@@ -1,8 +1,8 @@
 package at.fhv.ec.javafxclient.view.components;
 
 import at.fhv.ec.javafxclient.Application;
-import at.fhv.ec.javafxclient.application.dto.ProductOverviewDTO;
 import at.fhv.ec.javafxclient.view.ProductListController;
+import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ListCell;

@@ -1,15 +1,13 @@
 package at.fhv.ec.javafxclient.application.impl;
 
-import at.fhv.ec.javafxclient.application.api.ProductSearchService;
-import at.fhv.ec.javafxclient.application.dto.ProductOverviewDTO;
+import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
+import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 
 import java.util.List;
 
 public class ProductSearchServiceImpl implements ProductSearchService {
     @Override
     public List<ProductOverviewDTO> fullTextSearch(String query) {
-        System.out.println("You searched: " + query);
-
         return List.of(
                 ProductOverviewDTO.builder().withName("Album 1").withArtistName("Artist 1").withReleaseYear("1980").build(),
                 ProductOverviewDTO.builder().withName("Album 2").withArtistName("Artist 2").withReleaseYear("1990").build(),
