@@ -1,7 +1,6 @@
 package at.fhv.ec.javafxclient.view;
 
-
-import at.fhv.ec.javafxclient.application.impl.ProductSearchServiceImpl;
+import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ec.javafxclient.view.components.ProductListCell;
 import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
@@ -19,9 +18,6 @@ public class SearchController {
     @FXML
     private ListView<ProductOverviewDTO> productList;
 
-    // TODO: Use something like dependency injection in springboot
-    private final ProductSearchService productSearchService = new ProductSearchServiceImpl();
-
     public void initialize() {
         productList.setCellFactory(lv -> new ProductListCell());
     }
@@ -29,6 +25,8 @@ public class SearchController {
     @FXML
     protected void onSearchButtonClicked() {
         try {
+            // TODO: Use something like dependency injection in springboot
+            ProductSearchService productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
             String searchTerm = searchTextField.getText();
             List<ProductOverviewDTO> products = productSearchService.fullTextSearch(searchTerm);
             productList.getItems().clear();
