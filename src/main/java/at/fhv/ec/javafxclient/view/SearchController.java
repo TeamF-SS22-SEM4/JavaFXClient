@@ -26,6 +26,7 @@ public class SearchController {
 
     @FXML
     protected void onSearchButtonClicked() {
+
         String searchTerm = searchTextField.getText();
         System.out.println("You searched: " + searchTerm);
 
@@ -44,7 +45,6 @@ public class SearchController {
 
         productList.getItems().clear();
         productList.getItems().addAll(products);
-
         /*
         try {
             // TODO: Use something like dependency injection in springboot
