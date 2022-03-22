@@ -22,7 +22,7 @@ public class ProductListController {
             releaseYearLabel.setText(null);
         } else {
             nameLabel.setText(productOverviewDTO.name());
-            artistNameLabel.setText(productOverviewDTO.artistName());
+            artistNameLabel.setText(productOverviewDTO.artistName().get(0));
             releaseYearLabel.setText(productOverviewDTO.releaseYear());
         }
     }
