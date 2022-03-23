@@ -26,26 +26,6 @@ public class SearchController {
 
     @FXML
     protected void onSearchButtonClicked() {
-
-        String searchTerm = searchTextField.getText();
-        System.out.println("You searched: " + searchTerm);
-
-        List<ProductOverviewDTO> products = new ArrayList<>();
-
-        for(int i = 1; i <= 20; i++) {
-            products.add(
-                    ProductOverviewDTO.builder()
-                            .withId(UUID.randomUUID())
-                            .withName("Album " + i)
-                            .withArtistName(List.of("Artist " + i))
-                            .withReleaseYear("1980")
-                            .build()
-            );
-        }
-
-        productList.getItems().clear();
-        productList.getItems().addAll(products);
-        /*
         try {
             // TODO: Use something like dependency injection in springboot
             ProductSearchService productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
@@ -56,6 +36,5 @@ public class SearchController {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        */
     }
 }
