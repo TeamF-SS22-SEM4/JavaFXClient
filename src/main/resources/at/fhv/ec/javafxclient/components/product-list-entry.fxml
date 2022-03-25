@@ -9,6 +9,6 @@
       <Label fx:id="nameLabel" text="Label" />
       <Label fx:id="artistNameLabel" text="Label" />
       <Label fx:id="releaseYearLabel" text="Label" />
-      <Button text="Details" onAction="#onDetailsButtonClicked"/>
+<!--      <Button text="Details" onAction="#onDetailsButtonClicked"/>-->
    </children>
 </VBox>

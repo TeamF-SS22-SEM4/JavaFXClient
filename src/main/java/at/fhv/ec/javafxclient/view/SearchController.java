@@ -2,16 +2,13 @@ package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
-import at.fhv.ec.javafxclient.view.components.ProductListCell;
 import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 public class SearchController {
     @FXML
@@ -21,7 +18,7 @@ public class SearchController {
     private ListView<ProductOverviewDTO> productList;
 
     public void initialize() {
-        productList.setCellFactory(lv -> new ProductListCell());
+        //productList.setCellFactory(lv -> new ProductListCell());
     }
 
     @FXML
