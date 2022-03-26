@@ -2,15 +2,15 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TreeTableColumn?>
-<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 
 <HBox minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.SearchController">
    <children>
@@ -51,8 +51,25 @@
                   </Button>
                </children>
             </HBox>
-            <TreeTableView VBox.vgrow="ALWAYS" fx:id="productTable">
-            </TreeTableView>
+            <TableView fx:id="productTable" prefHeight="514.0" prefWidth="680.0" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="nameColumn" prefWidth="168.0" text="Name">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="name" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="artistColumn" prefWidth="318.0" text="Artist">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="artistName" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="releaseYearColumn" prefWidth="192.0" text="Release Year">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="releaseYear" />
+                     </cellValueFactory>
+                  </TableColumn>
+               </columns>
+            </TableView>
          </children>
       </VBox>
    </children>

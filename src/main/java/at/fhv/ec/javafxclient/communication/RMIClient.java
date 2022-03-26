@@ -13,7 +13,8 @@ public class RMIClient {
     private RMIFactory rmiFactory;
     private static int PORT = 12345;
     private static String PROTOCOL = "rmi://";
-    private static String HOST = "10.0.40.170";
+    //private static String HOST = "10.0.40.170";
+    private static String HOST = "localhost";
     private static String STUB = "/RMIFactory";
 
     private RMIClient() {
