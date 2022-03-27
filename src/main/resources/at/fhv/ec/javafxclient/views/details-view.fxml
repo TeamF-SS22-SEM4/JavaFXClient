@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
@@ -14,7 +15,7 @@
 
 <HBox minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.DetailsController">
    <children>
-      <VBox maxWidth="300.0" minWidth="200.0" style="-fx-background-color: #424242;" HBox.hgrow="ALWAYS">
+      <VBox fx:id="menu" maxWidth="300.0" minWidth="200.0" style="-fx-background-color: #424242;" HBox.hgrow="ALWAYS">
          <children>
             <Pane maxHeight="100.0" minHeight="100.0">
                <children>
@@ -34,11 +35,11 @@
       </VBox>
       <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
          <children>
-            <HBox alignment="CENTER_LEFT" maxHeight="100.0" minHeight="50.0" style="-fx-background-color: #616161;" VBox.vgrow="ALWAYS">
+            <HBox fx:id="headbar" alignment="CENTER_LEFT" maxHeight="100.0" minHeight="50.0" style="-fx-background-color: #616161;" VBox.vgrow="ALWAYS">
                <children>
-                  <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                  <Pane prefHeight="100.0" prefWidth="656.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label fx:id="nameLabel" layoutX="201.0" layoutY="28.0" text="Label">
+                        <Label fx:id="nameLabel" layoutX="256.0" layoutY="28.0" text="Label">
                            <font>
                               <Font size="36.0" />
                            </font>
@@ -46,37 +47,66 @@
                      </children></Pane>
                </children>
             </HBox>
-            <VBox maxHeight="100.0" minHeight="100.0">
+            <VBox maxHeight="499.0" minHeight="100.0" prefHeight="499.0" prefWidth="656.0">
                <children>
-                  <Pane maxHeight="100.0" minHeight="100.0">
+                  <Pane prefHeight="187.0" prefWidth="656.0">
                      <children>
-                        <Text layoutX="29.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Artist:" />
-                        <Text layoutX="29.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Release Year:" />
-                        <Text layoutX="29.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genre:" />
-                        <Text layoutX="29.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Label:" />
-                        <Text layoutX="29.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Duration:" />
-                        <Label fx:id="artistNameLabel" layoutX="74.0" layoutY="17.0" text="Label" />
-                        <Label fx:id="releaseYearLabel" layoutX="130.0" layoutY="51.0" text="Label" />
-                        <Label fx:id="labelNameLabel" layoutX="74.0" layoutY="82.0" text="Label" />
-                        <Label fx:id="genreLabel" layoutX="78.0" layoutY="111.0" text="Label" />
-                        <Label fx:id="durationLabel" layoutX="93.0" layoutY="145.0" text="Label" />
-                        <Text layoutX="29.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Songs:" />
-                        <TableView fx:id="songsTable" layoutY="202.0" prefHeight="297.0" prefWidth="599.0" VBox.vgrow="ALWAYS">
-                          <columns>
-                             <TableColumn fx:id="titleColumn" prefWidth="168.0" text="Title">
-                                <cellValueFactory>
-                                   <PropertyValueFactory property="title" />
-                                </cellValueFactory>
-                             </TableColumn>
-                             <TableColumn fx:id="durationColumn" prefWidth="168.0" text="Duration">
-                                <cellValueFactory>
-                                   <PropertyValueFactory property="duration" />
-                                </cellValueFactory>
-                             </TableColumn>
-                          </columns>
-                        </TableView>
+                        <Label fx:id="artistNameLabel" layoutX="119.0" layoutY="14.0" text="Label" />
+                        <Label fx:id="releaseYearLabel" layoutX="119.0" layoutY="43.0" text="Label" />
+                        <Label fx:id="labelNameLabel" layoutX="119.0" layoutY="73.0" text="Label" />
+                        <Label fx:id="genreLabel" layoutX="119.0" layoutY="103.0" text="Label" />
+                        <Label fx:id="durationLabel" layoutX="119.0" layoutY="132.0" text="Label" />
+                        <Text layoutX="22.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Artist:" />
+                        <Text layoutX="22.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Release Year:" />
+                        <Text layoutX="22.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Label:" />
+                        <Text layoutX="22.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genre:" />
+                        <Text layoutX="22.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Duration:" />
+                        <Text layoutX="22.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Songs">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Text>
                      </children>
                   </Pane>
+                  <TableView fx:id="songsTable" prefHeight="148.0" prefWidth="656.0">
+                    <columns>
+                       <TableColumn fx:id="titleColumn" prefWidth="318.0" text="Title">
+                          <cellValueFactory>
+                             <PropertyValueFactory property="title" />
+                          </cellValueFactory>
+                       </TableColumn>
+                       <TableColumn fx:id="durationColumn" prefWidth="318.0" text="Duration">
+                          <cellValueFactory>
+                             <PropertyValueFactory property="duration" />
+                          </cellValueFactory>
+                       </TableColumn>
+                    </columns>
+                  </TableView>
+                  <Pane prefHeight="164.0" prefWidth="656.0">
+                     <children>
+                        <Text layoutX="346.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sound Carrier">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Text>
+                        <Spinner fx:id="vinylSpinner" layoutX="426.0" layoutY="58.0" prefHeight="24.0" prefWidth="80.0" />
+                        <Spinner fx:id="cdSpinner" layoutX="426.0" layoutY="92.0" prefHeight="24.0" prefWidth="80.0" />
+                        <Spinner fx:id="cassetteSpinner" layoutX="426.0" layoutY="126.0" prefHeight="24.0" prefWidth="80.0" />
+                        <Button onAction="#onVinylCartButtonClicked" layoutX="536.0" layoutY="58.0" mnemonicParsing="false" text="Add to cart" />
+                        <Button onAction="#onCDCartButtonClicked" layoutX="536.0" layoutY="92.0" mnemonicParsing="false" text="Add to cart" />
+                        <Button onAction="#onCassetteCartButtonClicked" layoutX="536.0" layoutY="126.0" mnemonicParsing="false" text="Add to cart" />
+                        <Text layoutX="37.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" />
+                        <Text layoutX="183.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In stock" />
+                        <Text layoutX="294.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price per carrier" />
+                        <Label fx:id="vinylNameLabel" layoutX="35.0" layoutY="62.0" text="Label" />
+                        <Label fx:id="cdNameLabel" layoutX="35.0" layoutY="96.0" text="Label" />
+                        <Label fx:id="cassetteNameLabel" layoutX="35.0" layoutY="130.0" text="Label" />
+                        <Label fx:id="vinylAmountLabel" layoutX="183.0" layoutY="62.0" text="Label" />
+                        <Label fx:id="cdAmountLabel" layoutX="183.0" layoutY="96.0" text="Label" />
+                        <Label fx:id="cassetteAmountLabel" layoutX="183.0" layoutY="130.0" text="Label" />
+                        <Label fx:id="vinylPriceLabel" layoutX="294.0" layoutY="62.0" text="Label" />
+                        <Label fx:id="cdPriceLabel" layoutX="294.0" layoutY="96.0" text="Label" />
+                        <Label fx:id="cassettePriceLabel" layoutX="294.0" layoutY="130.0" text="Label" />
+                     </children></Pane>
                </children>
             </VBox>
          </children>

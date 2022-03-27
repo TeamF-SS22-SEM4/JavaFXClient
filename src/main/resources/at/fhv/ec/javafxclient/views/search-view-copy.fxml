@@ -17,7 +17,7 @@
       <VBox fx:id="menu" maxWidth="300.0" minWidth="200.0" HBox.hgrow="ALWAYS">
          <children>
             <Pane maxHeight="100.0" minHeight="100.0" />
-            <Button styleClass="btn-primary" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" text="Search" VBox.vgrow="ALWAYS">
+            <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" text="Search" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                </VBox.margin>
@@ -31,7 +31,7 @@
       </VBox>
       <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
          <children>
-            <HBox alignment="CENTER_LEFT" maxHeight="100.0" minHeight="50.0" style="-fx-background-color: #616161;" VBox.vgrow="ALWAYS">
+            <HBox fx:id="headbar" alignment="CENTER_LEFT" maxHeight="100.0" minHeight="50.0" style="-fx-background-color: #616161;" VBox.vgrow="ALWAYS">
                <children>
                   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
                      <font>
@@ -42,9 +42,9 @@
                      </HBox.margin>
                   </Text>
                   <TextField fx:id="searchTextField" maxHeight="30.0" maxWidth="300.0" minHeight="30.0" minWidth="150.0" style="-fx-background-color: #ffffff;" HBox.hgrow="ALWAYS" />
-                  <Button styleClass="btn-primary" maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onAction="#onSearchButtonClicked" text="Search" HBox.hgrow="ALWAYS" />
+                  <Button maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onAction="#onSearchButtonClicked" text="Search" HBox.hgrow="ALWAYS" />
                   <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button styleClass="btn-primary" maxHeight="30.0" minHeight="30.0" mnemonicParsing="false" text="Cart">
+                  <Button maxHeight="30.0" minHeight="30.0" mnemonicParsing="false" text="Cart">
                      <HBox.margin>
                         <Insets left="50.0" right="50.0" />
                      </HBox.margin>

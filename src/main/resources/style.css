@@ -1,3 +1,7 @@
 #menu {
-    -fx-background-color: #4a4947;
+    -fx-background-color: #575757;
+}
+
+#headbar {
+    -fx-background-color: #0398fc;
 }
