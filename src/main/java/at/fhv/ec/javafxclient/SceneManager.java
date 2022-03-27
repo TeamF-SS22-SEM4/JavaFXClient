@@ -35,11 +35,7 @@ public class SceneManager {
                 )
         );
 
-        Scene scene = new Scene(loader.load());
-        primaryStage.setMinWidth(400);
-        primaryStage.setMinHeight(200);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        switchView(loader);
     }
 
     public void switchToDetailsView(UUID productId) throws IOException {
@@ -53,7 +49,14 @@ public class SceneManager {
         detailsController.initData(productId);
         loader.setController(detailsController);
 
+        switchView(loader);
+    }
+
+    private void switchView(FXMLLoader loader) throws IOException {
         Scene scene = new Scene(loader.load());
+        scene.getStylesheets().add("style.css");
+        scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
+
         primaryStage.setMinWidth(400);
         primaryStage.setMinHeight(200);
         primaryStage.setScene(scene);
