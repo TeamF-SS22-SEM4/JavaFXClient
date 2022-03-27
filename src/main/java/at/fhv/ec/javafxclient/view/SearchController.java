@@ -16,6 +16,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public class SearchController {
+    // TODO: Use something like dependency injection in springboot
     ProductSearchService productSearchService;
     {
         try {
@@ -24,7 +25,6 @@ public class SearchController {
             e.printStackTrace();
         }
     }
-
 
     @FXML
     private TextField searchTextField;
@@ -39,7 +39,8 @@ public class SearchController {
             row.setOnMouseClicked(event -> {
                 if(event.getClickCount() == 2) {
                     try {
-                        SceneManager.getInstance().switchToDetailsView(row.getItem().getProductId());
+                        DetailsController.productId = row.getItem().getProductId();
+                        SceneManager.getInstance().switchView("views/details-view.fxml");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -53,7 +54,6 @@ public class SearchController {
     @FXML
     protected void onSearchButtonClicked() {
         try {
-            // TODO: Use something like dependency injection in springboot
             String searchTerm = searchTextField.getText();
             List<ProductOverviewDTO> products = productSearchService.fullTextSearch(searchTerm);
 

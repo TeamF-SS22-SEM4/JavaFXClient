@@ -9,7 +9,6 @@ import at.fhv.ss22.ea.f.communication.dto.SongDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 
@@ -18,7 +17,7 @@ import java.rmi.RemoteException;
 import java.util.UUID;
 
 public class DetailsController {
-    private UUID productId;
+    public static UUID productId;
 
     // Services
     ProductSearchService productSearchService;
@@ -51,14 +50,10 @@ public class DetailsController {
     @FXML
     public TableView<SongDTO> songsTable;
 
-    public void initData(UUID productId) {
-        this.productId = productId;
-    }
-
     @FXML
     public void initialize() {
         try {
-            ProductDetailsDTO productDetails = productSearchService.productById(this.productId);
+            ProductDetailsDTO productDetails = productSearchService.productById(productId);
 
             nameLabel.setText(productDetails.getName());
             artistNameLabel.setText(productDetails.getArtistName());
@@ -66,7 +61,6 @@ public class DetailsController {
             labelNameLabel.setText(productDetails.getLabelName());
             genreLabel.setText(productDetails.getGenre());
             durationLabel.setText(productDetails.getDuration());
-
 
             ObservableList<SongDTO> songsTableData = FXCollections.observableArrayList(productDetails.getSongs());
             songsTable.setItems(songsTableData);
@@ -78,7 +72,7 @@ public class DetailsController {
     @FXML
     protected void onBackButtonClicked() {
         try {
-            SceneManager.getInstance().switchToSearchView();
+            SceneManager.getInstance().switchView("views/search-view-copy.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }

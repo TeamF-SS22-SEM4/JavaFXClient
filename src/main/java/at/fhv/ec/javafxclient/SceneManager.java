@@ -1,13 +1,11 @@
 package at.fhv.ec.javafxclient;
 
-import at.fhv.ec.javafxclient.view.DetailsController;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.UUID;
+
 
 public class SceneManager {
     private static SceneManager instance;
@@ -28,31 +26,13 @@ public class SceneManager {
         return instance;
     }
 
-    public void switchToSearchView() throws IOException {
+    public void switchView(String view) throws IOException {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource(
-                        SEARCH_VIEW
+                        view
                 )
         );
 
-        switchView(loader);
-    }
-
-    public void switchToDetailsView(UUID productId) throws IOException {
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource(
-                        DETAILS_VIEW
-                )
-        );
-
-        DetailsController detailsController = new DetailsController();
-        detailsController.initData(productId);
-        loader.setController(detailsController);
-
-        switchView(loader);
-    }
-
-    private void switchView(FXMLLoader loader) throws IOException {
         Scene scene = new Scene(loader.load());
         scene.getStylesheets().add("style.css");
         scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
