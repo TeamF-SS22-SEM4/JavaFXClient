@@ -14,11 +14,10 @@ public class SceneManager {
     private Stage primaryStage;
 
     // Views
-    private final static String SEARCH_VIEW = "views/details-view.fxml";
+    private final static String SEARCH_VIEW = "views/search-view-copy.fxml";
+    private final static String DETAILS_VIEW = "views/details-view.fxml";
 
-    private SceneManager() {
-
-    }
+    private SceneManager() {}
 
     public static SceneManager getInstance() {
         if(instance == null) {
@@ -29,10 +28,24 @@ public class SceneManager {
         return instance;
     }
 
-    public void switchToDetailsView(UUID productId) throws IOException {
+    public void switchToSearchView() throws IOException {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource(
                         SEARCH_VIEW
+                )
+        );
+
+        Scene scene = new Scene(loader.load());
+        primaryStage.setMinWidth(400);
+        primaryStage.setMinHeight(200);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    public void switchToDetailsView(UUID productId) throws IOException {
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource(
+                        DETAILS_VIEW
                 )
         );
 
@@ -41,6 +54,8 @@ public class SceneManager {
         loader.setController(detailsController);
 
         Scene scene = new Scene(loader.load());
+        primaryStage.setMinWidth(400);
+        primaryStage.setMinHeight(200);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

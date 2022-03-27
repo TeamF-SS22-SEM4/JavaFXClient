@@ -63,7 +63,7 @@
                         <PropertyValueFactory property="artistName" />
                      </cellValueFactory>
                   </TableColumn>
-                  <TableColumn fx:id="releaseYearColumn" prefWidth="192.0" text="Release Year">
+                  <TableColumn fx:id="releaseYearColumn" prefWidth="253.0" text="Release Year">
                      <cellValueFactory>
                         <PropertyValueFactory property="releaseYear" />
                      </cellValueFactory>

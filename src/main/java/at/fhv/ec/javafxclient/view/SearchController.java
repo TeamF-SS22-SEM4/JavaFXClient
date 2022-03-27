@@ -16,7 +16,6 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public class SearchController {
-    SceneManager sceneManager;
     ProductSearchService productSearchService;
     {
         try {

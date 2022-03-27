@@ -5,18 +5,21 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.control.cell.PropertyValueFactory?>
 <HBox minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox maxWidth="300.0" minWidth="200.0" style="-fx-background-color: #424242;" HBox.hgrow="ALWAYS">
          <children>
-            <Pane maxHeight="100.0" minHeight="100.0" />
+            <Pane maxHeight="100.0" minHeight="100.0">
+               <children>
+                  <Button layoutX="69.0" layoutY="38.0" mnemonicParsing="false" onAction="#onBackButtonClicked" text="Back" />
+               </children></Pane>
             <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" text="Search" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
@@ -43,9 +46,9 @@
                      </children></Pane>
                </children>
             </HBox>
-            <VBox prefHeight="499.0" prefWidth="599.0">
+            <VBox maxHeight="100.0" minHeight="100.0">
                <children>
-                  <Pane prefHeight="502.0" prefWidth="599.0">
+                  <Pane maxHeight="100.0" minHeight="100.0">
                      <children>
                         <Text layoutX="29.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Artist:" />
                         <Text layoutX="29.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Release Year:" />
@@ -58,7 +61,7 @@
                         <Label fx:id="genreLabel" layoutX="78.0" layoutY="111.0" text="Label" />
                         <Label fx:id="durationLabel" layoutX="93.0" layoutY="145.0" text="Label" />
                         <Text layoutX="29.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Songs:" />
-                        <TableView layoutY="202.0" prefHeight="297.0" prefWidth="599.0">
+                        <TableView fx:id="songsTable" layoutY="202.0" prefHeight="297.0" prefWidth="599.0" VBox.vgrow="ALWAYS">
                           <columns>
                              <TableColumn fx:id="titleColumn" prefWidth="168.0" text="Title">
                                 <cellValueFactory>

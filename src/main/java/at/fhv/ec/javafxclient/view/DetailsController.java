@@ -1,5 +1,6 @@
 package at.fhv.ec.javafxclient.view;
 
+import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.ProductDetailsDTO;
@@ -8,9 +9,11 @@ import at.fhv.ss22.ea.f.communication.dto.SongDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.UUID;
 
@@ -46,7 +49,7 @@ public class DetailsController {
     public Label durationLabel;
 
     @FXML
-    private TableView<SongDTO> songsTable;
+    public TableView<SongDTO> songsTable;
 
     public void initData(UUID productId) {
         this.productId = productId;
@@ -64,12 +67,19 @@ public class DetailsController {
             genreLabel.setText(productDetails.getGenre());
             durationLabel.setText(productDetails.getDuration());
 
-            /*
-            getSongs returns null
+
             ObservableList<SongDTO> songsTableData = FXCollections.observableArrayList(productDetails.getSongs());
             songsTable.setItems(songsTableData);
-             */
         } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void onBackButtonClicked() {
+        try {
+            SceneManager.getInstance().switchToSearchView();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

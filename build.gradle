@@ -39,7 +39,7 @@ javafx {
 }
 
 dependencies {
-    implementation 'com.github.TeamF-SS22-SEM4:RMI-Shared-Lib:v3'
+    implementation 'com.github.TeamF-SS22-SEM4:RMI-Shared-Lib:v4'
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
