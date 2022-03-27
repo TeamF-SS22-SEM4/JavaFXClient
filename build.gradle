@@ -13,6 +13,10 @@ repositories {
     maven { url 'https://jitpack.io'}
 }
 
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
 ext {
     junitVersion = '5.8.1'
 }
@@ -35,7 +39,7 @@ javafx {
 }
 
 dependencies {
-    implementation 'com.github.TeamF-SS22-SEM4:RMI-Shared-Lib:main-SNAPSHOT'
+    implementation 'com.github.TeamF-SS22-SEM4:RMI-Shared-Lib:v4'
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
@@ -61,7 +65,7 @@ jlinkZip {
     group = 'distribution'
 }
 
-mainClassName = 'at.fhv.ec.javafxclient.HelloApplication'
+//mainClassName = 'at.fhv.ec.javafxclient.HelloApplication'
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
