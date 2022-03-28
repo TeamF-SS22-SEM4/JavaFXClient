@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.PopupWindow;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -17,11 +18,10 @@ import java.util.UUID;
 
 public class DetailsController {
     public static UUID productId;
-    private ProductDetailsDTO productDetails;
+    private static ProductDetailsDTO productDetails;
 
     // Services
     ProductSearchService productSearchService;
-
 
     {
         try {
@@ -91,7 +91,7 @@ public class DetailsController {
     @FXML
     public void initialize() {
         try {
-            this.productDetails = productSearchService.productById(productId);
+            productDetails = productSearchService.productById(productId);
 
             nameLabel.setText(productDetails.getName());
             artistNameLabel.setText(productDetails.getArtistName());
@@ -137,10 +137,22 @@ public class DetailsController {
                 .filter(soundCarrierDTO -> soundCarrierDTO.getSoundCarrierName().equals(soundCarrierName))
                 .findFirst().orElse(null);
 
-        ShoppingCartController.shoppingCart.put(selectedSoundCarrier, selectedAmount);
+        if(selectedSoundCarrier != null) {
+            ShoppingCartController.shoppingCart.put(selectedSoundCarrier, selectedAmount);
+            showPopup("Successful", "Successfully added sound carrier to shopping cart.\n" +
+                    ShoppingCartController.shoppingCart.size() + " products in shopping cart.");
+        } else {
+            showPopup("Error", "There was a problem.");
+        }
+    }
 
-        System.out.println(ShoppingCartController.shoppingCart.size() + " products in shopping cart.");
-        ShoppingCartController.shoppingCart.forEach((k ,v) -> System.out.println(k + ": " + v));
+    private void showPopup(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(message);
+        ButtonType confirmButton = new ButtonType("Ok");
+        alert.getButtonTypes().setAll(confirmButton);
+        alert.show();
     }
 
     @FXML
@@ -150,7 +162,7 @@ public class DetailsController {
         if(selectedAmount > 0) {
             addProductToCart("Vinyl", selectedAmount);
         } else {
-            System.out.println("You have to choose at least one.");
+            showPopup("Error", "You have to choose at least one.");
         }
     }
 
@@ -161,7 +173,7 @@ public class DetailsController {
         if(selectedAmount > 0) {
             addProductToCart("CD", selectedAmount);
         } else {
-            System.out.println("You have to choose at least one.");
+            showPopup("Error", "You have to choose at least one.");
         }
     }
 
@@ -172,7 +184,7 @@ public class DetailsController {
         if(selectedAmount > 0) {
             addProductToCart("Cassette", selectedAmount);
         } else {
-            System.out.println("You have to choose at least one.");
+            showPopup("Error", "You have to choose at least one.");
         }
     }
 
