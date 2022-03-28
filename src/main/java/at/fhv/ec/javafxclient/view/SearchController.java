@@ -63,4 +63,13 @@ public class SearchController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    protected void onShoppingCartButtonClicked() {
+        try {
+            SceneManager.getInstance().switchView("views/shopping-cart-view.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

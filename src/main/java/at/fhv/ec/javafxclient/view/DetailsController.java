@@ -4,13 +4,13 @@ import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.ProductDetailsDTO;
+import at.fhv.ss22.ea.f.communication.dto.ShoppingCartProductDTO;
 import at.fhv.ss22.ea.f.communication.dto.SongDTO;
 import at.fhv.ss22.ea.f.communication.dto.SoundCarrierDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.PopupWindow;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -138,9 +138,23 @@ public class DetailsController {
                 .findFirst().orElse(null);
 
         if(selectedSoundCarrier != null) {
-            ShoppingCartController.shoppingCart.put(selectedSoundCarrier, selectedAmount);
-            showPopup("Successful", "Successfully added sound carrier to shopping cart.\n" +
-                    ShoppingCartController.shoppingCart.size() + " products in shopping cart.");
+            float totalPrice = selectedAmount * selectedSoundCarrier.getPricePerCarrier();
+            ShoppingCartProductDTO shoppingCartProduct = ShoppingCartProductDTO.builder()
+                    .withProductId(productDetails.getProductId())
+                    .withProductName(productDetails.getName())
+                    .withArtistName(productDetails.getArtistName())
+                    .withSoundCarrierId(selectedSoundCarrier.getSoundCarrierId())
+                    .withCarrierName(selectedSoundCarrier.getSoundCarrierName())
+                    .withPricePerCarrier(selectedSoundCarrier.getPricePerCarrier())
+                    .withSelectedAmount(selectedAmount)
+                    .withTotalProductPrice(totalPrice)
+                    .build();
+
+            ShoppingCartController.shoppingCart.add(shoppingCartProduct);
+
+            showPopup("Successful", "Successfully added " + selectedAmount + " " + soundCarrierName +
+                    "(s) of " + productDetails.getName() + " to shopping cart.\n" +
+                    ShoppingCartController.shoppingCart.size() + " product(s) in shopping cart.");
         } else {
             showPopup("Error", "There was a problem.");
         }
@@ -161,6 +175,8 @@ public class DetailsController {
 
         if(selectedAmount > 0) {
             addProductToCart("Vinyl", selectedAmount);
+            vinylSpinner.getValueFactory().setValue(0);
+
         } else {
             showPopup("Error", "You have to choose at least one.");
         }
@@ -172,6 +188,7 @@ public class DetailsController {
 
         if(selectedAmount > 0) {
             addProductToCart("CD", selectedAmount);
+            cdSpinner.getValueFactory().setValue(0);
         } else {
             showPopup("Error", "You have to choose at least one.");
         }
@@ -183,6 +200,7 @@ public class DetailsController {
 
         if(selectedAmount > 0) {
             addProductToCart("Cassette", selectedAmount);
+            cassetteSpinner.getValueFactory().setValue(0);
         } else {
             showPopup("Error", "You have to choose at least one.");
         }
@@ -192,6 +210,15 @@ public class DetailsController {
     protected void onBackButtonClicked() {
         try {
             SceneManager.getInstance().switchView("views/search-view-copy.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void onShoppingCartButtonClicked() {
+        try {
+            SceneManager.getInstance().switchView("views/shopping-cart-view.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -11,7 +11,7 @@ public class RMIClient {
     // Instance as singleton
     private static RMIClient rmiClient;
     private RMIFactory rmiFactory;
-    private static int PORT = 12345;
+    private static int PORT = 1099;
     private static String PROTOCOL = "rmi://";
     //private static String HOST = "10.0.40.170";
     private static String HOST = "localhost";

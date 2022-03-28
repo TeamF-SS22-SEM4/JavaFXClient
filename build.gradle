@@ -39,7 +39,7 @@ javafx {
 }
 
 dependencies {
-    implementation 'com.github.TeamF-SS22-SEM4:RMI-Shared-Lib:v4'
+    implementation 'com.github.TeamF-SS22-SEM4:RMI-Shared-Lib:v5'
     implementation('org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0')
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")

@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <HBox minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.DetailsController">
    <children>
       <VBox fx:id="menu" maxWidth="300.0" minWidth="200.0" style="-fx-background-color: #424242;" HBox.hgrow="ALWAYS">
@@ -44,6 +36,7 @@
                               <Font size="36.0" />
                            </font>
                         </Label>
+                        <Button onAction="#onShoppingCartButtonClicked" layoutX="531.0" layoutY="38.0" mnemonicParsing="false" text="Shopping Cart" />
                      </children></Pane>
                </children>
             </HBox>
@@ -91,9 +84,9 @@
                         <Spinner fx:id="vinylSpinner" layoutX="426.0" layoutY="58.0" prefHeight="24.0" prefWidth="80.0" />
                         <Spinner fx:id="cdSpinner" layoutX="426.0" layoutY="92.0" prefHeight="24.0" prefWidth="80.0" />
                         <Spinner fx:id="cassetteSpinner" layoutX="426.0" layoutY="126.0" prefHeight="24.0" prefWidth="80.0" />
-                        <Button onAction="#onVinylCartButtonClicked" layoutX="536.0" layoutY="58.0" mnemonicParsing="false" text="Add to cart" />
-                        <Button onAction="#onCDCartButtonClicked" layoutX="536.0" layoutY="92.0" mnemonicParsing="false" text="Add to cart" />
-                        <Button onAction="#onCassetteCartButtonClicked" layoutX="536.0" layoutY="126.0" mnemonicParsing="false" text="Add to cart" />
+                        <Button layoutX="536.0" layoutY="58.0" mnemonicParsing="false" onAction="#onVinylCartButtonClicked" text="Add to cart" />
+                        <Button layoutX="536.0" layoutY="92.0" mnemonicParsing="false" onAction="#onCDCartButtonClicked" text="Add to cart" />
+                        <Button layoutX="536.0" layoutY="126.0" mnemonicParsing="false" onAction="#onCassetteCartButtonClicked" text="Add to cart" />
                         <Text layoutX="37.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" />
                         <Text layoutX="183.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In stock" />
                         <Text layoutX="294.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price per carrier" />
