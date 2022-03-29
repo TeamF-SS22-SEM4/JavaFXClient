@@ -11,7 +11,7 @@ public class Application extends javafx.application.Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("views/search-view-copy.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("views/search-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         scene.getStylesheets().add("style.css");
         scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
@@ -31,5 +31,4 @@ public class Application extends javafx.application.Application {
     public static Stage getPrimaryStage() {
         return primaryStage;
     }
-
 }

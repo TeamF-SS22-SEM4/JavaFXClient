@@ -3,14 +3,13 @@ package at.fhv.ec.javafxclient.view;
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
-import at.fhv.ss22.ea.f.communication.dto.ProductDetailsDTO;
-import at.fhv.ss22.ea.f.communication.dto.ShoppingCartProductDTO;
-import at.fhv.ss22.ea.f.communication.dto.SongDTO;
-import at.fhv.ss22.ea.f.communication.dto.SoundCarrierDTO;
+import at.fhv.ss22.ea.f.communication.dto.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -23,74 +22,71 @@ public class DetailsController {
     // Services
     ProductSearchService productSearchService;
 
-    {
-        try {
-            productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
+    @FXML
+    private Label nameLabel;
 
     @FXML
-    public Label nameLabel;
+    private Label artistNameLabel;
 
     @FXML
-    public Label artistNameLabel;
+    private Label releaseYearLabel;
 
     @FXML
-    public Label releaseYearLabel;
+    private Label labelNameLabel;
 
     @FXML
-    public Label labelNameLabel;
+    private Label genreLabel;
 
     @FXML
-    public Label genreLabel;
+    private Label durationLabel;
 
     @FXML
-    public Label durationLabel;
+    private TableView<SongDTO> songsTable;
 
     @FXML
-    public TableView<SongDTO> songsTable;
+    private Label vinylNameLabel;
 
     @FXML
-    public Label vinylNameLabel;
+    private Label cdNameLabel;
 
     @FXML
-    public Label cdNameLabel;
+    private Label cassetteNameLabel;
 
     @FXML
-    public Label cassetteNameLabel;
+    private Label vinylAmountLabel;
 
     @FXML
-    public Label vinylAmountLabel;
+    private Label cdAmountLabel;
 
     @FXML
-    public Label cdAmountLabel;
+    private Label cassetteAmountLabel;
 
     @FXML
-    public Label cassetteAmountLabel;
+    private Label vinylPriceLabel;
 
     @FXML
-    public Label vinylPriceLabel;
+    private Label cdPriceLabel;
 
     @FXML
-    public Label cdPriceLabel;
+    private Label cassettePriceLabel;
 
     @FXML
-    public Label cassettePriceLabel;
+    private Spinner<Integer> vinylSpinner;
 
     @FXML
-    public Spinner<Integer> vinylSpinner;
+    private Spinner<Integer> cdSpinner;
 
     @FXML
-    public Spinner<Integer> cdSpinner;
+    private Spinner<Integer> cassetteSpinner;
 
     @FXML
-    public Spinner<Integer> cassetteSpinner;
+    private TableView<SoundCarrierDTO> soundCarrierTable;
 
     @FXML
     public void initialize() {
         try {
+            productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
+
             productDetails = productSearchService.productById(productId);
 
             nameLabel.setText(productDetails.getName());
@@ -127,46 +123,12 @@ public class DetailsController {
                     );
                 }
             });
+
+            createTable();
+            fillTable();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-    }
-
-    private void addProductToCart(String soundCarrierName, int selectedAmount) {
-        SoundCarrierDTO selectedSoundCarrier = productDetails.getSoundCarriers().stream()
-                .filter(soundCarrierDTO -> soundCarrierDTO.getSoundCarrierName().equals(soundCarrierName))
-                .findFirst().orElse(null);
-
-        if(selectedSoundCarrier != null) {
-            float totalPrice = selectedAmount * selectedSoundCarrier.getPricePerCarrier();
-            ShoppingCartProductDTO shoppingCartProduct = ShoppingCartProductDTO.builder()
-                    .withProductId(productDetails.getProductId())
-                    .withProductName(productDetails.getName())
-                    .withArtistName(productDetails.getArtistName())
-                    .withSoundCarrierId(selectedSoundCarrier.getSoundCarrierId())
-                    .withCarrierName(selectedSoundCarrier.getSoundCarrierName())
-                    .withPricePerCarrier(selectedSoundCarrier.getPricePerCarrier())
-                    .withSelectedAmount(selectedAmount)
-                    .withTotalProductPrice(totalPrice)
-                    .build();
-
-            ShoppingCartController.shoppingCart.add(shoppingCartProduct);
-
-            showPopup("Successful", "Successfully added " + selectedAmount + " " + soundCarrierName +
-                    "(s) of " + productDetails.getName() + " to shopping cart.\n" +
-                    ShoppingCartController.shoppingCart.size() + " product(s) in shopping cart.");
-        } else {
-            showPopup("Error", "There was a problem.");
-        }
-    }
-
-    private void showPopup(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(message);
-        ButtonType confirmButton = new ButtonType("Ok");
-        alert.getButtonTypes().setAll(confirmButton);
-        alert.show();
     }
 
     @FXML
@@ -209,7 +171,7 @@ public class DetailsController {
     @FXML
     protected void onBackButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/search-view-copy.fxml");
+            SceneManager.getInstance().switchView("views/search-view.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -222,5 +184,127 @@ public class DetailsController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createTable() {
+        // Initialize Table Columns
+        TableColumn<SoundCarrierDTO, String> soundCarrierNameColumn = new TableColumn<>("Type");
+        soundCarrierNameColumn.setCellValueFactory(new PropertyValueFactory("soundCarrierName"));
+
+        TableColumn<SoundCarrierDTO, String> amountAvailableColumn = new TableColumn<>("In stock");
+        amountAvailableColumn.setCellValueFactory(new PropertyValueFactory("amountAvailable"));
+
+        TableColumn<SoundCarrierDTO, String> pricePerCarrierColumn = new TableColumn<>("Price per carrier");
+        pricePerCarrierColumn.setCellValueFactory(new PropertyValueFactory("pricePerCarrier"));
+
+        TableColumn spinnerColumn = new TableColumn("Selected Amount");
+        TableColumn addToCartColumn = new TableColumn("Action");
+
+        // TODO: find a more beautiful solution
+        Callback<TableColumn<SoundCarrierDTO, String>, TableCell<SoundCarrierDTO, String>> spinnerCellFactory = new Callback<>() {
+            @Override
+            public TableCell call(final TableColumn<SoundCarrierDTO, String> param) {
+                final TableCell<SoundCarrierDTO, String> cell = new TableCell<>() {
+
+                    private final Spinner<Integer> selectAmountSpinner = new Spinner<>();
+
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            selectAmountSpinner.setValueFactory(
+                                    new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                                            0,
+                                            getTableView().getItems().get(getIndex()).getAmountAvailable(),
+                                            0
+                                    )
+                            );
+                            setGraphic(selectAmountSpinner);
+                            setText(null);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        Callback<TableColumn<SoundCarrierDTO, String>, TableCell<SoundCarrierDTO, String>> addToCartButtonCellFactory = new Callback<>() {
+            @Override
+            public TableCell call(final TableColumn<SoundCarrierDTO, String> param) {
+                final TableCell<SoundCarrierDTO, String> cell = new TableCell<>() {
+
+                    private final Button addToCartButton = new Button("Add to cart");
+
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            addToCartButton.setOnAction(event -> {
+                                System.out.println(spinnerColumn.cellValueFactoryProperty().getValue());
+                                System.out.println(getTableView().getItems().get(getIndex()).getSoundCarrierName());
+                            });
+                            setGraphic(addToCartButton);
+                            setText(null);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        spinnerColumn.setCellFactory(spinnerCellFactory);
+        addToCartColumn.setCellFactory(addToCartButtonCellFactory);
+        soundCarrierTable.getColumns().addAll(
+                soundCarrierNameColumn, amountAvailableColumn, pricePerCarrierColumn,
+                spinnerColumn, addToCartColumn
+        );
+    }
+
+    private void fillTable() {
+        ObservableList<SoundCarrierDTO> soundCarrierTableData = FXCollections.observableArrayList(productDetails.getSoundCarriers());
+        soundCarrierTable.setItems(soundCarrierTableData);
+    }
+
+    private void addProductToCart(String soundCarrierName, int selectedAmount) {
+        SoundCarrierDTO selectedSoundCarrier = productDetails.getSoundCarriers().stream()
+                .filter(soundCarrierDTO -> soundCarrierDTO.getSoundCarrierName().equals(soundCarrierName))
+                .findFirst().orElse(null);
+
+        if(selectedSoundCarrier != null) {
+            float totalPrice = selectedAmount * selectedSoundCarrier.getPricePerCarrier();
+            ShoppingCartProductDTO shoppingCartProduct = ShoppingCartProductDTO.builder()
+                    .withProductId(productDetails.getProductId())
+                    .withProductName(productDetails.getName())
+                    .withArtistName(productDetails.getArtistName())
+                    .withSoundCarrierId(selectedSoundCarrier.getSoundCarrierId())
+                    .withCarrierName(selectedSoundCarrier.getSoundCarrierName())
+                    .withPricePerCarrier(selectedSoundCarrier.getPricePerCarrier())
+                    .withSelectedAmount(selectedAmount)
+                    .withTotalProductPrice(totalPrice)
+                    .build();
+
+            ShoppingCartController.shoppingCart.add(shoppingCartProduct);
+
+            showPopup("Successful", "Successfully added " + selectedAmount + " " + soundCarrierName +
+                    "(s) of " + productDetails.getName() + " to shopping cart.\n" +
+                    ShoppingCartController.shoppingCart.size() + " product(s) in shopping cart.");
+        } else {
+            showPopup("Error", "There was a problem.");
+        }
+    }
+
+    private void showPopup(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(message);
+        ButtonType confirmButton = new ButtonType("Ok");
+        alert.getButtonTypes().setAll(confirmButton);
+        alert.show();
     }
 }

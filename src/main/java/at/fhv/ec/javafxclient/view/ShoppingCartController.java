@@ -18,10 +18,10 @@ public class ShoppingCartController {
     private static float totalPrice;
 
     @FXML
-    public TableView<ShoppingCartProductDTO> shoppingCartTable;
+    private TableView<ShoppingCartProductDTO> shoppingCartTable;
 
     @FXML
-    public Label totalPriceLabel;
+    private Label totalPriceLabel;
 
     @FXML
     public void initialize() {
@@ -39,7 +39,7 @@ public class ShoppingCartController {
     @FXML
     protected void onBackButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/search-view-copy.fxml");
+            SceneManager.getInstance().switchView("views/search-view.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
