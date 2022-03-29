@@ -2,6 +2,7 @@ package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
+import at.fhv.ec.javafxclient.view.forms.ShoppingCartForm;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
 import javafx.collections.FXCollections;
@@ -26,6 +27,9 @@ public class SearchController {
 
     @FXML
     private TableView<ProductOverviewDTO> productTable;
+
+    @FXML
+    private TableColumn<ProductOverviewDTO, Button> actionColumn;
 
     @FXML
     public void initialize() {
@@ -56,6 +60,7 @@ public class SearchController {
     protected void onClearButtonClicked() {
         productTable.getItems().clear();
         products.clear();
+        searchTextField.clear();
     }
 
     @FXML
@@ -69,28 +74,17 @@ public class SearchController {
 
     private void createTable() {
         // Initialize Table Columns
-        TableColumn<ProductOverviewDTO, String> nameColumn = new TableColumn<>("Product");
-        nameColumn.setCellValueFactory(new PropertyValueFactory("name"));
-
-        TableColumn<ProductOverviewDTO, String> artistColumn = new TableColumn<>("Artist");
-        artistColumn.setCellValueFactory(new PropertyValueFactory("artistName"));
-
-        TableColumn<ProductOverviewDTO, String> releaseYearColumn = new TableColumn<>("Release Year");
-        releaseYearColumn.setCellValueFactory(new PropertyValueFactory("releaseYear"));
-
         // Add Button to table to switch to DetailsView
-        TableColumn actionCol = new TableColumn("Action");
-
         // TODO: find a more beautiful solution
-        Callback<TableColumn<ProductOverviewDTO, String>, TableCell<ProductOverviewDTO, String>> cellFactory = new Callback<>() {
+        actionColumn.setCellFactory(new Callback<>() {
             @Override
-            public TableCell call(final TableColumn<ProductOverviewDTO, String> param) {
-                final TableCell<ProductOverviewDTO, String> cell = new TableCell<>() {
+            public TableCell<ProductOverviewDTO, Button> call(TableColumn<ProductOverviewDTO, Button> param) {
+                return new TableCell<>() {
 
                     final Button detailsButton = new Button("Details");
 
                     @Override
-                    public void updateItem(String item, boolean empty) {
+                    public void updateItem(Button item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty) {
                             setGraphic(null);
@@ -109,12 +103,8 @@ public class SearchController {
                         }
                     }
                 };
-                return cell;
             }
-        };
-
-        actionCol.setCellFactory(cellFactory);
-        productTable.getColumns().addAll(nameColumn, artistColumn, releaseYearColumn, actionCol);
+        });
     }
 
     private void fillTable() {

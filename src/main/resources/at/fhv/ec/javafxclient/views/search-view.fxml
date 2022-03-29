@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <HBox minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.SearchController">
    <children>
       <VBox fx:id="menu" maxWidth="300.0" minWidth="200.0" HBox.hgrow="ALWAYS">
@@ -44,6 +45,26 @@
                </children>
             </HBox>
             <TableView fx:id="productTable" prefHeight="514.0" prefWidth="680.0" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="nameColumn" prefWidth="96.0" text="Product">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="name" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="artistColumn" prefWidth="96.0" text="Artist">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="artistName" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="releaseYearColumn" prefWidth="96.0" text="Release Year">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="releaseYear" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="actionColumn" prefWidth="96.0" text="Action">
+                  </TableColumn>
+               </columns>
+
             </TableView>
          </children>
       </VBox>
