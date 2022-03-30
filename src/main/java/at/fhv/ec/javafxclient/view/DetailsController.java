@@ -9,19 +9,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class DetailsController {
     public static UUID productId;
     private static ProductDetailsDTO productDetails;
-    private static List<Integer> selectedAmounts;
 
     // Services
     ProductSearchService productSearchService;
@@ -64,8 +61,6 @@ public class DetailsController {
 
     @FXML
     public void initialize() {
-        selectedAmounts = new ArrayList<>();
-
         try {
             productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
             productDetails = productSearchService.productById(productId);
@@ -164,14 +159,12 @@ public class DetailsController {
                             selectAmountSpinner.setValueFactory(
                                     new SpinnerValueFactory.IntegerSpinnerValueFactory(
                                             0,
-                                            soundCarrierTable.getItems().get(getIndex()).getAmountAvailable(),
+                                            getTableView().getItems().get(getIndex()).getAmountAvailable(),
                                             0
                                     )
                             );
 
-                            selectAmountSpinner.valueProperty().addListener((observable, oldValue, newValue) ->
-                                    selectedAmounts.add(getIndex(), newValue)
-                            );
+                            selectAmountSpinner.setId(getTableView().getItems().get(getIndex()).getSoundCarrierName());
 
                             setGraphic(selectAmountSpinner);
                         }
@@ -181,11 +174,10 @@ public class DetailsController {
         };
 
         // TODO: use a more beautiful solution
-        Callback<TableColumn<SoundCarrierDTO, Button>, TableCell<SoundCarrierDTO, Button>> addToCartButtonCellFactory = new Callback<>() {
+        addToCartColumn.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<SoundCarrierDTO, Button> call(final TableColumn<SoundCarrierDTO, Button> param) {
+            public TableCell<SoundCarrierDTO, Button> call(TableColumn<SoundCarrierDTO, Button> param) {
                 return new TableCell<>() {
-
                     private final Button addToCartButton = new Button("Add to cart");
 
                     @Override
@@ -197,7 +189,13 @@ public class DetailsController {
                         } else {
                             addToCartButton.setOnAction(event -> {
                                 // TODO: get spinner from same row
-                                addProductToCart(soundCarrierTable.getItems().get(getIndex()).getSoundCarrierName(), getIndex());
+                                Spinner<Integer> selectedAmountSpinner = (Spinner<Integer>) soundCarrierTable
+                                        .lookup("#" + getTableView()
+                                                .getItems()
+                                                .get(getIndex())
+                                                .getSoundCarrierName());
+
+                                addProductToCart(getTableView().getItems().get(getIndex()).getSoundCarrierName(), selectedAmountSpinner.getValue());
                             });
                             setGraphic(addToCartButton);
                             setText(null);
@@ -205,10 +203,9 @@ public class DetailsController {
                     }
                 };
             }
-        };
+        });
 
         spinnerColumn.setCellFactory(spinnerCellFactory);
-        addToCartColumn.setCellFactory(addToCartButtonCellFactory);
     }
 
     private void fillSoundCarrierTable() {
@@ -216,12 +213,10 @@ public class DetailsController {
         soundCarrierTable.setItems(soundCarrierTableData);
     }
 
-    private void addProductToCart(String soundCarrierName, int index) {
+    private void addProductToCart(String soundCarrierName, int selectedAmount) {
         SoundCarrierDTO selectedSoundCarrier = productDetails.getSoundCarriers().stream()
                 .filter(soundCarrierDTO -> soundCarrierDTO.getSoundCarrierName().equals(soundCarrierName))
                 .findFirst().orElse(null);
-
-        int selectedAmount = selectedAmounts.get(index);
 
         if(selectedSoundCarrier != null && selectedAmount > 0) {
             float totalPrice = selectedAmount * selectedSoundCarrier.getPricePerCarrier();
@@ -245,8 +240,6 @@ public class DetailsController {
                     ShoppingCartController.shoppingCart.size() + " product(s) are now in shopping cart.",
                     Alert.AlertType.CONFIRMATION
             );
-
-            selectedAmounts.add(index, 0);
         } else {
             showPopup("Error", "You have to choose at least one.", Alert.AlertType.ERROR);
         }

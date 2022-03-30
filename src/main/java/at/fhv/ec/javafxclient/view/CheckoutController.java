@@ -130,9 +130,15 @@ public class CheckoutController {
                         .getRmiFactory()
                         .getBuyingService()
                         .buyWithShoppingCart(shoppingCartProducts, selectedPaymentMethod);
+
+                shoppingCart.clear();
                 showPopup("Successful", "Bill is printed...", Alert.AlertType.CONFIRMATION);
                 SceneManager.getInstance().switchView("views/search-view.fxml");
-            } catch (CarrierNotAvailableException | IOException e) {
+            } catch (CarrierNotAvailableException cne) {
+                showPopup("Error", "The selected amount is not available.", Alert.AlertType.ERROR);
+                cne.printStackTrace();
+            } catch (IOException e) {
+                showPopup("Error", "An error occurred.", Alert.AlertType.ERROR);
                 e.printStackTrace();
             }
         } else {
