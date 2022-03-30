@@ -7,6 +7,7 @@ import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -35,6 +36,8 @@ public class SearchController {
     public void initialize() {
         try {
             productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
+            products = productSearchService.fullTextSearch("");
+            fillTable();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -61,6 +64,14 @@ public class SearchController {
         productTable.getItems().clear();
         products.clear();
         searchTextField.clear();
+        try {
+            String searchTerm = searchTextField.getText();
+            products = productSearchService.fullTextSearch(searchTerm);
+            fillTable();
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -110,5 +121,9 @@ public class SearchController {
     private void fillTable() {
         ObservableList<ProductOverviewDTO> productListData = FXCollections.observableArrayList(products);
         productTable.setItems(productListData);
+    }
+
+    public void onEnter() {
+        onSearchButtonClicked();
     }
 }
