@@ -12,73 +12,110 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.DetailsController">
+<HBox minHeight="600.0" minWidth="800.0" prefHeight="837.0" prefWidth="946.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.DetailsController">
    <children>
-      <VBox maxWidth="300.0" minWidth="200.0" style="-fx-background-color: #424242;" HBox.hgrow="ALWAYS">
+      <VBox maxWidth="300.0" minWidth="200.0" styleClass="sidebar" HBox.hgrow="ALWAYS">
          <children>
-            <Pane maxHeight="100.0" minHeight="100.0">
-               <children>
-                  <Button layoutX="69.0" layoutY="38.0" mnemonicParsing="false" onAction="#onBackButtonClicked" text="Back" />
-               </children></Pane>
-            <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" text="Search" VBox.vgrow="ALWAYS">
+            <Pane fx:id="sidebar" maxHeight="100.0" minHeight="100.0" />
+            <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" styleClass="btn" text="Shop" VBox.vgrow="ALWAYS">
                <VBox.margin>
-                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
                </VBox.margin>
             </Button>
-            <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" text="Search" VBox.vgrow="ALWAYS">
+            <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" text="Customers" VBox.vgrow="ALWAYS">
                <VBox.margin>
-                  <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" text="Exchange">
+               <VBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </VBox.margin>
             </Button>
          </children>
       </VBox>
       <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
          <children>
-            <HBox alignment="CENTER_LEFT" maxHeight="100.0" minHeight="50.0" style="-fx-background-color: #616161;" VBox.vgrow="ALWAYS">
+            <HBox fx:id="headbar" alignment="CENTER_LEFT" maxHeight="100.0" minHeight="50.0" spacing="20.0" styleClass="header" VBox.vgrow="ALWAYS">
                <children>
-                  <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label fx:id="nameLabel" layoutX="201.0" layoutY="28.0" text="Label">
-                           <font>
-                              <Font size="36.0" />
-                           </font>
-                        </Label>
-                     </children></Pane>
+                  <Label fx:id="nameLabel" text="Label" textFill="WHITE">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Label>
+                  <Pane HBox.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" onAction="#onShoppingCartButtonClicked" text="Shopping Cart" />
+                  <Button minWidth="0.0" mnemonicParsing="false" onAction="#onBackButtonClicked" text="Back" />
                </children>
             </HBox>
-            <VBox maxHeight="100.0" minHeight="100.0">
+            <VBox maxHeight="499.0" minHeight="100.0" prefHeight="400.0" prefWidth="745.0">
                <children>
-                  <Pane maxHeight="100.0" minHeight="100.0">
+                  <Pane prefHeight="187.0" prefWidth="656.0">
                      <children>
-                        <Text layoutX="29.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Artist:" />
-                        <Text layoutX="29.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Release Year:" />
-                        <Text layoutX="29.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genre:" />
-                        <Text layoutX="29.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Label:" />
-                        <Text layoutX="29.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Duration:" />
-                        <Label fx:id="artistNameLabel" layoutX="74.0" layoutY="17.0" text="Label" />
-                        <Label fx:id="releaseYearLabel" layoutX="130.0" layoutY="51.0" text="Label" />
-                        <Label fx:id="labelNameLabel" layoutX="74.0" layoutY="82.0" text="Label" />
-                        <Label fx:id="genreLabel" layoutX="78.0" layoutY="111.0" text="Label" />
-                        <Label fx:id="durationLabel" layoutX="93.0" layoutY="145.0" text="Label" />
-                        <Text layoutX="29.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Songs:" />
-                        <TableView fx:id="songsTable" layoutY="202.0" prefHeight="297.0" prefWidth="599.0" VBox.vgrow="ALWAYS">
-                          <columns>
-                             <TableColumn fx:id="titleColumn" prefWidth="168.0" text="Title">
-                                <cellValueFactory>
-                                   <PropertyValueFactory property="title" />
-                                </cellValueFactory>
-                             </TableColumn>
-                             <TableColumn fx:id="durationColumn" prefWidth="168.0" text="Duration">
-                                <cellValueFactory>
-                                   <PropertyValueFactory property="duration" />
-                                </cellValueFactory>
-                             </TableColumn>
-                          </columns>
-                        </TableView>
+                        <Label fx:id="artistNameLabel" layoutX="119.0" layoutY="14.0" text="Label" />
+                        <Label fx:id="releaseYearLabel" layoutX="119.0" layoutY="43.0" text="Label" />
+                        <Label fx:id="labelNameLabel" layoutX="119.0" layoutY="73.0" text="Label" />
+                        <Label fx:id="genreLabel" layoutX="119.0" layoutY="103.0" text="Label" />
+                        <Label fx:id="durationLabel" layoutX="119.0" layoutY="132.0" text="Label" />
+                        <Text layoutX="22.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Artist:" />
+                        <Text layoutX="22.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Release Year:" />
+                        <Text layoutX="22.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Label:" />
+                        <Text layoutX="22.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genre:" />
+                        <Text layoutX="22.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Duration:" />
+                        <Text layoutX="22.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Songs">
+                           <font>
+                              <Font size="16.0" />
+                           </font></Text>
                      </children>
                   </Pane>
+                  <TableView fx:id="songsTable" prefHeight="135.0" prefWidth="745.0">
+                    <columns>
+                       <TableColumn fx:id="durationColumn" prefWidth="318.0" text="Duration">
+                          <cellValueFactory>
+                             <PropertyValueFactory property="duration" />
+                          </cellValueFactory>
+                       </TableColumn>
+                       <TableColumn fx:id="titleColumn" prefWidth="318.0" text="Title">
+                          <cellValueFactory>
+                             <PropertyValueFactory property="title" />
+                          </cellValueFactory>
+                       </TableColumn>
+                    </columns>
+                  </TableView>
+                  <Pane prefHeight="81.0" prefWidth="745.0">
+                     <children>
+                        <Text layoutX="346.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <Text layoutX="14.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sound Carrier">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Text>
+                     </children></Pane>
                </children>
             </VBox>
+            <TableView fx:id="soundCarrierTable" prefHeight="237.0" prefWidth="638.0">
+               <columns>
+                  <TableColumn fx:id="soundCarrierNameColumn" prefWidth="86.0" text="Type">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="soundCarrierName" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="amountAvailableColumn" prefWidth="89.0" text="In stock">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="amountAvailable" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="pricePerCarrierColumn" prefWidth="175.0" text="Price per carrier">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="pricePerCarrier" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="spinnerColumn" prefWidth="138.0" text="Selected Amount">
+                  </TableColumn>
+                  <TableColumn fx:id="addToCartColumn" prefWidth="100.0" text="Action">
+                  </TableColumn>
+               </columns>
+            </TableView>
          </children>
       </VBox>
    </children>

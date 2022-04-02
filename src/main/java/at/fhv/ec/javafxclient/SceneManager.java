@@ -11,10 +11,6 @@ public class SceneManager {
     private static SceneManager instance;
     private Stage primaryStage;
 
-    // Views
-    private final static String SEARCH_VIEW = "views/search-view-copy.fxml";
-    private final static String DETAILS_VIEW = "views/details-view.fxml";
-
     private SceneManager() {}
 
     public static SceneManager getInstance() {
@@ -35,7 +31,6 @@ public class SceneManager {
 
         Scene scene = new Scene(loader.load());
         scene.getStylesheets().add("style.css");
-        scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
 
         primaryStage.setMinWidth(400);
         primaryStage.setMinHeight(200);
