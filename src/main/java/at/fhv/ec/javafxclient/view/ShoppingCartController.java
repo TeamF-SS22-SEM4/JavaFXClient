@@ -36,7 +36,7 @@ public class ShoppingCartController {
 
     @FXML
     public void initialize() {
-        createTable();
+        createShoppingCartTable();
 
         ObservableList<ShoppingCartForm> shoppingCartTableData = FXCollections.observableArrayList(shoppingCart);
         shoppingCartTable.setItems(shoppingCartTableData);
@@ -86,7 +86,7 @@ public class ShoppingCartController {
         totalPriceLabel.setText(totalPrice + "€");
     }
 
-    private void createTable() {
+    private void createShoppingCartTable() {
         Callback<TableColumn<ShoppingCartForm, Spinner<Integer>>, TableCell<ShoppingCartForm, Spinner<Integer>>> spinnerCellFactory = new Callback<>() {
             @Override
             public TableCell<ShoppingCartForm, Spinner<Integer>> call(final TableColumn<ShoppingCartForm, Spinner<Integer>> param) {

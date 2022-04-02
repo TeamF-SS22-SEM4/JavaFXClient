@@ -37,15 +37,16 @@
       </VBox>
       <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
          <children>
-            <HBox fx:id="headbar" alignment="CENTER_LEFT" maxHeight="100.0" minHeight="50.0" style="-fx-background-color: #616161;" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" maxHeight="100.0" minHeight="50.0" styleClass="header" VBox.vgrow="ALWAYS">
                <children>
                   <Pane prefHeight="100.0" prefWidth="638.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Text fill="WHITE" layoutX="315.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Checkout">
+                        <Text fill="WHITE" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Checkout">
                            <font>
                               <Font size="36.0" />
                            </font>
                         </Text>
+                        <Button layoutX="761.0" layoutY="26.0" mnemonicParsing="false" onAction="#onBackButtonClicked" styleClass="button" text="Back" />
                      </children></Pane>
                </children>
             </HBox>
@@ -99,7 +100,7 @@
                   <RadioButton fx:id="cashRadioButton" layoutX="18.0" layoutY="36.0" mnemonicParsing="false" text="Cash" />
                   <RadioButton fx:id="creditCardRadioButton" layoutX="18.0" layoutY="63.0" mnemonicParsing="false" text="Credit Card" />
                   <RadioButton fx:id="invoiceRadioButton" layoutX="18.0" layoutY="90.0" mnemonicParsing="false" text="Invoice" />
-                  <Button onAction="#onPayButtonClicked" layoutX="22.0" layoutY="124.0" mnemonicParsing="false" text="Pay" />
+                  <Button layoutX="22.0" layoutY="124.0" mnemonicParsing="false" onAction="#onPayButtonClicked" text="Pay" />
                </children>
             </Pane>
          </children>

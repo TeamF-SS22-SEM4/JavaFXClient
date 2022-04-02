@@ -36,7 +36,7 @@
       </VBox>
       <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
          <children>
-            <HBox fx:id="headbar" alignment="CENTER_LEFT" maxHeight="100.0" minHeight="50.0" styleClass="header" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" maxHeight="100.0" minHeight="50.0" styleClass="header" VBox.vgrow="ALWAYS">
                <children>
                   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Shopping Cart">
                      <font>

@@ -31,7 +31,6 @@ public class SceneManager {
 
         Scene scene = new Scene(loader.load());
         scene.getStylesheets().add("style.css");
-        scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
 
         primaryStage.setMinWidth(400);
         primaryStage.setMinHeight(200);

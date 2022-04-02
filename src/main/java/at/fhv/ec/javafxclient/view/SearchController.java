@@ -2,15 +2,12 @@ package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
-import at.fhv.ec.javafxclient.view.forms.ShoppingCartForm;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -37,14 +34,14 @@ public class SearchController {
         try {
             productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
             products = productSearchService.fullTextSearch("");
-            fillTable();
+            fillProductTable();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
 
-        createTable();
+        createProductTable();
 
-        fillTable();
+        fillProductTable();
     }
 
     @FXML
@@ -52,7 +49,7 @@ public class SearchController {
         try {
             String searchTerm = searchTextField.getText();
             products = productSearchService.fullTextSearch(searchTerm);
-            fillTable();
+            fillProductTable();
 
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -67,7 +64,7 @@ public class SearchController {
         try {
             String searchTerm = searchTextField.getText();
             products = productSearchService.fullTextSearch(searchTerm);
-            fillTable();
+            fillProductTable();
 
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -83,7 +80,7 @@ public class SearchController {
         }
     }
 
-    private void createTable() {
+    private void createProductTable() {
         // Initialize Table Columns
         // Add Button to table to switch to DetailsView
         // TODO: find a more beautiful solution
@@ -118,9 +115,9 @@ public class SearchController {
         });
     }
 
-    private void fillTable() {
-        ObservableList<ProductOverviewDTO> productListData = FXCollections.observableArrayList(products);
-        productTable.setItems(productListData);
+    private void fillProductTable() {
+        ObservableList<ProductOverviewDTO> productTableData = FXCollections.observableArrayList(products);
+        productTable.setItems(productTableData);
     }
 
     public void onEnter() {
