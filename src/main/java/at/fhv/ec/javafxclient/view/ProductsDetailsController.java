@@ -2,7 +2,7 @@ package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
-import at.fhv.ec.javafxclient.view.forms.ShoppingCartForm;
+import at.fhv.ec.javafxclient.view.forms.ShoppingCartEntry;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.*;
 import javafx.collections.FXCollections;
@@ -187,7 +187,6 @@ public class ProductsDetailsController {
                             setText(null);
                         } else {
                             addToCartButton.setOnAction(event -> {
-                                // TODO: get spinner from same row
                                 Spinner<Integer> selectedAmountSpinner = (Spinner<Integer>) soundCarrierTable
                                         .lookup("#" + getTableView()
                                                 .getItems()
@@ -219,7 +218,7 @@ public class ProductsDetailsController {
 
         if(selectedSoundCarrier != null && selectedAmount > 0) {
             float totalPrice = selectedAmount * selectedSoundCarrier.getPricePerCarrier();
-            ShoppingCartForm cartEntry = new ShoppingCartForm(
+            ShoppingCartEntry cartEntry = new ShoppingCartEntry(
                     productDetails.getProductId(),
                     productDetails.getName(),
                     productDetails.getArtistName(),

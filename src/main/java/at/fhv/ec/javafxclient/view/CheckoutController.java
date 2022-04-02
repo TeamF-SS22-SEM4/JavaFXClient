@@ -2,7 +2,7 @@ package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
-import at.fhv.ec.javafxclient.view.forms.ShoppingCartForm;
+import at.fhv.ec.javafxclient.view.forms.ShoppingCartEntry;
 import at.fhv.ss22.ea.f.communication.dto.ShoppingCartProductDTO;
 import at.fhv.ss22.ea.f.communication.exception.CarrierNotAvailableException;
 import javafx.collections.FXCollections;
@@ -12,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +22,13 @@ public class CheckoutController {
     private ToggleGroup paymentMethods;
 
     @FXML
-    private TableView<ShoppingCartForm> shoppingCartTable;
+    private TableView<ShoppingCartEntry> shoppingCartTable;
 
     @FXML
-    private TableColumn<ShoppingCartForm, Float> pricePerCarrierColumn;
+    private TableColumn<ShoppingCartEntry, Float> pricePerCarrierColumn;
 
     @FXML
-    private TableColumn<ShoppingCartForm, Float> totalProductPriceColumn;
+    private TableColumn<ShoppingCartEntry, Float> totalProductPriceColumn;
 
     @FXML
     private Label totalPriceLabel;
@@ -47,7 +46,7 @@ public class CheckoutController {
     public void initialize() {
         pricePerCarrierColumn.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<ShoppingCartForm, Float> call(TableColumn<ShoppingCartForm, Float> param) {
+            public TableCell<ShoppingCartEntry, Float> call(TableColumn<ShoppingCartEntry, Float> param) {
                 return new TableCell<>() {
                     @Override
                     protected void updateItem(Float pricePerCarrier, boolean empty) {
@@ -66,7 +65,7 @@ public class CheckoutController {
 
         totalProductPriceColumn.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<ShoppingCartForm, Float> call(TableColumn<ShoppingCartForm, Float> param) {
+            public TableCell<ShoppingCartEntry, Float> call(TableColumn<ShoppingCartEntry, Float> param) {
                 return new TableCell<>() {
                     @Override
                     protected void updateItem(Float totalProductPrice, boolean empty) {
@@ -83,7 +82,7 @@ public class CheckoutController {
             }
         });
 
-        ObservableList<ShoppingCartForm> shoppingCartTableData = FXCollections.observableArrayList(shoppingCart);
+        ObservableList<ShoppingCartEntry> shoppingCartTableData = FXCollections.observableArrayList(shoppingCart);
         shoppingCartTable.setItems(shoppingCartTableData);
 
         totalPrice = 0;

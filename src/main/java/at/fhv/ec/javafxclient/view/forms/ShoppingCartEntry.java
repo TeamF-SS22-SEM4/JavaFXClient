@@ -2,7 +2,7 @@ package at.fhv.ec.javafxclient.view.forms;
 
 import java.util.UUID;
 
-public class ShoppingCartForm {
+public class ShoppingCartEntry {
     private UUID productId;
     private String productName;
     private String artistName;
@@ -13,12 +13,9 @@ public class ShoppingCartForm {
     private float totalProductPrice;
     private int amountAvailable;
 
-    public ShoppingCartForm() {
-    }
-
-    public ShoppingCartForm(UUID productId, String productName, String artistName, UUID soundCarrierId,
-                            String soundCarrierName, float pricePerCarrier, int selectedAmount,
-                            float totalProductPrice, int amountAvailable) {
+    public ShoppingCartEntry(UUID productId, String productName, String artistName, UUID soundCarrierId,
+                             String soundCarrierName, float pricePerCarrier, int selectedAmount,
+                             float totalProductPrice, int amountAvailable) {
         this.productId = productId;
         this.productName = productName;
         this.artistName = artistName;
@@ -34,48 +31,24 @@ public class ShoppingCartForm {
         return productId;
     }
 
-    public void setProductId(UUID productId) {
-        this.productId = productId;
-    }
-
     public String getProductName() {
         return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
     }
 
     public String getArtistName() {
         return artistName;
     }
 
-    public void setArtistName(String artistName) {
-        this.artistName = artistName;
-    }
-
     public UUID getSoundCarrierId() {
         return soundCarrierId;
-    }
-
-    public void setSoundCarrierId(UUID soundCarrierId) {
-        this.soundCarrierId = soundCarrierId;
     }
 
     public String getSoundCarrierName() {
         return soundCarrierName;
     }
 
-    public void setSoundCarrierName(String soundCarrierName) {
-        this.soundCarrierName = soundCarrierName;
-    }
-
     public float getPricePerCarrier() {
         return pricePerCarrier;
-    }
-
-    public void setPricePerCarrier(float pricePerCarrier) {
-        this.pricePerCarrier = pricePerCarrier;
     }
 
     public int getSelectedAmount() {
@@ -96,9 +69,5 @@ public class ShoppingCartForm {
 
     public int getAmountAvailable() {
         return amountAvailable;
-    }
-
-    public void setAmountAvailable(int amountAvailable) {
-        this.amountAvailable = amountAvailable;
     }
 }

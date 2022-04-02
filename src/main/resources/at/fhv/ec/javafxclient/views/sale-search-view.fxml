@@ -84,7 +84,7 @@
                        <PropertyValueFactory property="pricePerCarrier" />
                     </cellValueFactory>
                  </TableColumn>
-                 <TableColumn fx:id="refundCarrierColumn" prefWidth="78.0" text="Refund">
+                 <TableColumn fx:id="refundCarrierColumn" prefWidth="78.0" text="Refund amount">
                  </TableColumn>
               </columns>
             </TableView>
@@ -100,6 +100,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
+                  <Button onAction="#onRefundButtonClicked" styleClass="button" layoutX="405.0" layoutY="66.0" mnemonicParsing="false" text="Refund" />
                </children>
             </Pane>
          </children>

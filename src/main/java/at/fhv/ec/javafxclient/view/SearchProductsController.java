@@ -3,7 +3,6 @@ package at.fhv.ec.javafxclient.view;
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
-import at.fhv.ss22.ea.f.communication.api.SaleSearchService;
 import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
