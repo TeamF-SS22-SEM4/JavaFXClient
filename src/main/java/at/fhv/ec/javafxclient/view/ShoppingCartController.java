@@ -53,7 +53,7 @@ public class ShoppingCartController {
     @FXML
     protected void onBackButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/search-view.fxml");
+            SceneManager.getInstance().switchView("views/product-search-view.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }

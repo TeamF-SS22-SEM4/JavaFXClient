@@ -13,10 +13,9 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.List;
 import java.util.UUID;
 
-public class DetailsController {
+public class ProductsDetailsController {
     public static UUID productId;
     private static ProductDetailsDTO productDetails;
 
@@ -95,7 +94,7 @@ public class DetailsController {
     @FXML
     protected void onBackButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/search-view.fxml");
+            SceneManager.getInstance().switchView("views/product-search-view.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }

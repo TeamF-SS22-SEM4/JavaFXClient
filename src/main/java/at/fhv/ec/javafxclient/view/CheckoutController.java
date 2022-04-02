@@ -133,7 +133,7 @@ public class CheckoutController {
 
                 shoppingCart.clear();
                 showPopup("Successful", "Bill is printed...", Alert.AlertType.CONFIRMATION);
-                SceneManager.getInstance().switchView("views/search-view.fxml");
+                SceneManager.getInstance().switchView("views/product-search-view.fxml");
             } catch (CarrierNotAvailableException cne) {
                 showPopup("Error", "The selected amount is not available.", Alert.AlertType.ERROR);
                 cne.printStackTrace();

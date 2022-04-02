@@ -3,6 +3,7 @@ package at.fhv.ec.javafxclient.view;
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
+import at.fhv.ss22.ea.f.communication.api.SaleSearchService;
 import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +16,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchController {
+public class SearchProductsController {
     // TODO: Use something like dependency injection in springboot
     private ProductSearchService productSearchService;
     private static List<ProductOverviewDTO> products = new ArrayList<>();
@@ -80,6 +81,15 @@ public class SearchController {
         }
     }
 
+    @FXML
+    protected void onExchangeButtonClicked() {
+        try {
+            SceneManager.getInstance().switchView("views/sale-search-view.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void createProductTable() {
         // Initialize Table Columns
         // Add Button to table to switch to DetailsView
@@ -100,7 +110,7 @@ public class SearchController {
                         } else {
                             detailsButton.setOnAction(event -> {
                                 try {
-                                    DetailsController.productId = getTableView().getItems().get(getIndex()).getProductId();
+                                    ProductsDetailsController.productId = getTableView().getItems().get(getIndex()).getProductId();
                                     SceneManager.getInstance().switchView("views/details-view.fxml");
                                 } catch (IOException e) {
                                     e.printStackTrace();
