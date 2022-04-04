@@ -19,6 +19,7 @@ import static at.fhv.ec.javafxclient.view.ShoppingCartController.shoppingCart;
 
 public class CheckoutController {
     private static float totalPrice;
+    private ToggleGroup purchaseTypes;
     private ToggleGroup paymentMethods;
 
     @FXML
@@ -32,6 +33,12 @@ public class CheckoutController {
 
     @FXML
     private Label totalPriceLabel;
+
+    @FXML
+    private RadioButton anonymousPurchaseRadioButton;
+
+    @FXML
+    private RadioButton customerPurchaseRadioButton;
 
     @FXML
     private RadioButton cashRadioButton;
@@ -94,6 +101,10 @@ public class CheckoutController {
         totalPriceLabel.setText(totalPrice + "€");
 
         // Add radio buttons to group
+        purchaseTypes = new ToggleGroup();
+        anonymousPurchaseRadioButton.setToggleGroup(purchaseTypes);
+        customerPurchaseRadioButton.setToggleGroup(purchaseTypes);
+
         paymentMethods = new ToggleGroup();
         cashRadioButton.setToggleGroup(paymentMethods);
         creditCardRadioButton.setToggleGroup(paymentMethods);
@@ -102,46 +113,23 @@ public class CheckoutController {
 
     @FXML
     protected void onPayButtonClicked() {
+        RadioButton selectedPurchaseTypeRadioButton = (RadioButton) purchaseTypes.getSelectedToggle();
         RadioButton selectedPaymentMethodRadioButton = (RadioButton) paymentMethods.getSelectedToggle();
 
-        if(selectedPaymentMethodRadioButton != null) {
-            String selectedPaymentMethod = selectedPaymentMethodRadioButton.getText();
-            List<ShoppingCartProductDTO> shoppingCartProducts = new ArrayList<>();
+        if(selectedPurchaseTypeRadioButton != null) {
+            String selectedPurchaseType = selectedPurchaseTypeRadioButton.getText();
 
-            shoppingCart.forEach(shoppingCartItem -> {
-                shoppingCartProducts.add(
-                        ShoppingCartProductDTO.builder()
-                                .withProductId(shoppingCartItem.getProductId())
-                                .withSoundCarrierId(shoppingCartItem.getSoundCarrierId())
-                                .withProductName(shoppingCartItem.getProductName())
-                                .withArtistName(shoppingCartItem.getArtistName())
-                                .withSelectedAmount(shoppingCartItem.getSelectedAmount())
-                                .withCarrierName(shoppingCartItem.getSoundCarrierName())
-                                .withPricePerCarrier(shoppingCartItem.getPricePerCarrier())
-                                .withTotalProductPrice(totalPrice)
-                                .build()
-                );
-            });
-
-            // TODO: Ask for confirmation
-            try {
-                RMIClient.getRmiClient()
-                        .getRmiFactory()
-                        .getBuyingService()
-                        .buyWithShoppingCart(shoppingCartProducts, selectedPaymentMethod);
-
-                shoppingCart.clear();
-                showPopup("Successful", "Bill is printed...", Alert.AlertType.CONFIRMATION);
-                SceneManager.getInstance().switchView("views/product-search-view.fxml");
-            } catch (CarrierNotAvailableException cne) {
-                showPopup("Error", "The selected amount is not available.", Alert.AlertType.ERROR);
-                cne.printStackTrace();
-            } catch (IOException e) {
-                showPopup("Error", "An error occurred.", Alert.AlertType.ERROR);
-                e.printStackTrace();
+            if(selectedPurchaseType.equals("Anonymous")) {
+                if(selectedPaymentMethodRadioButton != null) {
+                    anonymousPurchase(selectedPaymentMethodRadioButton.getText());
+                } else {
+                    showPopup("Error", "You have to select a payment method", Alert.AlertType.ERROR);
+                }
+            } else {
+                showPopup("Not implemented", "This is not implemented", Alert.AlertType.INFORMATION);
             }
         } else {
-            showPopup("Error", "You have to select a payment method", Alert.AlertType.ERROR);
+            showPopup("Error", "You have to select a purchase type", Alert.AlertType.ERROR);
         }
     }
 
@@ -150,6 +138,43 @@ public class CheckoutController {
         try {
             SceneManager.getInstance().switchView("views/shopping-cart-view.fxml");
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void anonymousPurchase(String selectedPaymentMethod) {
+        List<ShoppingCartProductDTO> shoppingCartProducts = new ArrayList<>();
+
+        shoppingCart.forEach(shoppingCartItem -> {
+            shoppingCartProducts.add(
+                    ShoppingCartProductDTO.builder()
+                            .withProductId(shoppingCartItem.getProductId())
+                            .withSoundCarrierId(shoppingCartItem.getSoundCarrierId())
+                            .withProductName(shoppingCartItem.getProductName())
+                            .withArtistName(shoppingCartItem.getArtistName())
+                            .withSelectedAmount(shoppingCartItem.getSelectedAmount())
+                            .withCarrierName(shoppingCartItem.getSoundCarrierName())
+                            .withPricePerCarrier(shoppingCartItem.getPricePerCarrier())
+                            .withTotalProductPrice(totalPrice)
+                            .build()
+            );
+        });
+
+        // TODO: Ask for confirmation
+        try {
+            RMIClient.getRmiClient()
+                    .getRmiFactory()
+                    .getBuyingService()
+                    .buyWithShoppingCart(shoppingCartProducts, selectedPaymentMethod);
+
+            shoppingCart.clear();
+            showPopup("Successful", "Bill is printed...", Alert.AlertType.CONFIRMATION);
+            SceneManager.getInstance().switchView("views/product-search-view.fxml");
+        } catch (CarrierNotAvailableException cne) {
+            showPopup("Error", "The selected amount is not available.", Alert.AlertType.ERROR);
+            cne.printStackTrace();
+        } catch (IOException e) {
+            showPopup("Error", "An error occurred.", Alert.AlertType.ERROR);
             e.printStackTrace();
         }
     }
