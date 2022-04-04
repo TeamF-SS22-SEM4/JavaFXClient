@@ -2,13 +2,11 @@ package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
-import at.fhv.ec.javafxclient.view.forms.RefundedSaleItem;
-import at.fhv.ec.javafxclient.view.forms.ShoppingCartEntry;
+import at.fhv.ec.javafxclient.view.forms.SaleItemEntry;
 import at.fhv.ss22.ea.f.communication.api.RefundSaleService;
 import at.fhv.ss22.ea.f.communication.api.SaleSearchService;
 import at.fhv.ss22.ea.f.communication.dto.RefundedSaleItemDTO;
 import at.fhv.ss22.ea.f.communication.dto.SaleDTO;
-import at.fhv.ss22.ea.f.communication.dto.SaleItemDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -23,7 +21,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class SearchSaleController {
-    private static List<RefundedSaleItem> refundedSaleItems;
+    private static List<SaleItemEntry> refundedSaleItems;
 
     @FXML
     private TextField searchTextField;
@@ -35,13 +33,16 @@ public class SearchSaleController {
     private Label invoiceNumberLabel;
 
     @FXML
-    private TableView<RefundedSaleItem> saleItemsTable;
+    private TableView<SaleItemEntry> saleItemsTable;
 
     @FXML
-    private TableColumn<RefundedSaleItem, Float> pricePerCarrierColumn;
+    private TableColumn<SaleItemEntry, String> productNameColumn;
 
     @FXML
-    private TableColumn<RefundedSaleItem, Spinner<Integer>> refundCarrierColumn;
+    private TableColumn<SaleItemEntry, Float> pricePerCarrierColumn;
+
+    @FXML
+    private TableColumn<SaleItemEntry, Spinner<Integer>> refundCarrierColumn;
 
     @FXML
     private Pane contentPaneBottom;
@@ -59,7 +60,7 @@ public class SearchSaleController {
         // Fomat table columns
         pricePerCarrierColumn.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<RefundedSaleItem, Float> call(TableColumn<RefundedSaleItem, Float> param) {
+            public TableCell<SaleItemEntry, Float> call(TableColumn<SaleItemEntry, Float> param) {
                 return new TableCell<>() {
                     @Override
                     protected void updateItem(Float pricePerCarrier, boolean empty) {
@@ -77,9 +78,9 @@ public class SearchSaleController {
         });
 
         // TODO: use a more beautiful solution
-        Callback<TableColumn<RefundedSaleItem, Spinner<Integer>>, TableCell<RefundedSaleItem, Spinner<Integer>>> spinnerCellFactory = new Callback<>() {
+        Callback<TableColumn<SaleItemEntry, Spinner<Integer>>, TableCell<SaleItemEntry, Spinner<Integer>>> spinnerCellFactory = new Callback<>() {
             @Override
-            public TableCell<RefundedSaleItem, Spinner<Integer>> call(final TableColumn<RefundedSaleItem, Spinner<Integer>> param) {
+            public TableCell<SaleItemEntry, Spinner<Integer>> call(final TableColumn<SaleItemEntry, Spinner<Integer>> param) {
                 return new TableCell<>() {
 
                     private final Spinner<Integer> refundAmountSpinner = new Spinner<>();
@@ -91,20 +92,25 @@ public class SearchSaleController {
                             setGraphic(null);
                             setText(null);
                         } else {
-                            refundAmountSpinner.setValueFactory(
-                                    new SpinnerValueFactory.IntegerSpinnerValueFactory(
-                                            0,
-                                            getTableView().getItems().get(getIndex()).getAmountOfCarriers(),
-                                            0
-                                    )
-                            );
+                            SaleItemEntry selectedItem = getTableView().getItems().get(getIndex());
+                            int maximumRefundableAmount = selectedItem.getAmountOfCarriers() - selectedItem.getRefundedAmount();
 
-                            refundAmountSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-                                RefundedSaleItem refundedSaleItem = refundedSaleItems.get(getIndex());
-                                refundedSaleItem.setAmountToRefund(newValue);
-                            });
+                            if(maximumRefundableAmount != 0) {
+                                refundAmountSpinner.setValueFactory(
+                                        new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                                                0,
+                                                maximumRefundableAmount,
+                                                0
+                                        )
+                                );
 
-                            setGraphic(refundAmountSpinner);
+                                refundAmountSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+                                    SaleItemEntry refundedSaleItem = refundedSaleItems.get(getIndex());
+                                    refundedSaleItem.setAmountToRefund(newValue);
+                                });
+
+                                setGraphic(refundAmountSpinner);
+                            }
                         }
                     }
                 };
@@ -125,24 +131,26 @@ public class SearchSaleController {
             SaleSearchService saleSearchService = RMIClient.getRmiClient().getRmiFactory().getSaleSearchService();
             SaleDTO sale = saleSearchService.saleByInvoiceNumber(searchTextField.getText());
 
-
-
             refundedSaleItems = new ArrayList<>();
-            sale.getSaleItems().forEach(saleItem ->
-                    refundedSaleItems.add(new RefundedSaleItem(
-                            saleItem.getProductName(),
-                            saleItem.getArtistName(),
-                            saleItem.getSoundCarrierId(),
-                            saleItem.getSoundCarrierName(),
-                            saleItem.getAmountOfCarriers(),
-                            saleItem.getPricePerCarrier(),
-                            saleItem.isRefunded()
-                    ))
-            );
+            sale.getSaleItems().forEach(saleItem -> {
+                refundedSaleItems.add(new SaleItemEntry(
+                        saleItem.getProductName(),
+                        saleItem.getArtistName(),
+                        saleItem.getSoundCarrierId(),
+                        saleItem.getSoundCarrierName(),
+                        saleItem.getAmountOfCarriers(),
+                        saleItem.getPricePerCarrier(),
+                        saleItem.getRefundedAmount()
+                ));
+
+                System.out.println(saleItem.getRefundedAmount());
+            });
 
             invoiceNumberLabel.setText(sale.getInvoiceNumber());
-            ObservableList<RefundedSaleItem> saleItemsTableData = FXCollections.observableArrayList(refundedSaleItems);
+            ObservableList<SaleItemEntry> saleItemsTableData = FXCollections.observableArrayList(refundedSaleItems);
             saleItemsTable.setItems(saleItemsTableData);
+            saleItemsTable.getSortOrder().add(productNameColumn);
+            saleItemsTable.sort();
 
             totalPriceLabel.setText(sale.getTotalPrice() + "€");
 
@@ -194,6 +202,7 @@ public class SearchSaleController {
 
             if(refundedSaleItemDTOs.size() > 0) {
                 refundSaleService.refundSale(invoiceNumberLabel.getText(), refundedSaleItemDTOs);
+                onClearButtonClicked();
                 onSearchButtonClicked();
                 showPopup("Sale Items refunded", "Refund successful", Alert.AlertType.INFORMATION);
             } else {
@@ -203,7 +212,6 @@ public class SearchSaleController {
             e.printStackTrace();
         }
     }
-
 
     private void showPopup(String title, String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);

@@ -20,6 +20,9 @@ public class ShoppingCartController {
     private TableView<ShoppingCartEntry> shoppingCartTable;
 
     @FXML
+    private TableColumn<ShoppingCartEntry, String> productNameColumn;
+
+    @FXML
     private TableColumn<ShoppingCartEntry, Spinner<Integer>> selectedAmountColumn;
 
     @FXML
@@ -40,6 +43,8 @@ public class ShoppingCartController {
 
         ObservableList<ShoppingCartEntry> shoppingCartTableData = FXCollections.observableArrayList(shoppingCart);
         shoppingCartTable.setItems(shoppingCartTableData);
+        shoppingCartTable.getSortOrder().add(productNameColumn);
+        shoppingCartTable.sort();
 
         updateTotalPrice();
     }

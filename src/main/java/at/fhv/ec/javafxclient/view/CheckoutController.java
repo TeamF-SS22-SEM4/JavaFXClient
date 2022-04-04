@@ -26,6 +26,9 @@ public class CheckoutController {
     private TableView<ShoppingCartEntry> shoppingCartTable;
 
     @FXML
+    private TableColumn<ShoppingCartEntry, String> productNameColumn;
+
+    @FXML
     private TableColumn<ShoppingCartEntry, Float> pricePerCarrierColumn;
 
     @FXML
@@ -91,6 +94,8 @@ public class CheckoutController {
 
         ObservableList<ShoppingCartEntry> shoppingCartTableData = FXCollections.observableArrayList(shoppingCart);
         shoppingCartTable.setItems(shoppingCartTableData);
+        shoppingCartTable.getSortOrder().add(productNameColumn);
+        shoppingCartTable.sort();
 
         totalPrice = 0;
 

@@ -47,6 +47,9 @@ public class ProductsDetailsController {
     private TableView<SoundCarrierDTO> soundCarrierTable;
 
     @FXML
+    private TableColumn<SoundCarrierDTO, String> soundCarrierNameColumn;
+
+    @FXML
     private TableColumn<SoundCarrierDTO, Integer> amountAvailableColumn;
 
     @FXML
@@ -209,6 +212,8 @@ public class ProductsDetailsController {
     private void fillSoundCarrierTable() {
         ObservableList<SoundCarrierDTO> soundCarrierTableData = FXCollections.observableArrayList(productDetails.getSoundCarriers());
         soundCarrierTable.setItems(soundCarrierTableData);
+        soundCarrierTable.getSortOrder().add(soundCarrierNameColumn);
+        soundCarrierTable.sort();
     }
 
     private void addProductToCart(String soundCarrierName, int selectedAmount) {

@@ -84,7 +84,12 @@
                        <PropertyValueFactory property="pricePerCarrier" />
                     </cellValueFactory>
                  </TableColumn>
-                 <TableColumn fx:id="refundCarrierColumn" prefWidth="78.0" text="Refund amount">
+                 <TableColumn fx:id="refundedAmountColumn" prefWidth="132.0" text="Already refunded">
+                    <cellValueFactory>
+                       <PropertyValueFactory property="refundedAmount" />
+                    </cellValueFactory>
+                 </TableColumn>
+                 <TableColumn fx:id="refundCarrierColumn" prefWidth="78.0" text="Refund">
                  </TableColumn>
               </columns>
             </TableView>

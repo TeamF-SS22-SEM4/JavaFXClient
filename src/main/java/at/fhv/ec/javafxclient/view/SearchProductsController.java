@@ -27,6 +27,9 @@ public class SearchProductsController {
     private TableView<ProductOverviewDTO> productTable;
 
     @FXML
+    private TableColumn<ProductOverviewDTO, String> nameColumn;
+
+    @FXML
     private TableColumn<ProductOverviewDTO, Button> actionColumn;
 
     @FXML
@@ -127,6 +130,8 @@ public class SearchProductsController {
     private void fillProductTable() {
         ObservableList<ProductOverviewDTO> productTableData = FXCollections.observableArrayList(products);
         productTable.setItems(productTableData);
+        productTable.getSortOrder().add(nameColumn);
+        productTable.sort();
     }
 
     public void onEnter() {
