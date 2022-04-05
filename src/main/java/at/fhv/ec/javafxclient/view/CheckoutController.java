@@ -141,7 +141,7 @@ public class CheckoutController {
     @FXML
     protected void onBackButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/shopping-cart-view.fxml");
+            SceneManager.getInstance().back();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -173,7 +173,7 @@ public class CheckoutController {
 
             shoppingCart.clear();
             showPopup("Successful", "Invoice No.: " + invoiceNumber + "\nBill is printed...", Alert.AlertType.CONFIRMATION);
-            SceneManager.getInstance().switchView("views/product-search-view.fxml");
+            SceneManager.getInstance().switchView("views/checkout-view.fxml", "views/product-search-view.fxml");
         } catch (CarrierNotAvailableException cne) {
             showPopup("Error", "The selected amount is not available.", Alert.AlertType.ERROR);
             cne.printStackTrace();

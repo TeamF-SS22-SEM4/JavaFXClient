@@ -176,7 +176,7 @@ public class SearchSaleController {
     @FXML
     protected void onBackButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/product-search-view.fxml");
+            SceneManager.getInstance().back();
         } catch (IOException e) {
             e.printStackTrace();
         }

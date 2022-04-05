@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.rmi.server.ServerNotActiveException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class ShoppingCartController {
     @FXML
     protected void onBackButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/product-search-view.fxml");
+            SceneManager.getInstance().back();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,7 +69,7 @@ public class ShoppingCartController {
     protected void onCheckoutButtonClicked() {
         if(shoppingCart.size() > 0) {
             try {
-                SceneManager.getInstance().switchView("views/checkout-view.fxml");
+                SceneManager.getInstance().switchView("views/checkout-view.fxml","views/checkout-view.fxml");
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -2,6 +2,7 @@ package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
+import at.fhv.ss22.ea.f.communication.api.CustomerService;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
 import javafx.collections.FXCollections;
@@ -38,6 +39,11 @@ public class SearchProductsController {
             productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
             products = productSearchService.fullTextSearch("");
             fillProductTable();
+
+            // TODO: Remove
+            // To test if Customers can be searched by MusicShopBackend from CustomerDataServer
+            // CustomerService customerService = RMIClient.getRmiClient().getRmiFactory().getCustomerSearchService();
+            // customerService.search("John").forEach(System.out::println);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -77,7 +83,7 @@ public class SearchProductsController {
     @FXML
     protected void onShoppingCartButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/shopping-cart-view.fxml");
+            SceneManager.getInstance().switchView("views/product-search-view.fxml","views/shopping-cart-view.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,7 +92,7 @@ public class SearchProductsController {
     @FXML
     protected void onExchangeButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/sale-search-view.fxml");
+            SceneManager.getInstance().switchView("views/product-search-view.fxml","views/sale-search-view.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,7 +119,7 @@ public class SearchProductsController {
                             detailsButton.setOnAction(event -> {
                                 try {
                                     ProductsDetailsController.productId = getTableView().getItems().get(getIndex()).getProductId();
-                                    SceneManager.getInstance().switchView("views/details-view.fxml");
+                                    SceneManager.getInstance().switchView("views/product-search-view.fxml","views/product-details-view.fxml");
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
