@@ -165,15 +165,14 @@ public class CheckoutController {
             );
         });
 
-        // TODO: Ask for confirmation
         try {
-            RMIClient.getRmiClient()
+            String invoiceNumber = RMIClient.getRmiClient()
                     .getRmiFactory()
                     .getBuyingService()
                     .buyWithShoppingCart(shoppingCartProducts, selectedPaymentMethod);
 
             shoppingCart.clear();
-            showPopup("Successful", "Bill is printed...", Alert.AlertType.CONFIRMATION);
+            showPopup("Successful", "Invoice No.: " + invoiceNumber + "\nBill is printed...", Alert.AlertType.CONFIRMATION);
             SceneManager.getInstance().switchView("views/product-search-view.fxml");
         } catch (CarrierNotAvailableException cne) {
             showPopup("Error", "The selected amount is not available.", Alert.AlertType.ERROR);

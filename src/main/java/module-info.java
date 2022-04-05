@@ -2,7 +2,7 @@ module at.fhv.ec.javafxclient {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.rmi;
-    requires RMI.Shared.Lib.v19;
+    requires RMI.Shared.Lib.v22;
 
     opens at.fhv.ec.javafxclient to javafx.fxml;
     exports at.fhv.ec.javafxclient;

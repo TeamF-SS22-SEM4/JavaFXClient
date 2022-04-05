@@ -142,8 +142,6 @@ public class SearchSaleController {
                         saleItem.getPricePerCarrier(),
                         saleItem.getRefundedAmount()
                 ));
-
-                System.out.println(saleItem.getRefundedAmount());
             });
 
             invoiceNumberLabel.setText(sale.getInvoiceNumber());

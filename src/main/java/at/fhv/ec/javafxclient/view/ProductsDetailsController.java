@@ -50,9 +50,6 @@ public class ProductsDetailsController {
     private TableColumn<SoundCarrierDTO, String> soundCarrierNameColumn;
 
     @FXML
-    private TableColumn<SoundCarrierDTO, Integer> amountAvailableColumn;
-
-    @FXML
     private TableColumn<SoundCarrierDTO, Float> pricePerCarrierColumn;
 
     @FXML
@@ -105,25 +102,6 @@ public class ProductsDetailsController {
 
     private void createSoundCarrierTable() {
         // Initialize Table Columns
-        amountAvailableColumn.setCellFactory(new Callback<>() {
-            @Override
-            public TableCell<SoundCarrierDTO, Integer> call(TableColumn<SoundCarrierDTO, Integer> param) {
-                return new TableCell<>() {
-                    @Override
-                    protected void updateItem(Integer amountAvailable, boolean empty) {
-                        super.updateItem(amountAvailable, empty);
-                        if (empty || amountAvailable == null) {
-                            setText("");
-                        } else {
-                            String amountAvailableStr = amountAvailable + " pieces";
-
-                            setText(amountAvailableStr);
-                        }
-                    }
-                };
-            }
-        });
-
         pricePerCarrierColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<SoundCarrierDTO, Float> call(TableColumn<SoundCarrierDTO, Float> param) {
