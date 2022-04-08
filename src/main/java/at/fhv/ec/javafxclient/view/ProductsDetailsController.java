@@ -2,7 +2,7 @@ package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
-import at.fhv.ec.javafxclient.view.forms.ShoppingCartForm;
+import at.fhv.ec.javafxclient.view.forms.ShoppingCartEntry;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.*;
 import javafx.collections.FXCollections;
@@ -13,10 +13,9 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.List;
 import java.util.UUID;
 
-public class DetailsController {
+public class ProductsDetailsController {
     public static UUID productId;
     private static ProductDetailsDTO productDetails;
 
@@ -48,7 +47,7 @@ public class DetailsController {
     private TableView<SoundCarrierDTO> soundCarrierTable;
 
     @FXML
-    private TableColumn<SoundCarrierDTO, Integer> amountAvailableColumn;
+    private TableColumn<SoundCarrierDTO, String> soundCarrierNameColumn;
 
     @FXML
     private TableColumn<SoundCarrierDTO, Float> pricePerCarrierColumn;
@@ -86,7 +85,7 @@ public class DetailsController {
     @FXML
     protected void onShoppingCartButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/shopping-cart-view.fxml");
+            SceneManager.getInstance().switchView("views/product-details-view.fxml", "views/shopping-cart-view.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,7 +94,7 @@ public class DetailsController {
     @FXML
     protected void onBackButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/search-view.fxml");
+            SceneManager.getInstance().back();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -103,25 +102,6 @@ public class DetailsController {
 
     private void createSoundCarrierTable() {
         // Initialize Table Columns
-        amountAvailableColumn.setCellFactory(new Callback<>() {
-            @Override
-            public TableCell<SoundCarrierDTO, Integer> call(TableColumn<SoundCarrierDTO, Integer> param) {
-                return new TableCell<>() {
-                    @Override
-                    protected void updateItem(Integer amountAvailable, boolean empty) {
-                        super.updateItem(amountAvailable, empty);
-                        if (empty || amountAvailable == null) {
-                            setText("");
-                        } else {
-                            String amountAvailableStr = amountAvailable + " pieces";
-
-                            setText(amountAvailableStr);
-                        }
-                    }
-                };
-            }
-        });
-
         pricePerCarrierColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<SoundCarrierDTO, Float> call(TableColumn<SoundCarrierDTO, Float> param) {
@@ -188,7 +168,6 @@ public class DetailsController {
                             setText(null);
                         } else {
                             addToCartButton.setOnAction(event -> {
-                                // TODO: get spinner from same row
                                 Spinner<Integer> selectedAmountSpinner = (Spinner<Integer>) soundCarrierTable
                                         .lookup("#" + getTableView()
                                                 .getItems()
@@ -211,6 +190,8 @@ public class DetailsController {
     private void fillSoundCarrierTable() {
         ObservableList<SoundCarrierDTO> soundCarrierTableData = FXCollections.observableArrayList(productDetails.getSoundCarriers());
         soundCarrierTable.setItems(soundCarrierTableData);
+        soundCarrierTable.getSortOrder().add(soundCarrierNameColumn);
+        soundCarrierTable.sort();
     }
 
     private void addProductToCart(String soundCarrierName, int selectedAmount) {
@@ -220,7 +201,7 @@ public class DetailsController {
 
         if(selectedSoundCarrier != null && selectedAmount > 0) {
             float totalPrice = selectedAmount * selectedSoundCarrier.getPricePerCarrier();
-            ShoppingCartForm cartEntry = new ShoppingCartForm(
+            ShoppingCartEntry cartEntry = new ShoppingCartEntry(
                     productDetails.getProductId(),
                     productDetails.getName(),
                     productDetails.getArtistName(),

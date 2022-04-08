@@ -1,7 +1,7 @@
 package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
-import at.fhv.ec.javafxclient.view.forms.ShoppingCartForm;
+import at.fhv.ec.javafxclient.view.forms.ShoppingCartEntry;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,27 +9,31 @@ import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.rmi.server.ServerNotActiveException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCartController {
-    public static List<ShoppingCartForm> shoppingCart = new ArrayList<>();
+    public static List<ShoppingCartEntry> shoppingCart = new ArrayList<>();
     private static float totalPrice;
 
     @FXML
-    private TableView<ShoppingCartForm> shoppingCartTable;
+    private TableView<ShoppingCartEntry> shoppingCartTable;
 
     @FXML
-    private TableColumn<ShoppingCartForm, Spinner<Integer>> selectedAmountColumn;
+    private TableColumn<ShoppingCartEntry, String> productNameColumn;
 
     @FXML
-    private TableColumn<ShoppingCartForm, Float> pricePerCarrierColumn;
+    private TableColumn<ShoppingCartEntry, Spinner<Integer>> selectedAmountColumn;
 
     @FXML
-    private TableColumn<ShoppingCartForm, Float> totalProductPriceColumn;
+    private TableColumn<ShoppingCartEntry, Float> pricePerCarrierColumn;
 
     @FXML
-    private TableColumn<ShoppingCartForm, Button> actionColumn;
+    private TableColumn<ShoppingCartEntry, Float> totalProductPriceColumn;
+
+    @FXML
+    private TableColumn<ShoppingCartEntry, Button> actionColumn;
 
     @FXML
     private Label totalPriceLabel;
@@ -38,8 +42,10 @@ public class ShoppingCartController {
     public void initialize() {
         createShoppingCartTable();
 
-        ObservableList<ShoppingCartForm> shoppingCartTableData = FXCollections.observableArrayList(shoppingCart);
+        ObservableList<ShoppingCartEntry> shoppingCartTableData = FXCollections.observableArrayList(shoppingCart);
         shoppingCartTable.setItems(shoppingCartTableData);
+        shoppingCartTable.getSortOrder().add(productNameColumn);
+        shoppingCartTable.sort();
 
         updateTotalPrice();
     }
@@ -53,7 +59,7 @@ public class ShoppingCartController {
     @FXML
     protected void onBackButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/search-view.fxml");
+            SceneManager.getInstance().back();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,7 +69,7 @@ public class ShoppingCartController {
     protected void onCheckoutButtonClicked() {
         if(shoppingCart.size() > 0) {
             try {
-                SceneManager.getInstance().switchView("views/checkout-view.fxml");
+                SceneManager.getInstance().switchView("views/checkout-view.fxml","views/checkout-view.fxml");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -87,9 +93,9 @@ public class ShoppingCartController {
     }
 
     private void createShoppingCartTable() {
-        Callback<TableColumn<ShoppingCartForm, Spinner<Integer>>, TableCell<ShoppingCartForm, Spinner<Integer>>> spinnerCellFactory = new Callback<>() {
+        Callback<TableColumn<ShoppingCartEntry, Spinner<Integer>>, TableCell<ShoppingCartEntry, Spinner<Integer>>> spinnerCellFactory = new Callback<>() {
             @Override
-            public TableCell<ShoppingCartForm, Spinner<Integer>> call(final TableColumn<ShoppingCartForm, Spinner<Integer>> param) {
+            public TableCell<ShoppingCartEntry, Spinner<Integer>> call(final TableColumn<ShoppingCartEntry, Spinner<Integer>> param) {
                 return new TableCell<>() {
 
                     private final Spinner<Integer> selectedAmountSpinner = new Spinner<>();
@@ -111,7 +117,7 @@ public class ShoppingCartController {
 
                             selectedAmountSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
                                 // TODO: Update total per product in table
-                                ShoppingCartForm selectedShoppingCartItem = shoppingCart.get(getIndex());
+                                ShoppingCartEntry selectedShoppingCartItem = shoppingCart.get(getIndex());
                                 selectedShoppingCartItem.setSelectedAmount(newValue);
                                 selectedShoppingCartItem.setTotalProductPrice(newValue * selectedShoppingCartItem.getPricePerCarrier());
                                 updateTotalPrice();
@@ -128,7 +134,7 @@ public class ShoppingCartController {
 
         pricePerCarrierColumn.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<ShoppingCartForm, Float> call(TableColumn<ShoppingCartForm, Float> param) {
+            public TableCell<ShoppingCartEntry, Float> call(TableColumn<ShoppingCartEntry, Float> param) {
                 return new TableCell<>() {
                     @Override
                     protected void updateItem(Float pricePerCarrier, boolean empty) {
@@ -147,7 +153,7 @@ public class ShoppingCartController {
 
         totalProductPriceColumn.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<ShoppingCartForm, Float> call(TableColumn<ShoppingCartForm, Float> param) {
+            public TableCell<ShoppingCartEntry, Float> call(TableColumn<ShoppingCartEntry, Float> param) {
                 return new TableCell<>() {
                     @Override
                     protected void updateItem(Float totalProductPrice, boolean empty) {
@@ -166,7 +172,7 @@ public class ShoppingCartController {
 
         actionColumn.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<ShoppingCartForm, Button> call(TableColumn<ShoppingCartForm, Button> param) {
+            public TableCell<ShoppingCartEntry, Button> call(TableColumn<ShoppingCartEntry, Button> param) {
                 return new TableCell<>() {
 
                     final Button removeButton = new Button("Remove");

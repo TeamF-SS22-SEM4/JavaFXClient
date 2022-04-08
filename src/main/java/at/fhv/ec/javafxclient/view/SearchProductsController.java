@@ -2,6 +2,7 @@ package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
+import at.fhv.ss22.ea.f.communication.api.CustomerService;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
 import javafx.collections.FXCollections;
@@ -15,7 +16,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchController {
+public class SearchProductsController {
     // TODO: Use something like dependency injection in springboot
     private ProductSearchService productSearchService;
     private static List<ProductOverviewDTO> products = new ArrayList<>();
@@ -27,6 +28,9 @@ public class SearchController {
     private TableView<ProductOverviewDTO> productTable;
 
     @FXML
+    private TableColumn<ProductOverviewDTO, String> nameColumn;
+
+    @FXML
     private TableColumn<ProductOverviewDTO, Button> actionColumn;
 
     @FXML
@@ -35,6 +39,11 @@ public class SearchController {
             productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
             products = productSearchService.fullTextSearch("");
             fillProductTable();
+
+            // TODO: Remove
+            // To test if Customers can be searched by MusicShopBackend from CustomerDataServer
+            // CustomerService customerService = RMIClient.getRmiClient().getRmiFactory().getCustomerSearchService();
+            // customerService.search("John").forEach(System.out::println);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -74,7 +83,16 @@ public class SearchController {
     @FXML
     protected void onShoppingCartButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/shopping-cart-view.fxml");
+            SceneManager.getInstance().switchView("views/product-search-view.fxml","views/shopping-cart-view.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void onExchangeButtonClicked() {
+        try {
+            SceneManager.getInstance().switchView("views/product-search-view.fxml","views/sale-search-view.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -100,8 +118,8 @@ public class SearchController {
                         } else {
                             detailsButton.setOnAction(event -> {
                                 try {
-                                    DetailsController.productId = getTableView().getItems().get(getIndex()).getProductId();
-                                    SceneManager.getInstance().switchView("views/details-view.fxml");
+                                    ProductsDetailsController.productId = getTableView().getItems().get(getIndex()).getProductId();
+                                    SceneManager.getInstance().switchView("views/product-search-view.fxml","views/product-details-view.fxml");
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -118,6 +136,8 @@ public class SearchController {
     private void fillProductTable() {
         ObservableList<ProductOverviewDTO> productTableData = FXCollections.observableArrayList(products);
         productTable.setItems(productTableData);
+        productTable.getSortOrder().add(nameColumn);
+        productTable.sort();
     }
 
     public void onEnter() {
