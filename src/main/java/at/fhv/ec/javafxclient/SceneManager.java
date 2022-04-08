@@ -37,6 +37,10 @@ public class SceneManager {
         }
     }
 
+    public String getLastView() {
+        return viewHistory.peek();
+    }
+
     private void loadView(String view) throws IOException {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource(

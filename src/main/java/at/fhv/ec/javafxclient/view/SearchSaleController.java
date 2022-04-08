@@ -7,6 +7,8 @@ import at.fhv.ss22.ea.f.communication.api.RefundSaleService;
 import at.fhv.ss22.ea.f.communication.api.SaleSearchService;
 import at.fhv.ss22.ea.f.communication.dto.RefundedSaleItemDTO;
 import at.fhv.ss22.ea.f.communication.dto.SaleDTO;
+import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
+import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -159,6 +161,8 @@ public class SearchSaleController {
             showPopup("Connection Error", "A connection error occured.", Alert.AlertType.ERROR);
         } catch (NoSuchElementException ne) {
             showPopup("Sale not found", "Sale " + searchTextField.getText() + " not found", Alert.AlertType.ERROR);
+        } catch (SessionExpired | NoPermissionForOperation e) {
+            e.printStackTrace();
         }
     }
 
@@ -206,7 +210,7 @@ public class SearchSaleController {
             } else {
                 showPopup("Refund not possible", "You have to select at least one item to refund", Alert.AlertType.ERROR);
             }
-        } catch (RemoteException e) {
+        } catch (RemoteException | NoPermissionForOperation | SessionExpired e) {
             e.printStackTrace();
         }
     }

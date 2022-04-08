@@ -5,6 +5,8 @@ import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ec.javafxclient.view.forms.ShoppingCartEntry;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.*;
+import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
+import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -66,6 +68,8 @@ public class ProductsDetailsController {
         } catch (RemoteException e) {
             e.printStackTrace();
             showPopup("Error", "Error connecting to the server.", Alert.AlertType.ERROR);
+        } catch (SessionExpired | NoPermissionForOperation e) {
+            e.printStackTrace();
         }
 
         nameLabel.setText(productDetails.getName());

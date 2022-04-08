@@ -5,6 +5,8 @@ import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.CustomerService;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
+import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
+import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -45,7 +47,7 @@ public class SearchProductsController {
             // To test if Customers can be searched by MusicShopBackend from CustomerDataServer
             // CustomerService customerService = RMIClient.getRmiClient().getRmiFactory().getCustomerSearchService();
             // customerService.search("John").forEach(System.out::println);
-        } catch (RemoteException e) {
+        } catch (RemoteException | SessionExpired | NoPermissionForOperation e) {
             e.printStackTrace();
         }
 
@@ -61,7 +63,7 @@ public class SearchProductsController {
             products = productSearchService.fullTextSearch(searchTerm);
             fillProductTable();
 
-        } catch (RemoteException e) {
+        } catch (RemoteException | NoPermissionForOperation | SessionExpired e) {
             e.printStackTrace();
         }
     }
@@ -76,7 +78,7 @@ public class SearchProductsController {
             products = productSearchService.fullTextSearch(searchTerm);
             fillProductTable();
 
-        } catch (RemoteException e) {
+        } catch (RemoteException | NoPermissionForOperation | SessionExpired e) {
             e.printStackTrace();
         }
     }

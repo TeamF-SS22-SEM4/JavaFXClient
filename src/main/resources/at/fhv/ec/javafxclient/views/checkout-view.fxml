@@ -96,14 +96,16 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Text layoutX="14.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Payment method" />
-                  <RadioButton fx:id="cashRadioButton" layoutX="18.0" layoutY="131.0" mnemonicParsing="false" text="Cash" />
-                  <RadioButton fx:id="creditCardRadioButton" layoutX="18.0" layoutY="153.0" mnemonicParsing="false" text="Credit Card" />
-                  <RadioButton fx:id="invoiceRadioButton" layoutX="18.0" layoutY="176.0" mnemonicParsing="false" text="Invoice" />
-                  <Button layoutX="22.0" layoutY="204.0" mnemonicParsing="false" onAction="#onPayButtonClicked" text="Pay" />
-                  <Text layoutX="17.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Purchase type" />
-                  <RadioButton fx:id="anonymousPurchaseRadioButton" layoutX="15.0" layoutY="36.0" mnemonicParsing="false" text="Anonymous" />
-                  <RadioButton fx:id="customerPurchaseRadioButton" layoutX="15.0" layoutY="60.0" mnemonicParsing="false" text="With customer" />
+                  <Text layoutX="11.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Payment method" />
+                  <RadioButton fx:id="cashRadioButton" layoutX="18.0" layoutY="37.0" mnemonicParsing="false" text="Cash" />
+                  <RadioButton fx:id="creditCardRadioButton" layoutX="18.0" layoutY="62.0" mnemonicParsing="false" text="Credit Card" />
+                  <RadioButton fx:id="invoiceRadioButton" layoutX="18.0" layoutY="87.0" mnemonicParsing="false" text="Invoice" />
+                  <Button layoutX="15.0" layoutY="117.0" mnemonicParsing="false" onAction="#onPayButtonClicked" text="Pay" />
+                  <Text layoutX="257.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer Information:" />
+                  <Label fx:id="customerNameLabel" layoutX="256.0" layoutY="37.0" text="Label" />
+                  <Label fx:id="customerAddressLabel" layoutX="256.0" layoutY="63.0" text="Label" />
+                  <Label fx:id="customerMailAndPhoneLabel" layoutX="256.0" layoutY="88.0" text="Label" />
+                  <Button layoutX="67.0" layoutY="117.0" mnemonicParsing="false" onAction="#onSelectCustomerButtonClicked" text="Select customer" />
                </children>
             </Pane>
          </children>

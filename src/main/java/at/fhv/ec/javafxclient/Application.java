@@ -3,10 +3,11 @@ package at.fhv.ec.javafxclient;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
+// TODO: Add alerts instead of printing stacktrace
+// TODO: Refactor code
 public class Application extends javafx.application.Application {
     private static Stage primaryStage;
 
