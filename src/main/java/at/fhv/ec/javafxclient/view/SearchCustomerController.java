@@ -77,7 +77,7 @@ public class SearchCustomerController {
         String searchTerm = searchTextField.getText();
         try {
             customerService = RMIClient.getRmiClient().getRmiFactory().getCustomerSearchService();
-            List<CustomerDTO> customers = customerService.search(searchTerm);
+            List<CustomerDTO> customers = customerService.search(LoginController.sessionInformation.getSessionId(), searchTerm);
 
             ObservableList<CustomerDTO> customerTableData = FXCollections.observableArrayList(customers);
             customerTable.setItems(customerTableData);

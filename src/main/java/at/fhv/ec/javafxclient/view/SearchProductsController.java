@@ -40,7 +40,7 @@ public class SearchProductsController {
     public void initialize() {
         try {
             productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
-            products = productSearchService.fullTextSearch("");
+            products = productSearchService.fullTextSearch(LoginController.sessionInformation.getSessionId(), "");
             fillProductTable();
 
             // TODO: Remove
@@ -60,7 +60,7 @@ public class SearchProductsController {
     protected void onSearchButtonClicked() {
         try {
             String searchTerm = searchTextField.getText();
-            products = productSearchService.fullTextSearch(searchTerm);
+            products = productSearchService.fullTextSearch(LoginController.sessionInformation.getSessionId(), searchTerm);
             fillProductTable();
 
         } catch (RemoteException | NoPermissionForOperation | SessionExpired e) {
@@ -75,7 +75,7 @@ public class SearchProductsController {
         searchTextField.clear();
         try {
             String searchTerm = searchTextField.getText();
-            products = productSearchService.fullTextSearch(searchTerm);
+            products = productSearchService.fullTextSearch(LoginController.sessionInformation.getSessionId(), searchTerm);
             fillProductTable();
 
         } catch (RemoteException | NoPermissionForOperation | SessionExpired e) {

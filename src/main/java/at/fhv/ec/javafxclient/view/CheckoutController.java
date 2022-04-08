@@ -2,7 +2,7 @@ package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
-import at.fhv.ec.javafxclient.view.forms.ShoppingCartEntry;
+import at.fhv.ec.javafxclient.view.utils.ShoppingCartEntry;
 import at.fhv.ss22.ea.f.communication.dto.CustomerDTO;
 import at.fhv.ss22.ea.f.communication.dto.ShoppingCartProductDTO;
 import at.fhv.ss22.ea.f.communication.exception.CarrierNotAvailableException;
@@ -186,7 +186,7 @@ public class CheckoutController {
             String invoiceNumber = RMIClient.getRmiClient()
                     .getRmiFactory()
                     .getBuyingService()
-                    .buyWithShoppingCart(shoppingCartProducts, selectedPaymentMethod, customerId);
+                    .buyWithShoppingCart(LoginController.sessionInformation.getSessionId(), shoppingCartProducts, selectedPaymentMethod, customerId);
 
             shoppingCart.clear();
             showPopup("Successful", "Invoice No.: " + invoiceNumber + "\nBill is printed...", Alert.AlertType.CONFIRMATION);

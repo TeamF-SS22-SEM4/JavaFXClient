@@ -13,7 +13,7 @@ public class Application extends javafx.application.Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("views/product-search-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("views/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
         scene.getStylesheets().add("style.css");

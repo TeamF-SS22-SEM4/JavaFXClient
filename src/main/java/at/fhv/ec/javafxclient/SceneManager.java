@@ -41,7 +41,9 @@ public class SceneManager {
         return viewHistory.peek();
     }
 
-    private void loadView(String view) throws IOException {
+    private void loadView(String viewName) throws IOException {
+        String view = "views/" + viewName + ".fxml";
+
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource(
                         view

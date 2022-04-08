@@ -1,7 +1,7 @@
 package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
-import at.fhv.ec.javafxclient.view.forms.ShoppingCartEntry;
+import at.fhv.ec.javafxclient.view.utils.ShoppingCartEntry;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.io.IOException;
-import java.rmi.server.ServerNotActiveException;
 import java.util.ArrayList;
 import java.util.List;
 
