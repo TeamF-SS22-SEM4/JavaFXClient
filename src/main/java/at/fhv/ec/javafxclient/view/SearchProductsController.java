@@ -8,6 +8,7 @@ import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 
@@ -84,6 +85,15 @@ public class SearchProductsController {
     protected void onShoppingCartButtonClicked() {
         try {
             SceneManager.getInstance().switchView("views/product-search-view.fxml","views/shopping-cart-view.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void onCustomersButtonClicked() {
+        try {
+            SceneManager.getInstance().switchView("views/product-search-view.fxml","views/customer-search.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
