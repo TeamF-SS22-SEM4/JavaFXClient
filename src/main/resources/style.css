@@ -1,3 +1,26 @@
-#menu {
-    -fx-background-color: #4a4947;
+.root {
+    -fx-font: 14px "Helvetica";
+    -fx-pref-height: 800;
+    -fx-pref-width: 1200;
+}
+
+.sidebar {
+    -fx-min-width: 200;
+    -fx-max-width: 200;
+    -fx-background-color: #2b2b2b;
+}
+
+.header {
+    -fx-min-height: 100;
+    -fx-max-height: 100;
+    -fx-background-color: #383838;
+    -fx-padding: 10 50 10 50;
+}
+
+
+.button {
+    -fx-background-color: #c27f00;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border: black;
 }

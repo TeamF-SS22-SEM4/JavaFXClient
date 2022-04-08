@@ -7,24 +7,18 @@ import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchController {
     // TODO: Use something like dependency injection in springboot
-    ProductSearchService productSearchService;
-    {
-        try {
-            productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
+    private ProductSearchService productSearchService;
+    private static List<ProductOverviewDTO> products = new ArrayList<>();
 
     @FXML
     private TextField searchTextField;
@@ -33,34 +27,100 @@ public class SearchController {
     private TableView<ProductOverviewDTO> productTable;
 
     @FXML
-    public void initialize() {
-        productTable.setRowFactory(tv -> {
-            TableRow<ProductOverviewDTO> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if(event.getClickCount() == 2) {
-                    try {
-                        DetailsController.productId = row.getItem().getProductId();
-                        SceneManager.getInstance().switchView("views/details-view.fxml");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+    private TableColumn<ProductOverviewDTO, Button> actionColumn;
 
-            return row;
-        });
+    @FXML
+    public void initialize() {
+        try {
+            productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
+            products = productSearchService.fullTextSearch("");
+            fillProductTable();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        createProductTable();
+
+        fillProductTable();
     }
 
     @FXML
     protected void onSearchButtonClicked() {
         try {
             String searchTerm = searchTextField.getText();
-            List<ProductOverviewDTO> products = productSearchService.fullTextSearch(searchTerm);
+            products = productSearchService.fullTextSearch(searchTerm);
+            fillProductTable();
 
-            ObservableList<ProductOverviewDTO> productListData = FXCollections.observableArrayList(products);
-            productTable.setItems(productListData);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    protected void onClearButtonClicked() {
+        productTable.getItems().clear();
+        products.clear();
+        searchTextField.clear();
+        try {
+            String searchTerm = searchTextField.getText();
+            products = productSearchService.fullTextSearch(searchTerm);
+            fillProductTable();
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void onShoppingCartButtonClicked() {
+        try {
+            SceneManager.getInstance().switchView("views/shopping-cart-view.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createProductTable() {
+        // Initialize Table Columns
+        // Add Button to table to switch to DetailsView
+        // TODO: find a more beautiful solution
+        actionColumn.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<ProductOverviewDTO, Button> call(TableColumn<ProductOverviewDTO, Button> param) {
+                return new TableCell<>() {
+
+                    final Button detailsButton = new Button("Details");
+
+                    @Override
+                    public void updateItem(Button item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            detailsButton.setOnAction(event -> {
+                                try {
+                                    DetailsController.productId = getTableView().getItems().get(getIndex()).getProductId();
+                                    SceneManager.getInstance().switchView("views/details-view.fxml");
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                            setGraphic(detailsButton);
+                            setText(null);
+                        }
+                    }
+                };
+            }
+        });
+    }
+
+    private void fillProductTable() {
+        ObservableList<ProductOverviewDTO> productTableData = FXCollections.observableArrayList(products);
+        productTable.setItems(productTableData);
+    }
+
+    public void onEnter() {
+        onSearchButtonClicked();
     }
 }
