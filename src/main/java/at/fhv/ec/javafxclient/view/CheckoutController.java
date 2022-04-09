@@ -24,7 +24,6 @@ import static at.fhv.ec.javafxclient.view.ShoppingCartController.shoppingCart;
 public class CheckoutController {
     public static CustomerDTO customer;
     private static float totalPrice;
-    private ToggleGroup purchaseTypes;
     private ToggleGroup paymentMethods;
 
     @FXML
@@ -149,7 +148,7 @@ public class CheckoutController {
     @FXML
     protected void onSelectCustomerButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/checkout-view.fxml", "views/customer-search.fxml");
+            SceneManager.getInstance().switchView("checkout-view", "customer-search");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -190,7 +189,7 @@ public class CheckoutController {
 
             shoppingCart.clear();
             showPopup("Successful", "Invoice No.: " + invoiceNumber + "\nBill is printed...", Alert.AlertType.CONFIRMATION);
-            SceneManager.getInstance().switchView("views/checkout-view.fxml", "views/product-search-view.fxml");
+            SceneManager.getInstance().switchView("checkout-view", "product-search-view");
         } catch (CarrierNotAvailableException cne) {
             showPopup("Error", "The selected amount is not available.", Alert.AlertType.ERROR);
             cne.printStackTrace();

@@ -1,5 +1,6 @@
 package at.fhv.ec.javafxclient.view;
 
+import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.AuthenticationService;
 import at.fhv.ss22.ea.f.communication.dto.LoginResultDTO;
@@ -9,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 public class LoginController {
@@ -30,20 +32,19 @@ public class LoginController {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
 
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password);
 
         if((username != null) && (password != null)) {
             try {
                 authenticationService = RMIClient.getRmiClient().getRmiFactory().getAuthenticationService();
                 sessionInformation = authenticationService.login(username, password);
 
-                System.out.println(sessionInformation.getSessionId());
-                sessionInformation.getRoles().forEach(System.out::println);
+                SceneManager.getInstance().switchView("login-view", "product-search-view");
             } catch (RemoteException e) {
                 statusLabel.setText("Could not establish a connection to the server");
             } catch (AuthenticationFailed e) {
                 statusLabel.setText("Invalid username or password");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

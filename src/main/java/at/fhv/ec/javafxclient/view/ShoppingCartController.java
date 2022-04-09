@@ -68,7 +68,7 @@ public class ShoppingCartController {
     protected void onCheckoutButtonClicked() {
         if(shoppingCart.size() > 0) {
             try {
-                SceneManager.getInstance().switchView("views/checkout-view.fxml","views/checkout-view.fxml");
+                SceneManager.getInstance().switchView("checkout-view","checkout-view");
             } catch (IOException e) {
                 e.printStackTrace();
             }

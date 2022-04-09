@@ -42,11 +42,6 @@ public class SearchProductsController {
             productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
             products = productSearchService.fullTextSearch(LoginController.sessionInformation.getSessionId(), "");
             fillProductTable();
-
-            // TODO: Remove
-            // To test if Customers can be searched by MusicShopBackend from CustomerDataServer
-            // CustomerService customerService = RMIClient.getRmiClient().getRmiFactory().getCustomerSearchService();
-            // customerService.search("John").forEach(System.out::println);
         } catch (RemoteException | SessionExpired | NoPermissionForOperation e) {
             e.printStackTrace();
         }
@@ -75,6 +70,7 @@ public class SearchProductsController {
         searchTextField.clear();
         try {
             String searchTerm = searchTextField.getText();
+            System.out.println(LoginController.sessionInformation.getSessionId());
             products = productSearchService.fullTextSearch(LoginController.sessionInformation.getSessionId(), searchTerm);
             fillProductTable();
 
@@ -86,7 +82,7 @@ public class SearchProductsController {
     @FXML
     protected void onShoppingCartButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/product-search-view.fxml","views/shopping-cart-view.fxml");
+            SceneManager.getInstance().switchView("product-search-view","shopping-cart-view");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,7 +91,7 @@ public class SearchProductsController {
     @FXML
     protected void onCustomersButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/product-search-view.fxml","views/customer-search.fxml");
+            SceneManager.getInstance().switchView("product-search-view","customer-search");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -104,7 +100,7 @@ public class SearchProductsController {
     @FXML
     protected void onExchangeButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/product-search-view.fxml","views/sale-search-view.fxml");
+            SceneManager.getInstance().switchView("product-search-view","sale-search-view");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -131,7 +127,7 @@ public class SearchProductsController {
                             detailsButton.setOnAction(event -> {
                                 try {
                                     ProductsDetailsController.productId = getTableView().getItems().get(getIndex()).getProductId();
-                                    SceneManager.getInstance().switchView("views/product-search-view.fxml","views/product-details-view.fxml");
+                                    SceneManager.getInstance().switchView("product-search-view","product-details-view");
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }

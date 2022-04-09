@@ -89,7 +89,7 @@ public class ProductsDetailsController {
     @FXML
     protected void onShoppingCartButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/product-details-view.fxml", "views/shopping-cart-view.fxml");
+            SceneManager.getInstance().switchView("product-details-view", "shopping-cart-view");
         } catch (IOException e) {
             e.printStackTrace();
         }

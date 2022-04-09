@@ -38,7 +38,7 @@ public class SearchCustomerController {
         addToSaleColumn.setVisible(false);
 
         // Show add to sale button only when user comes from checkout view
-        if(SceneManager.getInstance().getLastView().equals("views/checkout-view.fxml")) {
+        if(SceneManager.getInstance().getLastView().equals("checkout-view")) {
             addToSaleColumn.setCellFactory(new Callback<>() {
                 @Override
                 public TableCell<CustomerDTO, Button> call(TableColumn<CustomerDTO, Button> param) {
@@ -55,7 +55,7 @@ public class SearchCustomerController {
                                 addToSaleButton.setOnAction(event -> {
                                     CheckoutController.customer = getTableView().getItems().get(getIndex());
                                     try {
-                                        SceneManager.getInstance().switchView("views/customer-search.fxml", "views/checkout-view.fxml");
+                                        SceneManager.getInstance().switchView("customer-search", "checkout-view");
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
