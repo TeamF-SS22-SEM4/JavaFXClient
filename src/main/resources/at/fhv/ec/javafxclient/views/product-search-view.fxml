@@ -14,29 +14,30 @@
    <children>
       <VBox maxWidth="300.0" minWidth="200.0" styleClass="sidebar" HBox.hgrow="ALWAYS">
          <children>
-            <Pane fx:id="sidebar" maxHeight="100.0" minHeight="100.0" />
+            <Pane fx:id="sidebar" maxHeight="104.0" minHeight="100.0" prefHeight="104.0" prefWidth="200.0" />
             <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" styleClass="btn" text="Shop" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
                </VBox.margin>
             </Button>
-            <Button onAction="#onCustomersButtonClicked" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" text="Customers" VBox.vgrow="ALWAYS">
+            <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#onCustomersButtonClicked" text="Customers" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </VBox.margin>
             </Button>
-            <Button onAction="#onExchangeButtonClicked" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" text="Exchange">
+            <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" onAction="#onExchangeButtonClicked" text="Exchange">
                <VBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </VBox.margin>
             </Button>
+            <Button onAction="#onLogoutButtonClicked" maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="126.0" styleClass="btn" text="Logout" />
          </children>
       </VBox>
       <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
          <children>
             <HBox alignment="CENTER_LEFT" maxHeight="100.0" minHeight="50.0" spacing="20.0" styleClass="header" VBox.vgrow="ALWAYS">
                <children>
-                  <TextField fx:id="searchTextField" maxHeight="30.0" maxWidth="300.0" minHeight="30.0" minWidth="150.0" onAction="#onEnter" style="-fx-background-color: #ffffff;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="searchTextField" maxHeight="30.0" maxWidth="300.0" minHeight="30.0" minWidth="150.0" onAction="#onSearchButtonClicked" style="-fx-background-color: #ffffff;" HBox.hgrow="ALWAYS" />
                   <Button maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onAction="#onSearchButtonClicked" text="Search" HBox.hgrow="ALWAYS" />
                   <Button maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onAction="#onClearButtonClicked" text="Clear" HBox.hgrow="ALWAYS" />
                   <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />

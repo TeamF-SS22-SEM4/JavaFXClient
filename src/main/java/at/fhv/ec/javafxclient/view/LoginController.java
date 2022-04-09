@@ -1,6 +1,7 @@
 package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
+import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.AuthenticationService;
 import at.fhv.ss22.ea.f.communication.dto.LoginResultDTO;
@@ -15,8 +16,6 @@ import java.rmi.RemoteException;
 
 public class LoginController {
     private AuthenticationService authenticationService;
-
-    public static LoginResultDTO sessionInformation;
 
     @FXML
     private TextField usernameTextField;
@@ -36,8 +35,9 @@ public class LoginController {
         if((username != null) && (password != null)) {
             try {
                 authenticationService = RMIClient.getRmiClient().getRmiFactory().getAuthenticationService();
-                sessionInformation = authenticationService.login(username, password);
+                LoginResultDTO loginResultDTO = authenticationService.login(username, password);
 
+                SessionManager.getInstance().login(loginResultDTO.getSessionId(), loginResultDTO.getRoles());
                 SceneManager.getInstance().switchView("login-view", "product-search-view");
             } catch (RemoteException e) {
                 statusLabel.setText("Could not establish a connection to the server");

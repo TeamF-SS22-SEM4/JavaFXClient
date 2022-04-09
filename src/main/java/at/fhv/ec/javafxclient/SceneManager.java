@@ -37,6 +37,11 @@ public class SceneManager {
         }
     }
 
+    public void logout() throws IOException {
+        loadView("login-view");
+        viewHistory.clear();
+    }
+
     public String getLastView() {
         return viewHistory.peek();
     }

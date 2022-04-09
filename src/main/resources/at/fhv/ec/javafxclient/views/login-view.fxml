@@ -12,12 +12,12 @@
    <children>
       <Pane prefHeight="600.0" prefWidth="800.0">
          <children>
-            <TextField fx:id="usernameTextField" layoutX="315.0" layoutY="225.0" />
+            <TextField onAction="#onLoginButtonClicked" fx:id="usernameTextField" layoutX="315.0" layoutY="225.0" />
             <Text layoutX="235.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" />
             <Text layoutX="237.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" />
             <Button layoutX="369.0" layoutY="326.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" text="Login" />
             <Label fx:id="statusLabel" layoutX="378.0" layoutY="369.0" />
-            <PasswordField fx:id="passwordTextField" layoutX="311.0" layoutY="276.0" />
+            <PasswordField onAction="#onLoginButtonClicked" fx:id="passwordTextField" layoutX="311.0" layoutY="276.0" />
          </children>
       </Pane>
    </children>

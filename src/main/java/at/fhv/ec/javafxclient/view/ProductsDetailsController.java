@@ -1,6 +1,7 @@
 package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
+import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ec.javafxclient.view.utils.ShoppingCartEntry;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
@@ -64,7 +65,7 @@ public class ProductsDetailsController {
     public void initialize() {
         try {
             productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
-            productDetails = productSearchService.productById(LoginController.sessionInformation.getSessionId(), productId);
+            productDetails = productSearchService.productById(SessionManager.getInstance().getSessionId(), productId);
         } catch (RemoteException e) {
             e.printStackTrace();
             showPopup("Error", "Error connecting to the server.", Alert.AlertType.ERROR);

@@ -1,6 +1,7 @@
 package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
+import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.CustomerService;
 import at.fhv.ss22.ea.f.communication.dto.CustomerDTO;
@@ -77,7 +78,7 @@ public class SearchCustomerController {
         String searchTerm = searchTextField.getText();
         try {
             customerService = RMIClient.getRmiClient().getRmiFactory().getCustomerSearchService();
-            List<CustomerDTO> customers = customerService.search(LoginController.sessionInformation.getSessionId(), searchTerm);
+            List<CustomerDTO> customers = customerService.search(SessionManager.getInstance().getSessionId(), searchTerm);
 
             ObservableList<CustomerDTO> customerTableData = FXCollections.observableArrayList(customers);
             customerTable.setItems(customerTableData);
@@ -88,11 +89,6 @@ public class SearchCustomerController {
         } catch (SessionExpired e) {
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    public void onEnter() {
-        onSearchButtonClicked();
     }
 
     @FXML
