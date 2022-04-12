@@ -34,7 +34,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" maxHeight="100.0" minHeight="50.0" spacing="20.0" styleClass="header" VBox.vgrow="ALWAYS">
                <children>
-                  <TextField fx:id="searchTextField" maxHeight="30.0" maxWidth="300.0" minHeight="30.0" minWidth="150.0" onAction="#onEnter" style="-fx-background-color: #ffffff;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="searchTextField" maxHeight="30.0" maxWidth="300.0" minHeight="30.0" minWidth="150.0" onAction="#onSearchButtonClicked" style="-fx-background-color: #ffffff;" HBox.hgrow="ALWAYS" />
                   <Button maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onAction="#onSearchButtonClicked" text="Search" HBox.hgrow="ALWAYS" />
                   <Button maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" onAction="#onClearButtonClicked" text="Clear" HBox.hgrow="ALWAYS" />
                   <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">

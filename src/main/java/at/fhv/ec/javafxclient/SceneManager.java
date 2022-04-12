@@ -37,7 +37,18 @@ public class SceneManager {
         }
     }
 
-    private void loadView(String view) throws IOException {
+    public void logout() throws IOException {
+        loadView("login-view");
+        viewHistory.clear();
+    }
+
+    public String getLastView() {
+        return viewHistory.peek();
+    }
+
+    private void loadView(String viewName) throws IOException {
+        String view = "views/" + viewName + ".fxml";
+
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource(
                         view

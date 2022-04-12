@@ -3,16 +3,17 @@ package at.fhv.ec.javafxclient;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
+// TODO: Add alerts instead of printing stacktrace
+// TODO: Refactor code
 public class Application extends javafx.application.Application {
     private static Stage primaryStage;
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("views/product-search-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("views/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
         scene.getStylesheets().add("style.css");

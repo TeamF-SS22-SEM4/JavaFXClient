@@ -1,10 +1,12 @@
 package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
+import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
-import at.fhv.ss22.ea.f.communication.api.CustomerService;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
+import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
+import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -37,14 +39,9 @@ public class SearchProductsController {
     public void initialize() {
         try {
             productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
-            products = productSearchService.fullTextSearch("");
+            products = productSearchService.fullTextSearch(SessionManager.getInstance().getSessionId(), "");
             fillProductTable();
-
-            // TODO: Remove
-            // To test if Customers can be searched by MusicShopBackend from CustomerDataServer
-            // CustomerService customerService = RMIClient.getRmiClient().getRmiFactory().getCustomerSearchService();
-            // customerService.search("John").forEach(System.out::println);
-        } catch (RemoteException e) {
+        } catch (RemoteException | SessionExpired | NoPermissionForOperation e) {
             e.printStackTrace();
         }
 
@@ -57,10 +54,10 @@ public class SearchProductsController {
     protected void onSearchButtonClicked() {
         try {
             String searchTerm = searchTextField.getText();
-            products = productSearchService.fullTextSearch(searchTerm);
+            products = productSearchService.fullTextSearch(SessionManager.getInstance().getSessionId(), searchTerm);
             fillProductTable();
 
-        } catch (RemoteException e) {
+        } catch (RemoteException | NoPermissionForOperation | SessionExpired e) {
             e.printStackTrace();
         }
     }
@@ -70,20 +67,21 @@ public class SearchProductsController {
         productTable.getItems().clear();
         products.clear();
         searchTextField.clear();
-        try {
-            String searchTerm = searchTextField.getText();
-            products = productSearchService.fullTextSearch(searchTerm);
-            fillProductTable();
-
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML
     protected void onShoppingCartButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/product-search-view.fxml","views/shopping-cart-view.fxml");
+            SceneManager.getInstance().switchView("product-search-view","shopping-cart-view");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void onCustomersButtonClicked() {
+        try {
+            SceneManager.getInstance().switchView("product-search-view","customer-search");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,7 +90,18 @@ public class SearchProductsController {
     @FXML
     protected void onExchangeButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/product-search-view.fxml","views/sale-search-view.fxml");
+            SceneManager.getInstance().switchView("product-search-view","sale-search-view");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void onLogoutButtonClicked() {
+        SessionManager.getInstance().logout();
+
+        try {
+            SceneManager.getInstance().logout();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -119,7 +128,7 @@ public class SearchProductsController {
                             detailsButton.setOnAction(event -> {
                                 try {
                                     ProductsDetailsController.productId = getTableView().getItems().get(getIndex()).getProductId();
-                                    SceneManager.getInstance().switchView("views/product-search-view.fxml","views/product-details-view.fxml");
+                                    SceneManager.getInstance().switchView("product-search-view","product-details-view");
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -138,9 +147,5 @@ public class SearchProductsController {
         productTable.setItems(productTableData);
         productTable.getSortOrder().add(nameColumn);
         productTable.sort();
-    }
-
-    public void onEnter() {
-        onSearchButtonClicked();
     }
 }
