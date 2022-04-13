@@ -83,8 +83,8 @@
 /* SIDEBAR                   */
 /*****************************/
 .sidebar {
-    -fx-min-width: 200;
-    -fx-max-width: 200;
+    -fx-min-width: 225;
+    -fx-max-width: 225;
     -fx-background-color: -fx-color-background1;
 }
 
