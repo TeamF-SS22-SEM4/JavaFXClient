@@ -24,7 +24,7 @@
             <HBox alignment="CENTER">
                <children>
                   <FontAwesomeIconView glyphName="USER" size="20" styleClass="login-icon" />
-                  <TextField fx:id="usernameTextField" styleClass="login-textfield">
+                  <TextField fx:id="usernameTextField" promptText="username" styleClass="login-textfield">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
@@ -34,7 +34,7 @@
             <HBox alignment="CENTER">
                <children>
                   <FontAwesomeIconView glyphName="LOCK" size="20" styleClass="login-icon" />
-                  <PasswordField fx:id="passwordTextField" styleClass="login-textfield">
+                  <PasswordField fx:id="passwordTextField" onAction="#onLoginButtonClicked" promptText="password" styleClass="login-textfield">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>

@@ -33,8 +33,8 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        usernameTextField.setText("test");
-        passwordTextField.setText("test");
+//        usernameTextField.setText("test");
+//        passwordTextField.setText("test");
     }
     @FXML
     private void onLoginButtonClicked() {
@@ -58,10 +58,10 @@ public class LoginController implements Initializable {
                     authenticationService = RMIClient.getRmiClient().getRmiFactory().getAuthenticationService();
 
                     // backdoor
-                    LoginResultDTO loginResultDTO = authenticationService.login("tf-test", "PssWrd");
+//                    LoginResultDTO loginResultDTO = authenticationService.login("tf-test", "PssWrd");
 
                     // regular
-                    //LoginResultDTO loginResultDTO = authenticationService.login(username, password);
+                    LoginResultDTO loginResultDTO = authenticationService.login(username, password);
 
                     SessionManager.getInstance().login(loginResultDTO.getSessionId(), loginResultDTO.getRoles());
                     SceneManager.getInstance().switchView("shop");
