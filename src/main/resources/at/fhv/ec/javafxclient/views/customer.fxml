@@ -10,37 +10,45 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.SearchCustomerController">
+<?import java.lang.String?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<HBox minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.CustomerController">
    <children>
-      <VBox maxWidth="300.0" minWidth="200.0" styleClass="sidebar" HBox.hgrow="ALWAYS">
-         <children>
-            <Pane fx:id="sidebar" maxHeight="100.0" minHeight="100.0" />
-            <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" styleClass="btn" text="Shop" VBox.vgrow="ALWAYS">
-               <VBox.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
-               </VBox.margin>
-            </Button>
-            <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" text="Customers" VBox.vgrow="ALWAYS">
-               <VBox.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </VBox.margin>
-            </Button>
-            <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" text="Exchange">
-               <VBox.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </VBox.margin>
-            </Button>
-         </children>
-      </VBox>
+      <fx:include source="sidebar.fxml"/>
       <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
          <children>
-            <HBox alignment="CENTER_LEFT" maxHeight="100.0" minHeight="50.0" spacing="20.0" styleClass="header" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" styleClass="header" VBox.vgrow="ALWAYS">
                <children>
-                  <TextField onAction="#onSearchButtonClicked" fx:id="searchTextField" maxHeight="30.0" maxWidth="300.0" minHeight="30.0" minWidth="150.0" style="-fx-background-color: #ffffff;" HBox.hgrow="ALWAYS" />
-                  <Button onAction="#onSearchButtonClicked" maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" text="Search" HBox.hgrow="ALWAYS" />
-                  <Button onAction="#onClearButtonClicked" maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" text="Clear" HBox.hgrow="ALWAYS" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <Button minWidth="0.0" mnemonicParsing="false" onAction="#onBackButtonClicked" text="Back" />
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Button alignment="CENTER" mnemonicParsing="false" onAction="#onHomeButtonClicked">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="HOME" size="20" />
+                           </graphic>
+                           <styleClass>
+                              <String fx:value="searchbar-btn-home" />
+                              <String fx:value="btn" />
+                           </styleClass>
+                           <HBox.margin>
+                              <Insets bottom="1.0" />
+                           </HBox.margin>
+                        </Button>
+                        <TextField fx:id="searchTextField" onAction="#onSearchButtonClicked" promptText="Search" styleClass="searchbar-textfield" />
+                        <Button mnemonicParsing="false" onAction="#onSearchButtonClicked">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="SEARCH" size="20" />
+                           </graphic>
+                           <styleClass>
+                              <String fx:value="searchbar-btn-search" />
+                              <String fx:value="btn" />
+                           </styleClass>
+                           <HBox.margin>
+                              <Insets bottom="1.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <Pane HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <TableView fx:id="customerTable" VBox.vgrow="ALWAYS">

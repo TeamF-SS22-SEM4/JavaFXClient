@@ -39,7 +39,8 @@ javafx {
 }
 
 dependencies {
-    implementation 'com.github.TeamF-SS22-SEM4:RMI-Shared-Lib:v28'
+    implementation 'com.github.TeamF-SS22-SEM4:RMI-Shared-Lib:v31'
+    implementation 'de.jensd:fontawesomefx-fontawesome:4.7.0-9.1.2'
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
@@ -65,7 +66,6 @@ jlinkZip {
     group = 'distribution'
 }
 
-//mainClassName = 'at.fhv.ec.javafxclient.HelloApplication'
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
