@@ -31,9 +31,6 @@ public class ShoppingCartController {
     private TableColumn<ShoppingCartEntry, Spinner<Integer>> selectedAmountColumn;
 
     @FXML
-    private TableColumn<ShoppingCartEntry, Float> pricePerCarrierColumn;
-
-    @FXML
     private TableColumn<ShoppingCartEntry, Float> totalProductPriceColumn;
 
     @FXML
@@ -128,25 +125,6 @@ public class ShoppingCartController {
         };
 
         selectedAmountColumn.setCellFactory(spinnerCellFactory);
-
-        pricePerCarrierColumn.setCellFactory(new Callback<>() {
-            @Override
-            public TableCell<ShoppingCartEntry, Float> call(TableColumn<ShoppingCartEntry, Float> param) {
-                return new TableCell<>() {
-                    @Override
-                    protected void updateItem(Float pricePerCarrier, boolean empty) {
-                        super.updateItem(pricePerCarrier, empty);
-                        if (empty || pricePerCarrier == null) {
-                            setText("");
-                        } else {
-                            String pricePerCarrierStr = pricePerCarrier + "€";
-
-                            setText(pricePerCarrierStr);
-                        }
-                    }
-                };
-            }
-        });
 
         totalProductPriceColumn.setCellFactory(new Callback<>() {
             @Override

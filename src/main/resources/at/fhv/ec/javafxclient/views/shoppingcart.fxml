@@ -44,11 +44,6 @@
                         </TableColumn>
                         <TableColumn fx:id="selectedAmountColumn" prefWidth="137.0" text="Selected Amount">
                   </TableColumn>
-                        <TableColumn fx:id="pricePerCarrierColumn" prefWidth="155.0" text="Price per carrier">
-                           <cellValueFactory>
-                              <PropertyValueFactory property="pricePerCarrier" />
-                           </cellValueFactory>
-                        </TableColumn>
                         <TableColumn fx:id="totalProductPriceColumn" prefWidth="110.0" text="Total">
                            <cellValueFactory>
                               <PropertyValueFactory property="totalProductPrice" />
