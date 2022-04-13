@@ -1,14 +1,19 @@
 package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
+import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.view.utils.ShoppingCartEntry;
+import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
+import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,20 +60,13 @@ public class ShoppingCartController {
         shoppingCart.clear();
     }
 
-    @FXML
-    protected void onBackButtonClicked() {
-        try {
-            SceneManager.getInstance().back();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     @FXML
     protected void onCheckoutButtonClicked() {
         if(shoppingCart.size() > 0) {
             try {
-                SceneManager.getInstance().switchView("checkout-view","checkout-view");
+                SceneManager.getInstance().switchView("checkout-view");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -203,5 +201,10 @@ public class ShoppingCartController {
         ButtonType confirmButton = new ButtonType("Ok");
         alert.getButtonTypes().setAll(confirmButton);
         alert.show();
+    }
+
+    @FXML
+    public void onBackButtonClicked() throws IOException {
+        SceneManager.getInstance().switchView("shop");
     }
 }
