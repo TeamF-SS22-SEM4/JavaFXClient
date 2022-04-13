@@ -5,13 +5,12 @@ import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.CustomerService;
 import at.fhv.ss22.ea.f.communication.dto.CustomerDTO;
-import at.fhv.ss22.ea.f.communication.dto.SoundCarrierDTO;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 
@@ -19,7 +18,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public class SearchCustomerController {
+public class CustomerController {
     CustomerService customerService;
 
     @FXML
@@ -38,8 +37,25 @@ public class SearchCustomerController {
     public void initialize() {
         addToSaleColumn.setVisible(false);
 
+
+        String searchTerm = "b";
+        try {
+            customerService = RMIClient.getRmiClient().getRmiFactory().getCustomerSearchService();
+            List<CustomerDTO> customers = customerService.search(SessionManager.getInstance().getSessionId(), searchTerm);
+
+            ObservableList<CustomerDTO> customerTableData = FXCollections.observableArrayList(customers);
+            customerTable.setItems(customerTableData);
+            customerTable.getSortOrder().add(lastNameColumn);
+            customerTable.sort();
+        } catch (RemoteException | NoPermissionForOperation e) {
+            e.printStackTrace();
+        } catch (SessionExpired e) {
+            e.printStackTrace();
+        }
+
+
         // Show add to sale button only when user comes from checkout view
-        if(SceneManager.getInstance().getLastView().equals("checkout-view")) {
+//        if(SceneManager.getInstance().getLastView().equals("checkout-view")) {
             addToSaleColumn.setCellFactory(new Callback<>() {
                 @Override
                 public TableCell<CustomerDTO, Button> call(TableColumn<CustomerDTO, Button> param) {
@@ -56,7 +72,7 @@ public class SearchCustomerController {
                                 addToSaleButton.setOnAction(event -> {
                                     CheckoutController.customer = getTableView().getItems().get(getIndex());
                                     try {
-                                        SceneManager.getInstance().switchView("customer-search", "checkout-view");
+                                        SceneManager.getInstance().switchView("checkout-view");
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -71,7 +87,7 @@ public class SearchCustomerController {
 
             addToSaleColumn.setVisible(true);
         }
-    }
+//    }
 
     @FXML
     protected void onSearchButtonClicked() {
@@ -91,18 +107,17 @@ public class SearchCustomerController {
         }
     }
 
-    @FXML
-    protected void onBackButtonClicked() {
-        try {
-            SceneManager.getInstance().back();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     protected void onClearButtonClicked() {
         customerTable.getItems().clear();
         searchTextField.clear();
+    }
+
+    public void onBackButtonClicked(ActionEvent actionEvent) {
+    }
+
+    public void onHomeButtonClicked() throws IOException {
+        SceneManager.getInstance().switchView("customer");
     }
 }

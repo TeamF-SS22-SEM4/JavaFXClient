@@ -1,26 +1,245 @@
-.root {
-    -fx-font: 14px "Helvetica";
-    -fx-pref-height: 800;
-    -fx-pref-width: 1200;
+/*****************************/
+/* DEFAULT VALUES            */
+/*****************************/
+* {
+    -fx-color-primary: #c27f00;
+
+    -fx-color-background1: #2b2b2b;
+    -fx-color-background2: #383838;
+    -fx-color-background3: #4b4b4b;
+    -fx-color-background4: #7a7a7a;
+    -fx-color-background-hover: -fx-color-background4;
+
+    -fx-color-text1: rgba(255, 255, 255, 1);
+    -fx-color-text2: rgba(255, 255, 255, 0.75);
+
+    -fx-color-buttontext: -fx-color-text1;
+    -fx-color-btn-primary: -fx-color-primary;
+    -fx-color-btn-green: rgb(0, 173, 23);
 }
 
+.root {
+    -fx-pref-height: 648;
+    -fx-pref-width: 1152;
+    -fx-font: 14px "Helvetica";
+}
+/*****************************/
+/* LOGIN                     */
+/*****************************/
+.login-background {
+    -fx-background-image: url(images/background.jpg);
+    -fx-background-size: cover;
+    -fx-font-size: 16;
+}
+
+.login-content {
+    -fx-background-color: -fx-color-background2;
+    -fx-background-radius: 5;
+    -fx-padding: 40 50 40 50;
+    -fx-spacing: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,1), 10, 0, 0, 0);
+}
+
+.login-textfield {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-color-text2;
+    -fx-prompt-text-fill: -fx-color-text2;
+    -fx-border-color: -fx-color-text2;
+    -fx-border-width: 0 0 2 0;
+}
+
+.login-textfield:focused {
+    -fx-text-fill: -fx-color-text1;
+    -fx-prompt-text-fill: -fx-color-text1;
+    -fx-border-color: -fx-color-btn-primary;
+}
+
+.login-icon {
+    -fx-fill: -fx-color-text2;
+}
+
+/* LOGIN TEXT COLORS ALSO SET STATIC WHITE AND RED IN CONTROLLER */
+.login-text {
+    -fx-text-fill: -fx-color-text1;
+    -fx-max-width: 200;
+    -fx-padding: 10 0 10 0;
+}
+
+.login-button {
+    -fx-text-fill: -fx-color-text2;
+    -fx-background-color: transparent;
+    -fx-border-color: -fx-color-btn-primary;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+}
+
+.login-button:pressed, .login-button:focused, .login-button:hover {
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text1;
+    -fx-background-color: -fx-color-btn-primary;
+    -fx-background-radius: 5;
+}
+/*****************************/
+/* SIDEBAR                   */
+/*****************************/
 .sidebar {
     -fx-min-width: 200;
     -fx-max-width: 200;
-    -fx-background-color: #2b2b2b;
+    -fx-background-color: -fx-color-background1;
 }
 
+.sidebar-top {
+    -fx-min-height: 100;
+    -fx-max-height: 100;
+}
+
+.sidebar-body {
+    -fx-padding: 30;
+    -fx-spacing: 30;
+}
+
+.sidebar-body Button {
+    -fx-max-height: 20;
+    -fx-max-width: infinity;
+    -fx-padding: 10 10 10 20;
+}
+/*****************************/
+/* HEADER                    */
+/*****************************/
 .header {
     -fx-min-height: 100;
     -fx-max-height: 100;
-    -fx-background-color: #383838;
-    -fx-padding: 10 50 10 50;
+    -fx-background-color: -fx-color-background2;
+    -fx-padding: 32.5 30 32.5 30;
+    -fx-spacing: 20;
+    -fx-alignment: center;
+}
+
+.searchbar-btn-home {
+    -fx-background-radius: 5 0 0 5 !important;
+}
+
+.searchbar-btn-search {
+    -fx-background-radius: 0 5 5 0 !important;
+}
+
+.searchbar-textfield {
+    -fx-background-radius: 0;
+    -fx-min-width: 300;
+    -fx-prompt-text-fill: -fx-color-text2;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-text1;
+    -fx-background-color: -fx-color-background3;
+
+}
+
+.header Button, .header TextField {
+    -fx-max-height: infinity;
+}
+/*****************************/
+/* CONTENT                   */
+/*****************************/
+.content {
+    -fx-padding: 30;
+    -fx-background-color: -fx-color-background3;
+}
+/*****************************/
+/* BUTTONS                   */
+/*****************************/
+.btn, .btn FontAwesomeIconView {
+    -fx-text-fill: -fx-color-buttontext;
+    -fx-fill: -fx-color-buttontext;
+    -fx-font-weight: bold;
+    -fx-background-color: -fx-color-btn-primary;
+    -fx-background-radius: 5;
+}
+
+.btn-green, .btn-green FontAwesomeIconView {
+    -fx-text-fill: -fx-color-buttontext;
+    -fx-fill: -fx-color-buttontext;
+    -fx-font-weight: bold;
+    -fx-background-color: -fx-color-btn-green;
+    -fx-background-radius: 5;
+
+}
+/*****************************/
+/* TABLE                     */
+/*****************************/
+.table-view,
+.table-view .column-header,
+.table-view .column-header-background,
+.table-view .column-header-background .filler,
+.table-view .corner {
+    -fx-background-color: -fx-color-background2;
+}
+
+.table-view {
+    -fx-padding: 0  10 0 10;
+}
+
+.table-view .column-header-background{
+    -fx-padding: 5;
+    -fx-text-background-color: -fx-color-text2;
+    -fx-font-size: 16;
+    -fx-border-color: -fx-color-text2;
+    -fx-border-width: 0 0 2 0;
+}
+
+.table-view .table-row-cell, .table-view .table-cell {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-text-background-color: -fx-color-text2;
+    -fx-cell-size: 50;
+    -fx-padding: 0 5 0 5;
+    -fx-alignment: center-left;
+}
+
+.table-view .table-row-cell:filled:hover .table-cell, .table-view .column-header:hover{
+    -fx-background-color: -fx-color-background-hover;
+    -fx-text-background-color: -fx-color-text1;
+    -fx-text-fill: -fx-color-text1;
+    -fx-font-weight: bold;
 }
 
 
-.button {
-    -fx-background-color: #c27f00;
-    -fx-text-fill: white;
+.table-view .scroll-bar {
+    -fx-background-color: transparent;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.modal {
+    -fx-background-color: green;
+    -fx-min-height: 200;
+    -fx-min-width: 400;
+}
+/*****************************/
+/* ELEMENTS                  */
+/*****************************/
+.h1 {
+    -fx-font-size: 28;
+    -fx-text-fill: -fx-color-text1;
     -fx-font-weight: bold;
-    -fx-border: black;
+}
+
+.h2 {
+    -fx-font-size: 16;
+    -fx-text-fill: -fx-color-text1;
+    -fx-font-weight: bold;
+}
+
+.p {
+    -fx-text-fill: -fx-color-text1;
 }

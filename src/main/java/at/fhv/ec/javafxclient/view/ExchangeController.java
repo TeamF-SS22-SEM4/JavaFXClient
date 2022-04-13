@@ -12,6 +12,7 @@ import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class SearchSaleController {
+public class ExchangeController {
     private static List<SaleItemEntry> refundedSaleItems;
 
     @FXML
@@ -123,6 +124,10 @@ public class SearchSaleController {
         refundCarrierColumn.setCellFactory(spinnerCellFactory);
     }
 
+    public void onHomeButtonClicked() throws IOException {
+        SceneManager.getInstance().switchView("exchange");
+    }
+
     @FXML
     protected void onSearchButtonClicked() {
         onClearButtonClicked();
@@ -176,15 +181,6 @@ public class SearchSaleController {
     }
 
     @FXML
-    protected void onBackButtonClicked() {
-        try {
-            SceneManager.getInstance().back();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
     protected void onRefundButtonClicked() {
         try {
             RefundSaleService refundSaleService = RMIClient.getRmiClient().getRmiFactory().getRefundedSaleService();
@@ -221,4 +217,6 @@ public class SearchSaleController {
         alert.getButtonTypes().setAll(confirmButton);
         alert.show();
     }
+
+
 }

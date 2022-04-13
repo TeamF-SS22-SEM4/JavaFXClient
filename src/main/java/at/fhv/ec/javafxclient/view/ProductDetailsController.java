@@ -10,15 +10,18 @@ import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-public class ProductsDetailsController {
+public class ProductDetailsController {
     public static UUID productId;
     private static ProductDetailsDTO productDetails;
 
@@ -87,23 +90,14 @@ public class ProductsDetailsController {
         fillSoundCarrierTable();
     }
 
-    @FXML
-    protected void onShoppingCartButtonClicked() {
-        try {
-            SceneManager.getInstance().switchView("product-details-view", "shopping-cart-view");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     @FXML
-    protected void onBackButtonClicked() {
-        try {
-            SceneManager.getInstance().back();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void onShoppingCartButtonClicked() throws IOException {
+        SceneManager.getInstance().switchView("shoppingcart");
     }
+
+
 
     private void createSoundCarrierTable() {
         // Initialize Table Columns
@@ -239,4 +233,10 @@ public class ProductsDetailsController {
         alert.getButtonTypes().setAll(confirmButton);
         alert.show();
     }
+
+    @FXML
+    public void onBackButtonClicked() throws IOException {
+        SceneManager.getInstance().switchView("shop");
+    }
+
 }

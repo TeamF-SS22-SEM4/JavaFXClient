@@ -11,6 +11,7 @@ import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
@@ -149,20 +150,12 @@ public class CheckoutController {
     @FXML
     protected void onSelectCustomerButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("checkout-view", "customer-search");
+            SceneManager.getInstance().switchView("customer-search");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @FXML
-    protected void onBackButtonClicked() {
-        try {
-            SceneManager.getInstance().back();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void purchase(String selectedPaymentMethod, UUID customerId) {
         List<ShoppingCartProductDTO> shoppingCartProducts = new ArrayList<>();
@@ -190,7 +183,7 @@ public class CheckoutController {
 
             shoppingCart.clear();
             showPopup("Successful", "Invoice No.: " + invoiceNumber + "\nBill is printed...", Alert.AlertType.CONFIRMATION);
-            SceneManager.getInstance().switchView("checkout-view", "product-search-view");
+            SceneManager.getInstance().switchView("product-search-view");
         } catch (CarrierNotAvailableException cne) {
             showPopup("Error", "The selected amount is not available.", Alert.AlertType.ERROR);
             cne.printStackTrace();
@@ -209,5 +202,8 @@ public class CheckoutController {
         ButtonType confirmButton = new ButtonType("Ok");
         alert.getButtonTypes().setAll(confirmButton);
         alert.show();
+    }
+
+    public void onBackButtonClicked(ActionEvent actionEvent) {
     }
 }
