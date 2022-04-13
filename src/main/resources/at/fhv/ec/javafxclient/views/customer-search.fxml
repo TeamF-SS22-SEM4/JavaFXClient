@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.SearchCustomerController">
+   <children>
+      <VBox maxWidth="300.0" minWidth="200.0" styleClass="sidebar" HBox.hgrow="ALWAYS">
+         <children>
+            <Pane fx:id="sidebar" maxHeight="100.0" minHeight="100.0" />
+            <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" styleClass="btn" text="Shop" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" text="Customers" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button maxHeight="40.0" maxWidth="1.7976931348623157E308" minHeight="40.0" mnemonicParsing="false" text="Exchange">
+               <VBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+      <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
+         <children>
+            <HBox alignment="CENTER_LEFT" maxHeight="100.0" minHeight="50.0" spacing="20.0" styleClass="header" VBox.vgrow="ALWAYS">
+               <children>
+                  <TextField onAction="#onSearchButtonClicked" fx:id="searchTextField" maxHeight="30.0" maxWidth="300.0" minHeight="30.0" minWidth="150.0" style="-fx-background-color: #ffffff;" HBox.hgrow="ALWAYS" />
+                  <Button onAction="#onSearchButtonClicked" maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" text="Search" HBox.hgrow="ALWAYS" />
+                  <Button onAction="#onClearButtonClicked" maxHeight="30.0" maxWidth="75.0" minHeight="30.0" minWidth="50.0" mnemonicParsing="false" text="Clear" HBox.hgrow="ALWAYS" />
+                  <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <Button minWidth="0.0" mnemonicParsing="false" onAction="#onBackButtonClicked" text="Back" />
+               </children>
+            </HBox>
+            <TableView fx:id="customerTable" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="firstNameColumn" maxWidth="-1.0" minWidth="300.0" prefWidth="-1.0" text="First Name">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="givenName" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="lastNameColumn" maxWidth="-1.0" minWidth="200.0" prefWidth="-1.0" text="Last Name">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="familyName" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="streetColumn" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Street">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="street" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="houseNumberColumn" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="House Number">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="houseNumber" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="postalColumn" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Postal Code">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="postalCode" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="cityColumn" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="City">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="city" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="countryColumn" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Country">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="country" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="eMailColumn" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="E-Mail">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="email" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="phoneNumberColumn" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Phone Number">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="phoneNumber" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="mobileNumberColumn" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Mobile Number">
+                     <cellValueFactory>
+                        <PropertyValueFactory property="mobileNumber" />
+                     </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="addToSaleColumn" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Action">
+                  </TableColumn>
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</HBox>

@@ -1,10 +1,13 @@
 package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
+import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
-import at.fhv.ec.javafxclient.view.forms.ShoppingCartEntry;
+import at.fhv.ec.javafxclient.view.utils.ShoppingCartEntry;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.*;
+import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
+import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -62,10 +65,12 @@ public class ProductsDetailsController {
     public void initialize() {
         try {
             productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
-            productDetails = productSearchService.productById(productId);
+            productDetails = productSearchService.productById(SessionManager.getInstance().getSessionId(), productId);
         } catch (RemoteException e) {
             e.printStackTrace();
             showPopup("Error", "Error connecting to the server.", Alert.AlertType.ERROR);
+        } catch (SessionExpired | NoPermissionForOperation e) {
+            e.printStackTrace();
         }
 
         nameLabel.setText(productDetails.getName());
@@ -85,7 +90,7 @@ public class ProductsDetailsController {
     @FXML
     protected void onShoppingCartButtonClicked() {
         try {
-            SceneManager.getInstance().switchView("views/product-details-view.fxml", "views/shopping-cart-view.fxml");
+            SceneManager.getInstance().switchView("product-details-view", "shopping-cart-view");
         } catch (IOException e) {
             e.printStackTrace();
         }

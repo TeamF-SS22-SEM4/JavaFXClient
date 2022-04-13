@@ -1,12 +1,15 @@
 package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
+import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
-import at.fhv.ec.javafxclient.view.forms.SaleItemEntry;
+import at.fhv.ec.javafxclient.view.utils.SaleItemEntry;
 import at.fhv.ss22.ea.f.communication.api.RefundSaleService;
 import at.fhv.ss22.ea.f.communication.api.SaleSearchService;
 import at.fhv.ss22.ea.f.communication.dto.RefundedSaleItemDTO;
 import at.fhv.ss22.ea.f.communication.dto.SaleDTO;
+import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
+import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -121,15 +124,12 @@ public class SearchSaleController {
     }
 
     @FXML
-    public void onEnter() {
-        onSearchButtonClicked();
-    }
-
-    @FXML
     protected void onSearchButtonClicked() {
+        onClearButtonClicked();
+
         try {
             SaleSearchService saleSearchService = RMIClient.getRmiClient().getRmiFactory().getSaleSearchService();
-            SaleDTO sale = saleSearchService.saleByInvoiceNumber(searchTextField.getText());
+            SaleDTO sale = saleSearchService.saleByInvoiceNumber(SessionManager.getInstance().getSessionId(), searchTextField.getText());
 
             refundedSaleItems = new ArrayList<>();
             sale.getSaleItems().forEach(saleItem -> {
@@ -159,6 +159,8 @@ public class SearchSaleController {
             showPopup("Connection Error", "A connection error occured.", Alert.AlertType.ERROR);
         } catch (NoSuchElementException ne) {
             showPopup("Sale not found", "Sale " + searchTextField.getText() + " not found", Alert.AlertType.ERROR);
+        } catch (SessionExpired | NoPermissionForOperation e) {
+            e.printStackTrace();
         }
     }
 
@@ -199,14 +201,14 @@ public class SearchSaleController {
             });
 
             if(refundedSaleItemDTOs.size() > 0) {
-                refundSaleService.refundSale(invoiceNumberLabel.getText(), refundedSaleItemDTOs);
+                refundSaleService.refundSale(SessionManager.getInstance().getSessionId(), invoiceNumberLabel.getText(), refundedSaleItemDTOs);
                 onClearButtonClicked();
                 onSearchButtonClicked();
                 showPopup("Sale Items refunded", "Refund successful", Alert.AlertType.INFORMATION);
             } else {
                 showPopup("Refund not possible", "You have to select at least one item to refund", Alert.AlertType.ERROR);
             }
-        } catch (RemoteException e) {
+        } catch (RemoteException | NoPermissionForOperation | SessionExpired e) {
             e.printStackTrace();
         }
     }

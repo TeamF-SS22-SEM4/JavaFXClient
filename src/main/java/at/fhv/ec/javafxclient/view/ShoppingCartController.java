@@ -1,7 +1,7 @@
 package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
-import at.fhv.ec.javafxclient.view.forms.ShoppingCartEntry;
+import at.fhv.ec.javafxclient.view.utils.ShoppingCartEntry;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.io.IOException;
-import java.rmi.server.ServerNotActiveException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +68,7 @@ public class ShoppingCartController {
     protected void onCheckoutButtonClicked() {
         if(shoppingCart.size() > 0) {
             try {
-                SceneManager.getInstance().switchView("views/checkout-view.fxml","views/checkout-view.fxml");
+                SceneManager.getInstance().switchView("checkout-view","checkout-view");
             } catch (IOException e) {
                 e.printStackTrace();
             }
