@@ -6,6 +6,7 @@ import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.AuthenticationService;
 import at.fhv.ss22.ea.f.communication.dto.LoginResultDTO;
 import at.fhv.ss22.ea.f.communication.exception.AuthenticationFailed;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -30,6 +31,11 @@ public class LoginController implements Initializable {
     @FXML
     private Label infoText;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        usernameTextField.setText("test");
+        passwordTextField.setText("test");
+    }
     @FXML
     private void onLoginButtonClicked() {
         String username = usernameTextField.getText();
@@ -45,35 +51,38 @@ public class LoginController implements Initializable {
             infoText.setTextFill(Color.web("#ffffff"));
             infoText.setText("Loading ...");
 
-            try {
-                authenticationService = RMIClient.getRmiClient().getRmiFactory().getAuthenticationService();
-                //LoginResultDTO loginResultDTO = authenticationService.login(username, password);
-                // Backdoor User
-                LoginResultDTO loginResultDTO = authenticationService.login("tf-test", "PssWrd");
-                SessionManager.getInstance().login(loginResultDTO.getSessionId(), loginResultDTO.getRoles());
-                SceneManager.getInstance().switchView("shop");
+            Platform.runLater(() -> {
 
-            } catch (RemoteException e) {
+                try {
 
-                infoText.setTextFill(Color.web("#ff0000"));
-                infoText.setText("Connection to the server could not be established!");
+                    authenticationService = RMIClient.getRmiClient().getRmiFactory().getAuthenticationService();
 
-            } catch (AuthenticationFailed e) {
+                    // backdoor
+                    LoginResultDTO loginResultDTO = authenticationService.login("tf-test", "PssWrd");
 
-                infoText.setTextFill(Color.web("#ff0000"));
-                infoText.setText("Invalid username or password!");
+                    // regular
+                    //LoginResultDTO loginResultDTO = authenticationService.login(username, password);
 
-            } catch (IOException e) {
+                    SessionManager.getInstance().login(loginResultDTO.getSessionId(), loginResultDTO.getRoles());
+                    SceneManager.getInstance().switchView("shop");
 
-                e.printStackTrace();
-            }
+                } catch (RemoteException e) {
+
+                    infoText.setTextFill(Color.web("#ff0000"));
+                    infoText.setText("Connection to the server could not be established!");
+
+                } catch (AuthenticationFailed e) {
+
+                    infoText.setTextFill(Color.web("#ff0000"));
+                    infoText.setText("Invalid username or password!");
+
+                } catch (IOException e) {
+
+                    e.printStackTrace();
+
+                }
+            });
+
         }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        usernameTextField.setText("test");
-        passwordTextField.setText("test");
-
     }
 }
