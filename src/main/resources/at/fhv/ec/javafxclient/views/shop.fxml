@@ -69,14 +69,11 @@
                               <PropertyValueFactory property="artistName" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn fx:id="genreColumn" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="-1.0" text="Genre">
-                  </TableColumn>
                         <TableColumn fx:id="releaseYearColumn" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" style="-fx-alignment: center;" text="Release">
                            <cellValueFactory>
                               <PropertyValueFactory property="releaseYear" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn fx:id="priceColumn" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0" style="-fx-alignment: center;" text="Price" />
                         <TableColumn fx:id="detailsColumn" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" style="-fx-alignment: center;" />
                         <TableColumn fx:id="addToCartColumn" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" style="-fx-alignment: center;" />
                      </columns>

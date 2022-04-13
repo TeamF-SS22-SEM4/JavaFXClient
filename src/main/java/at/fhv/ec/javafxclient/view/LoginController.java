@@ -22,18 +22,20 @@ public class LoginController implements Initializable {
     private AuthenticationService authenticationService;
 
     @FXML
-    private TextField username;
+    private TextField usernameTextField;
 
     @FXML
-    private PasswordField password;
+    private PasswordField passwordTextField;
 
     @FXML
     private Label infoText;
 
     @FXML
     private void onLoginButtonClicked() {
+        String username = usernameTextField.getText();
+        String password = passwordTextField.getText();
 
-        if (username.getText().isEmpty() || password.getText().isEmpty()) {
+        if (username.isEmpty() || password.isEmpty()) {
 
             infoText.setTextFill(Color.web("#ff0000"));
             infoText.setText("Empty username or password!");
@@ -44,8 +46,9 @@ public class LoginController implements Initializable {
             infoText.setText("Loading ...");
 
             try {
-
                 authenticationService = RMIClient.getRmiClient().getRmiFactory().getAuthenticationService();
+                //LoginResultDTO loginResultDTO = authenticationService.login(username, password);
+                // Backdoor User
                 LoginResultDTO loginResultDTO = authenticationService.login("tf-test", "PssWrd");
                 SessionManager.getInstance().login(loginResultDTO.getSessionId(), loginResultDTO.getRoles());
                 SceneManager.getInstance().switchView("shop");
@@ -69,8 +72,8 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        username.setText("test");
-        password.setText("test");
+        usernameTextField.setText("test");
+        passwordTextField.setText("test");
 
     }
 }

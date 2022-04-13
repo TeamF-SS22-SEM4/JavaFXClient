@@ -30,10 +30,26 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ShopController implements Initializable{
+    public HBox ct;
+    private ProductSearchService productSearchService;
+    private static List<ProductOverviewDTO> products = new ArrayList<>();
 
     private TextAnimator textAnimator;
 
+    @FXML
+    private TextField searchTextField;
 
+    @FXML
+    private TableView<ProductOverviewDTO> productTable;
+
+    @FXML
+    private TableColumn<ProductOverviewDTO, String> nameColumn;
+
+    @FXML
+    private TableColumn<ProductOverviewDTO, Button> detailsColumn;
+
+    @FXML
+    private TableColumn<ProductOverviewDTO, Button> addToCartColumn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -64,41 +80,6 @@ public class ShopController implements Initializable{
         fillProductTable();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public HBox ct;
-    // TODO: Use something like dependency injection in springboot
-    private ProductSearchService productSearchService;
-    private static List<ProductOverviewDTO> products = new ArrayList<>();
-
-    @FXML
-    private TextField searchTextField;
-
-    @FXML
-    private TableView<ProductOverviewDTO> productTable;
-
-    @FXML
-    private TableColumn<ProductOverviewDTO, String> nameColumn;
-
-    @FXML
-    private TableColumn<ProductOverviewDTO, Button> detailsColumn;
-
-    @FXML
-    private TableColumn<ProductOverviewDTO, Button> addToCartColumn;
-
-
     @FXML
     private void onShoppingCartButtonClicked() throws IOException {
         SceneManager.getInstance().switchView("shoppingcart");
@@ -109,7 +90,7 @@ public class ShopController implements Initializable{
         try {
             String searchTerm = searchTextField.getText();
             products = productSearchService.fullTextSearch(SessionManager.getInstance().getSessionId(), searchTerm);
-            searchTextField.setPromptText(searchTerm);
+            searchTextField.setText(searchTerm);
             searchTextField.selectAll();
             fillProductTable();
 
@@ -137,8 +118,6 @@ public class ShopController implements Initializable{
         products.clear();
         searchTextField.clear();
     }
-
-
 
     private void createProductTable() {
         // Initialize Table Columns
@@ -209,6 +188,9 @@ public class ShopController implements Initializable{
                 };
             }
         });
+
+        // TODO: Remove after implementing popup
+        addToCartColumn.setVisible(false);
     }
 
     private void fillProductTable() {
