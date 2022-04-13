@@ -55,15 +55,14 @@ public class ShoppingCartController {
     protected void onClearCartButtonClicked() {
         shoppingCartTable.getItems().clear();
         shoppingCart.clear();
+        updateTotalPrice();
     }
-
-
 
     @FXML
     protected void onCheckoutButtonClicked() {
         if(shoppingCart.size() > 0) {
             try {
-                SceneManager.getInstance().switchView("checkout-view");
+                SceneManager.getInstance().switchView("checkout");
             } catch (IOException e) {
                 e.printStackTrace();
             }

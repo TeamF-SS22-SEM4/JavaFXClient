@@ -93,7 +93,6 @@ public class ShopController implements Initializable{
             searchTextField.setText(searchTerm);
             searchTextField.selectAll();
             fillProductTable();
-
         } catch (RemoteException | NoPermissionForOperation | SessionExpired e) {
             e.printStackTrace();
         }

@@ -55,7 +55,7 @@ public class CustomerController {
 
 
         // Show add to sale button only when user comes from checkout view
-//        if(SceneManager.getInstance().getLastView().equals("checkout-view")) {
+        if(ShoppingCartController.shoppingCart.size() > 0) {
             addToSaleColumn.setCellFactory(new Callback<>() {
                 @Override
                 public TableCell<CustomerDTO, Button> call(TableColumn<CustomerDTO, Button> param) {
@@ -72,7 +72,7 @@ public class CustomerController {
                                 addToSaleButton.setOnAction(event -> {
                                     CheckoutController.customer = getTableView().getItems().get(getIndex());
                                     try {
-                                        SceneManager.getInstance().switchView("checkout-view");
+                                        SceneManager.getInstance().switchView("checkout");
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -87,7 +87,7 @@ public class CustomerController {
 
             addToSaleColumn.setVisible(true);
         }
-//    }
+    }
 
     @FXML
     protected void onSearchButtonClicked() {
@@ -100,21 +100,9 @@ public class CustomerController {
             customerTable.setItems(customerTableData);
             customerTable.getSortOrder().add(lastNameColumn);
             customerTable.sort();
-        } catch (RemoteException | NoPermissionForOperation e) {
-            e.printStackTrace();
-        } catch (SessionExpired e) {
+        } catch (RemoteException | NoPermissionForOperation | SessionExpired e) {
             e.printStackTrace();
         }
-    }
-
-
-    @FXML
-    protected void onClearButtonClicked() {
-        customerTable.getItems().clear();
-        searchTextField.clear();
-    }
-
-    public void onBackButtonClicked(ActionEvent actionEvent) {
     }
 
     public void onHomeButtonClicked() throws IOException {
