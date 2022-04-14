@@ -119,20 +119,7 @@ public class CheckoutController {
         creditCardRadioButton.setToggleGroup(paymentMethods);
         invoiceRadioButton.setToggleGroup(paymentMethods);
 
-        // Add customer information
-        if(customer != null) {
-            customerNameLabel.setText(customer.getGivenName() + " " + customer.getFamilyName());
-            customerAddressLabel.setText(customer.getStreet() + " " + customer.getHouseNumber() +
-                    ", " + customer.getPostalCode() + " " + customer.getCity());
-            customerMailAndPhoneLabel.setText("E-Mail: " + customer.getEmail() + "\nPhonenumber: " + customer.getPhoneNumber());
-
-            customerAddressLabel.setVisible(true);
-            customerMailAndPhoneLabel.setVisible(true);
-        } else {
-            customerNameLabel.setText("No customer selected");
-            customerAddressLabel.setVisible(false);
-            customerMailAndPhoneLabel.setVisible(false);
-        }
+        addCustomer();
     }
 
     @FXML
@@ -154,6 +141,12 @@ public class CheckoutController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    protected void onRemoveCustomerButtonClicked() {
+        customer = null;
+        addCustomer();
     }
 
     private void purchase(String selectedPaymentMethod, UUID customerId) {
@@ -204,5 +197,22 @@ public class CheckoutController {
     }
 
     public void onBackButtonClicked(ActionEvent actionEvent) {
+    }
+
+    private void addCustomer() {
+        // Add customer information
+        if(customer != null) {
+            customerNameLabel.setText(customer.getGivenName() + " " + customer.getFamilyName());
+            customerAddressLabel.setText(customer.getStreet() + " " + customer.getHouseNumber() +
+                    ", " + customer.getPostalCode() + " " + customer.getCity());
+            customerMailAndPhoneLabel.setText("E-Mail: " + customer.getEmail() + "\nPhonenumber: " + customer.getPhoneNumber());
+
+            customerAddressLabel.setVisible(true);
+            customerMailAndPhoneLabel.setVisible(true);
+        } else {
+            customerNameLabel.setText("No customer selected");
+            customerAddressLabel.setVisible(false);
+            customerMailAndPhoneLabel.setVisible(false);
+        }
     }
 }
