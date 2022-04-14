@@ -44,6 +44,9 @@ public class CheckoutController {
     private Label totalPriceLabel;
 
     @FXML
+    private Button removeCustomerButton;
+
+    @FXML
     private RadioButton cashRadioButton;
 
     @FXML
@@ -209,10 +212,12 @@ public class CheckoutController {
 
             customerAddressLabel.setVisible(true);
             customerMailAndPhoneLabel.setVisible(true);
+            removeCustomerButton.setVisible(true);
         } else {
             customerNameLabel.setText("No customer selected");
             customerAddressLabel.setVisible(false);
             customerMailAndPhoneLabel.setVisible(false);
+            removeCustomerButton.setVisible(false);
         }
     }
 }
