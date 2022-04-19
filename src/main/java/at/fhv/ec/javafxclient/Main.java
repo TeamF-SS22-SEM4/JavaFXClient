@@ -7,6 +7,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+//TODO: Try and catch!!!
 public class Main extends javafx.application.Application {
 
     private static Stage window;

@@ -32,7 +32,7 @@
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="USERS" size="20" />
                </graphic></Button>
-            <Button alignment="BASELINE_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#onMessageButtonClicked" styleClass="btn" text="Messages" VBox.vgrow="ALWAYS">
+            <Button fx:id="messageButton" alignment="BASELINE_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#onMessageButtonClicked" styleClass="btn" text="Messages" VBox.vgrow="ALWAYS">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="ENVELOPE" size="20" />
                </graphic></Button>
