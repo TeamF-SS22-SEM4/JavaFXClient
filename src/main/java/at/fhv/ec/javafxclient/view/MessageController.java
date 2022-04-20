@@ -32,14 +32,15 @@ public class MessageController {
         try {
             MessagingService messagingService = RMIClient.getRmiClient().getRmiFactory().getMessagingService();
 
+
             MessageDTO message = MessageDTO.builder()
                     .withTitle(titleTextField.getText())
                     .withContent(contentTextArea.getText())
                     .withTopicName(topicTextField.getText())
                     .build();
 
-            //messagingService.publish(SessionManager.getInstance().getSessionId(), message);
-        } catch (RemoteException e) {
+            messagingService.publish(SessionManager.getInstance().getSessionId(), message);
+        } catch (RemoteException | SessionExpired | NoPermissionForOperation e) {
             throw new RuntimeException(e);
         }
     }
