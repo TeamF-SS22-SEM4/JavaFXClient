@@ -169,7 +169,6 @@ public class ShopController implements Initializable{
                     Dialog d = new Dialog();
                     d.initStyle(StageStyle.UNDECORATED);
                     ct.setEffect(colorAdjust);
-                    d.getDialogPane().getStylesheets().add(Main.returnStylesheet());
                     d.getDialogPane().getStyleClass().add("modal");
                     d.show();
                     ButtonType b = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
