@@ -4,10 +4,10 @@
 * {
     -fx-color-primary: #c27f00;
 
-    -fx-color-background1: #2b2b2b;
-    -fx-color-background2: #383838;
-    -fx-color-background3: #4b4b4b;
-    -fx-color-background4: #7a7a7a;
+    -fx-color-background1: #212121;
+    -fx-color-background2: #424242;
+    -fx-color-background3: #616161;
+    -fx-color-background4: #757575;
     -fx-color-background-hover: -fx-color-background4;
 
     -fx-color-text1: rgba(255, 255, 255, 1);
@@ -46,7 +46,11 @@
     -fx-prompt-text-fill: -fx-color-text2;
     -fx-border-color: -fx-color-text2;
     -fx-border-width: 0 0 2 0;
+    -fx-min-width: 200;
+    -fx-max-width: 200;
 }
+
+
 
 .login-textfield:focused {
     -fx-text-fill: -fx-color-text1;
@@ -152,6 +156,7 @@
     -fx-font-weight: bold;
     -fx-background-color: -fx-color-btn-primary;
     -fx-background-radius: 5;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
 }
 
 .btn-green, .btn-green FontAwesomeIconView {
@@ -160,7 +165,23 @@
     -fx-font-weight: bold;
     -fx-background-color: -fx-color-btn-green;
     -fx-background-radius: 5;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
 
+}
+
+.btn-toggle, .btn-toggle FontAwesomeIconView {
+
+    -fx-background-color: -fx-color-btn-primary;
+    -fx-background-radius: 0;
+    -fx-opacity: 0.7;
+    -fx-pref-width: 50;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+
+}
+
+.btn-toggle:selected, .btn-toggle:hover,
+.btn-toggle:selected FontAwesomeIconView, .btn-toggle:hover FontAwesomeIconView {
+    -fx-opacity: 1;
 }
 /*****************************/
 /* TABLE                     */
@@ -207,6 +228,24 @@
 }
 
 
+
+
+
+
+.choice-box .context-menu { -fx-background-color: -fx-color-background3; }
+
+
+.choice-box .menu-item:focused { -fx-background-color: -fx-color-primary; }
+.choice-box .menu-item > .label { -fx-text-fill: -fx-color-text2; }
+.choice-box .menu-item:focused > .label { -fx-text-fill: -fx-color-text1; }
+.choice-box {
+    -fx-background-color: transparent;
+    -fx-mark-color: -fx-color-text2;
+}
+
+.choice-box > .label { -fx-text-fill: -fx-color-text2; }
+
+.choice-box:focused > .label { -fx-text-fill: -fx-color-text1; }
 
 
 

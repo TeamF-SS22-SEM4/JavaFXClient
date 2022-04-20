@@ -13,18 +13,7 @@ public class RMIClient {
     private static final String PROTOCOL = "rmi://";
     private static final String STUB = "/RMIFactory";
 
-    private static final String HOST = "10.0.40.170"; // Server
-    private static final int PORT = 12345;            // Server
-//    private static final String HOST = "localhost";     // LocalDevEnv
-//    private static final int PORT = 1099;               // LocalDevEnv
-
-    private RMIClient() {
-        try {
-            rmiFactory = (RMIFactory) Naming.lookup(PROTOCOL + HOST + ":" + PORT + STUB);
-        } catch (NotBoundException | MalformedURLException | RemoteException e) {
-            e.printStackTrace();
-        }
-    }
+    private RMIClient() {}
 
     public static RMIClient getRmiClient() {
         if(rmiClient == null) {
@@ -33,7 +22,12 @@ public class RMIClient {
         return rmiClient;
     }
 
+    public void connect(String HOST, String PORT) throws MalformedURLException, NotBoundException, RemoteException {
+        rmiFactory = (RMIFactory) Naming.lookup(PROTOCOL + HOST + ":" + PORT + STUB);
+    }
+
     public RMIFactory getRmiFactory() {
         return rmiFactory;
     }
+
 }

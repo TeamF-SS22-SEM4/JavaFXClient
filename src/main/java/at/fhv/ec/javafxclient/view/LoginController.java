@@ -9,16 +9,27 @@ import at.fhv.ss22.ea.f.communication.exception.AuthenticationFailed;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
+
+    private static final String HOST_REMOTE = "10.0.40.170";
+    private static final String PORT_REMOTE = "12345";
+    private static final String HOST_LOCAL = "localhost";
+    private static final String PORT_LOCAL = "1099";
+
+    private static final String REMOTE = "remote (port:12345)";
+    private static final String LOCAL = "local (port:1099)";
+
+
+    @FXML
+    private ChoiceBox connectionType;
 
     private AuthenticationService authenticationService;
 
@@ -35,7 +46,11 @@ public class LoginController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 //        usernameTextField.setText("test");
 //        passwordTextField.setText("test");
+
+        connectionType.getItems().addAll(REMOTE, LOCAL);
+        connectionType.setValue(REMOTE);
     }
+
     @FXML
     private void onLoginButtonClicked() {
         String username = usernameTextField.getText();
@@ -55,6 +70,14 @@ public class LoginController implements Initializable {
 
                 try {
 
+                    if (connectionType.getValue().toString().equals("local (port:1099)")) {
+                        RMIClient.getRmiClient().connect(HOST_LOCAL, PORT_LOCAL);
+                        System.out.println("LOCAL");
+                    } else {
+                        RMIClient.getRmiClient().connect(HOST_REMOTE, PORT_REMOTE);
+                        System.out.println("REMOTE");
+                    }
+
                     authenticationService = RMIClient.getRmiClient().getRmiFactory().getAuthenticationService();
 
                     // backdoor
@@ -66,7 +89,7 @@ public class LoginController implements Initializable {
                     SessionManager.getInstance().login(loginResultDTO.getSessionId(), loginResultDTO.getRoles());
                     SceneManager.getInstance().switchView("shop");
 
-                } catch (RemoteException e) {
+                } catch (RemoteException | NotBoundException e) {
 
                     infoText.setTextFill(Color.web("#ff0000"));
                     infoText.setText("Connection to the server could not be established!");
