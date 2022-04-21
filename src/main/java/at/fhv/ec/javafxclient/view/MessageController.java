@@ -3,19 +3,22 @@ package at.fhv.ec.javafxclient.view;
 import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.MessagingService;
-import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
-import at.fhv.ss22.ea.f.communication.api.RMIFactory;
 import at.fhv.ss22.ea.f.communication.dto.MessageDTO;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
 import java.rmi.RemoteException;
 
 public class MessageController {
+    public static String topicName;
 
+    @FXML
+    private Label topicNameLabel;
     @FXML
     private TextField titleTextField;
 
@@ -23,25 +26,44 @@ public class MessageController {
     private TextArea contentTextArea;
 
     @FXML
-    private TextField topicTextField;
+    private Label statusLabel;
+
+    @FXML
+    private void initialize() {
+        topicNameLabel.setText(topicName);
+        statusLabel.setVisible(false);
+    }
 
     @FXML
     protected void onSendButtonClicked() {
-        System.out.println("On send button clicked");
+        statusLabel.setVisible(false);
 
-        try {
-            MessagingService messagingService = RMIClient.getRmiClient().getRmiFactory().getMessagingService();
+        if((!titleTextField.getText().isEmpty()) && (!contentTextArea.getText().isEmpty())) {
+            System.out.println("On send button clicked");
+
+            try {
+                MessagingService messagingService = RMIClient.getRmiClient().getRmiFactory().getMessagingService();
 
 
-            MessageDTO message = MessageDTO.builder()
-                    .withTitle(titleTextField.getText())
-                    .withContent(contentTextArea.getText())
-                    .withTopicName(topicTextField.getText())
-                    .build();
+                MessageDTO message = MessageDTO.builder()
+                        .withTitle(titleTextField.getText())
+                        .withContent(contentTextArea.getText())
+                        .withTopicName(topicName)
+                        .build();
 
-            messagingService.publish(SessionManager.getInstance().getSessionId(), message);
-        } catch (RemoteException | SessionExpired | NoPermissionForOperation e) {
-            throw new RuntimeException(e);
+                messagingService.publish(SessionManager.getInstance().getSessionId(), message);
+
+                titleTextField.clear();
+                contentTextArea.clear();
+
+                statusLabel.setText("Sent message successfully to topic " + topicName);
+                statusLabel.setVisible(true);
+            } catch (RemoteException | SessionExpired | NoPermissionForOperation e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            statusLabel.setText("Title and message can't be empty");
+            statusLabel.setVisible(true);
         }
     }
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<HBox fx:id="ct" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.TopicController">
+   <children>
+      <fx:include source="sidebar.fxml" />
+      <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
+         <children>
+            <HBox alignment="CENTER_LEFT" styleClass="header" VBox.vgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER" />
+                  <Pane HBox.hgrow="ALWAYS">
+                     <children>
+                        <Text fill="WHITE" layoutX="328.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Topics">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Text>
+                     </children></Pane>
+               </children>
+            </HBox>
+            <VBox styleClass="content" VBox.vgrow="ALWAYS">
+               <children>
+                  <ListView fx:id="topicListView" prefHeight="498.0" prefWidth="867.0" />
+               </children></VBox>
+         </children>
+      </VBox>
+   </children>
+</HBox>

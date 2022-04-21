@@ -29,7 +29,7 @@ public class LoginController implements Initializable {
 
 
     @FXML
-    private ChoiceBox connectionType;
+    private ChoiceBox<String> connectionType;
 
     private AuthenticationService authenticationService;
 
@@ -44,9 +44,6 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        usernameTextField.setText("test");
-//        passwordTextField.setText("test");
-
         connectionType.getItems().addAll(REMOTE, LOCAL);
         connectionType.setValue(REMOTE);
     }
@@ -70,42 +67,33 @@ public class LoginController implements Initializable {
 
                 try {
 
-                    if (connectionType.getValue().toString().equals("local (port:1099)")) {
+                    if (connectionType.getValue().equals("local (port:1099)")) {
                         RMIClient.getRmiClient().connect(HOST_LOCAL, PORT_LOCAL);
-                        System.out.println("LOCAL");
                     } else {
                         RMIClient.getRmiClient().connect(HOST_REMOTE, PORT_REMOTE);
-                        System.out.println("REMOTE");
                     }
 
                     authenticationService = RMIClient.getRmiClient().getRmiFactory().getAuthenticationService();
 
                     // backdoor
-//                    LoginResultDTO loginResultDTO = authenticationService.login("tf-test", "PssWrd");
+                    // LoginResultDTO loginResultDTO = authenticationService.login("tf-test", "PssWrd");
 
                     // regular
                     LoginResultDTO loginResultDTO = authenticationService.login(username, password);
 
                     SessionManager.getInstance().login(loginResultDTO.getSessionId(), loginResultDTO.getRoles());
                     SceneManager.getInstance().switchView("shop");
-
                 } catch (RemoteException | NotBoundException e) {
-
                     infoText.setTextFill(Color.web("#ff0000"));
                     infoText.setText("Connection to the server could not be established!");
-
+                    e.printStackTrace();
                 } catch (AuthenticationFailed e) {
-
                     infoText.setTextFill(Color.web("#ff0000"));
                     infoText.setText("Invalid username or password!");
-
                 } catch (IOException e) {
-
                     e.printStackTrace();
-
                 }
             });
-
         }
     }
 }

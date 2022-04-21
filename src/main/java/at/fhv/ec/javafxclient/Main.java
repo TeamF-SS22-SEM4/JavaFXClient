@@ -7,7 +7,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-//TODO: Try and catch!!!
+// TODO: Try and catch!!!
+// TODO: Use consistent initialize
+// TODO: Remove Popups and use statusLabels
 public class Main extends javafx.application.Application {
 
     private static final String STYLESHEET_DEFAULT = "style.css";
@@ -34,7 +36,6 @@ public class Main extends javafx.application.Application {
         window.getIcons().add(new Image("images/icon.png"));
         window.setTitle("Tomify");
         window.setScene(scene);
-        window.setMaximized(true);
         window.show();
     }
 

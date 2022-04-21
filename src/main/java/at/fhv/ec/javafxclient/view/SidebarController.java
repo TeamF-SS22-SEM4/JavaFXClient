@@ -49,7 +49,7 @@ public class SidebarController implements Initializable {
 
     @FXML
     private void onMessageButtonClicked() throws IOException {
-        SceneManager.getInstance().switchView("send-message");
+        SceneManager.getInstance().switchView("topic-list");
     }
 
     @FXML
