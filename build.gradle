@@ -46,7 +46,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 
     runtimeOnly "org.openjfx:javafx-graphics:$javafx.version:win"
-    runtimeOnly "org.openjfx:javafx-graphics:$javafx.version:linux"
+    runtimeOnly "org.openjfx:javafx-graphics:17.0.2:linux" // 11.0.2 doesn't work anymore on Ubuntu 22.04
     runtimeOnly "org.openjfx:javafx-graphics:$javafx.version:mac"
 }
 

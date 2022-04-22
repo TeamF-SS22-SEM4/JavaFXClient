@@ -27,7 +27,7 @@
 /* LOGIN                     */
 /*****************************/
 .login-background {
-    -fx-background-image: url(images/background.jpg);
+    -fx-background-image: url("images/background.jpg");
     -fx-background-size: cover;
     -fx-font-size: 16;
 }
