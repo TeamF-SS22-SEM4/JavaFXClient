@@ -20,15 +20,6 @@ public class SidebarController implements Initializable {
     public ToggleButton color1;
 
     @FXML
-    private Button messageButton;
-
-    @FXML
-    private void initialize() {
-        if(!SessionManager.getInstance().getRoles().contains("Operator")) {
-            messageButton.setVisible(false);
-        }
-    }
-    @FXML
     private void onLogoClicked() throws IOException {
         SceneManager.getInstance().switchView("shop");
     }

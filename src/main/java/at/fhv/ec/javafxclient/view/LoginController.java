@@ -81,7 +81,7 @@ public class LoginController implements Initializable {
                     // regular
                     LoginResultDTO loginResultDTO = authenticationService.login(username, password);
 
-                    SessionManager.getInstance().login(loginResultDTO.getSessionId(), loginResultDTO.getRoles());
+                    SessionManager.getInstance().login(loginResultDTO.getSessionId(), loginResultDTO.getRoles(), loginResultDTO.getTopicNames());
                     SceneManager.getInstance().switchView("shop");
                 } catch (RemoteException | NotBoundException e) {
                     infoText.setTextFill(Color.web("#ff0000"));

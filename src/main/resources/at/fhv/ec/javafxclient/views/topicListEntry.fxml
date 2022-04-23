@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="138.0" prefWidth="638.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.TopicListEntryController">
    <children>
       <Pane prefHeight="200.0" prefWidth="200.0">
@@ -16,9 +15,10 @@
                   <Font size="30.0" />
                </font>
             </Label>
-            <Button layoutX="217.0" layoutY="57.0" mnemonicParsing="false" text="Subscribers" />
-            <Button layoutX="343.0" layoutY="57.0" mnemonicParsing="false" text="View Messages" />
+            <Button fx:id="subscribersButton" layoutX="217.0" layoutY="57.0" mnemonicParsing="false" text="Subscribers" />
+            <Button fx:id="viewMessagesButton" layoutX="343.0" layoutY="57.0" mnemonicParsing="false" text="View Messages" />
             <Button fx:id="newMessageButton" layoutX="486.0" layoutY="57.0" mnemonicParsing="false" text="New Message" />
+            <Button fx:id="unsubscribeButton" layoutX="486.0" layoutY="57.0" mnemonicParsing="false" text="Unsubscribe" />
          </children>
       </Pane>
    </children>

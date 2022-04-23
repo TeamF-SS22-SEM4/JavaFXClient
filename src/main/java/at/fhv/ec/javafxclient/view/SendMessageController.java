@@ -10,11 +10,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 
 import java.rmi.RemoteException;
 
-public class MessageController {
+public class SendMessageController {
     public static String topicName;
 
     @FXML
