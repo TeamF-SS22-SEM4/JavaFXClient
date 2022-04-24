@@ -33,6 +33,7 @@ public class TopicListEntryController {
 
         viewMessagesButton.setOnAction(event -> {
             try {
+                MessageListController.topicName = topicNameLabel.getText();
                 SceneManager.getInstance().switchView("message-list");
             } catch (IOException e) {
                 throw new RuntimeException(e);
