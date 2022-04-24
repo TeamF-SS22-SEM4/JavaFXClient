@@ -23,27 +23,23 @@ public class JMSClient {
     public void getMessagesByTopic(String topicName) throws JMSException {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(PROTOCOL + "://" + HOST + ":" + PORT);
 
-        Connection connection = connectionFactory.createConnection();
+        TopicConnection connection = (TopicConnection) connectionFactory.createConnection();
+        connection.setClientID("DurableSubscriber");
         connection.start();
 
-        Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+        TopicSession session = connection.createTopicSession(false, Session.CLIENT_ACKNOWLEDGE);
         
-        Destination destination = session.createTopic(topicName);
+        Topic destination = session.createTopic(topicName);
 
-        MessageConsumer consumer = session.createConsumer(destination);
+        MessageConsumer consumer = session.createDurableSubscriber(destination, "Listener");
 
-        Message message = consumer.receive(1000);
+        // Listening for messages from publisher
+        consumer.setMessageListener(System.out::println);
 
-        if (message instanceof TextMessage) {
-            TextMessage textMessage = (TextMessage) message;
-            String text = textMessage.getText();
-            System.out.println("Received: " + text);
-        } else {
-            System.out.println("No messages received");
-        }
-
+        /*
         consumer.close();
         session.close();
         connection.close();
+        */
     }
 }
