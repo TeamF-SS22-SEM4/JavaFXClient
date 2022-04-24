@@ -39,6 +39,11 @@ public class SidebarController implements Initializable {
     }
 
     @FXML
+    private void onOrderButtonClicked() throws IOException {
+        SceneManager.getInstance().switchView("order");
+    }
+
+    @FXML
     private void onMessageButtonClicked() throws IOException {
         SceneManager.getInstance().switchView("topic-list");
     }

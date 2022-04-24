@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -65,6 +66,9 @@ public class ProductDetailsController {
     private TableColumn<SoundCarrierDTO, Button> addToCartColumn;
 
     @FXML
+    private TableColumn<SoundCarrierDTO, Integer> orderButtonColumn;
+
+    @FXML
     public void initialize() {
         try {
             productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
@@ -90,14 +94,10 @@ public class ProductDetailsController {
         fillSoundCarrierTable();
     }
 
-
-
     @FXML
     private void onShoppingCartButtonClicked() throws IOException {
         SceneManager.getInstance().switchView("shoppingcart");
     }
-
-
 
     private void createSoundCarrierTable() {
         // Initialize Table Columns
@@ -151,6 +151,34 @@ public class ProductDetailsController {
                 };
             }
         };
+
+        orderButtonColumn.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<SoundCarrierDTO, Integer> call(TableColumn<SoundCarrierDTO, Integer> param) {
+                return new TableCell<>() {
+//                    TODO amount to order
+                    Pane wrappingPane = new Pane();
+
+                    private final Button orderButton = new Button("Order");
+
+                    @Override
+                    public void updateItem(Integer item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            orderButton.setOnAction(event -> {
+                                System.out.println("ordering from available " + item);
+                                //TODO actual handling
+                            });
+                            setGraphic(orderButton);
+                            setText(null);
+                        }
+                    }
+                };
+            }
+        });
 
         // TODO: use a more beautiful solution
         addToCartColumn.setCellFactory(new Callback<>() {

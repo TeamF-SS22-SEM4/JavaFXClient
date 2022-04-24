@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.ProductDetailsController">
+<HBox prefHeight="666.0" prefWidth="1194.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.ProductDetailsController">
    <children>
       <fx:include source="sidebar.fxml" />
       <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
@@ -95,24 +95,29 @@
                   </HBox>
                   <TableView fx:id="soundCarrierTable" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="soundCarrierNameColumn" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="-1.0" text="Type">
+                        <TableColumn fx:id="soundCarrierNameColumn" maxWidth="200" minWidth="20" prefWidth="50" text="Type">
                            <cellValueFactory>
                               <PropertyValueFactory property="soundCarrierName" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn fx:id="amountAvailableColumn" maxWidth="1.7976931348623157E308" minWidth="150.0" prefWidth="150.0" text="In stock">
+                        <TableColumn fx:id="amountAvailableColumn" maxWidth="150" minWidth="50.0" prefWidth="50" text="In stock">
                            <cellValueFactory>
                               <PropertyValueFactory property="amountAvailable" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn fx:id="pricePerCarrierColumn" maxWidth="1.7976931348623157E308" minWidth="150.0" prefWidth="150.0" text="Price per carrier">
+                        <TableColumn fx:id="orderButtonColumn" maxWidth="150" minWidth="30" prefWidth="75" text="TESTBUTTON">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="amountAvailable" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="pricePerCarrierColumn" maxWidth="150" minWidth="20" prefWidth="100.0" text="Price per carrier">
                            <cellValueFactory>
                               <PropertyValueFactory property="pricePerCarrier" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn fx:id="spinnerColumn" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Selected Amount">
+                        <TableColumn fx:id="spinnerColumn" maxWidth="200" minWidth="75.0" prefWidth="100.0" text="Selected Amount">
                   </TableColumn>
-                        <TableColumn fx:id="addToCartColumn" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Action">
+                        <TableColumn fx:id="addToCartColumn" maxWidth="150.0" minWidth="50" prefWidth="120" text="Action">
                   </TableColumn>
                      </columns>
                      <columnResizePolicy>
