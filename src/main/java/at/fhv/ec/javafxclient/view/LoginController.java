@@ -2,6 +2,7 @@ package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
+import at.fhv.ec.javafxclient.communication.JMSClient;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.AuthenticationService;
 import at.fhv.ss22.ea.f.communication.dto.LoginResultDTO;
@@ -9,8 +10,13 @@ import at.fhv.ss22.ea.f.communication.exception.AuthenticationFailed;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+
+import javax.jms.JMSException;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.NotBoundException;
@@ -69,8 +75,10 @@ public class LoginController implements Initializable {
 
                     if (connectionType.getValue().equals("local (port:1099)")) {
                         RMIClient.getRmiClient().connect(HOST_LOCAL, PORT_LOCAL);
+                        JMSClient.getJmsClient().connect(HOST_LOCAL);
                     } else {
                         RMIClient.getRmiClient().connect(HOST_REMOTE, PORT_REMOTE);
+                        JMSClient.getJmsClient().connect(HOST_REMOTE);
                     }
 
                     authenticationService = RMIClient.getRmiClient().getRmiFactory().getAuthenticationService();
@@ -80,6 +88,9 @@ public class LoginController implements Initializable {
 
                     // regular
                     LoginResultDTO loginResultDTO = authenticationService.login(username, password);
+
+                    // Start listeners for all subscribed topics
+                    JMSClient.getJmsClient().startMessageListeners(loginResultDTO.getTopicNames(), loginResultDTO.getEmployeeId());
 
                     SessionManager.getInstance().login(loginResultDTO.getSessionId(), loginResultDTO.getRoles(), loginResultDTO.getTopicNames());
                     SceneManager.getInstance().switchView("shop");
@@ -92,6 +103,8 @@ public class LoginController implements Initializable {
                     infoText.setText("Invalid username or password!");
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (JMSException e) {
+                    throw new RuntimeException(e);
                 }
             });
         }
