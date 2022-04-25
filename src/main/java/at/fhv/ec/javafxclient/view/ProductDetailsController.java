@@ -10,16 +10,14 @@ import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class ProductDetailsController {
@@ -157,9 +155,12 @@ public class ProductDetailsController {
             public TableCell<SoundCarrierDTO, Integer> call(TableColumn<SoundCarrierDTO, Integer> param) {
                 return new TableCell<>() {
 //                    TODO amount to order
-                    Pane wrappingPane = new Pane();
-
-                    private final Button orderButton = new Button("Order");
+                    private final Pane wrappingPane = new Pane();
+                    private Button startButton = new Button("Order");
+                    private HBox replacement = new HBox();
+                    private Spinner amountInput = new Spinner();
+                    private Button orderButton = new Button("->");
+                    private Button quitButton = new Button("X");
 
                     @Override
                     public void updateItem(Integer item, boolean empty) {
@@ -168,11 +169,53 @@ public class ProductDetailsController {
                             setGraphic(null);
                             setText(null);
                         } else {
-                            orderButton.setOnAction(event -> {
-                                System.out.println("ordering from available " + item);
-                                //TODO actual handling
+                            wrappingPane.getChildren().add(startButton);
+                            quitButton.setOnAction(quitEvent -> {
+                                wrappingPane.getChildren().remove(replacement);
+                                wrappingPane.getChildren().add(startButton);
                             });
-                            setGraphic(orderButton);
+                            replacement.getChildren().add(quitButton);
+                            replacement.getChildren().add(amountInput);
+                            replacement.getChildren().add(orderButton);
+                            orderButton.setOnAction(orderEvent -> {
+                                int amount = (Integer) amountInput.getValue();
+                                if (amount > 0) {
+                                    //TODO success/fail notification (NOT popup) for ordering
+                                    wrappingPane.getChildren().remove(replacement);
+                                    wrappingPane.getChildren().add(startButton);
+
+                                    SoundCarrierOrderDTO orderDTO = SoundCarrierOrderDTO.builder()
+                                            .withOrderId(UUID.randomUUID())
+                                            .withCarrierId(getTableView().getItems().get(getIndex()).getSoundCarrierId())
+                                            .withAmount(amount)
+                                            .build();
+
+                                    try {
+                                        RMIClient.getRmiClient().getRmiFactory().getOrderingService()
+                                                .placeOrder(SessionManager.getInstance().getSessionId(), orderDTO);
+                                    } catch (RemoteException e) {
+                                        //TODO error handling,
+                                        e.printStackTrace();
+                                    } catch (SessionExpired e) {
+                                        e.printStackTrace();
+                                    } catch (NoPermissionForOperation e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+                            startButton.setOnAction(event -> {
+                                amountInput.setMaxWidth(100);
+                                amountInput.setValueFactory(
+                                        new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                                                0,
+                                                100
+                                        )
+                                );
+                                wrappingPane.getChildren().remove(startButton);;
+                                wrappingPane.getChildren().add(replacement);
+                            });
+                            setGraphic(wrappingPane);
                             setText(null);
                         }
                     }

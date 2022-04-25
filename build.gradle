@@ -39,7 +39,7 @@ javafx {
 }
 
 dependencies {
-    implementation 'com.github.TeamF-SS22-SEM4:RMI-Shared-Lib:v34'
+    implementation 'com.github.TeamF-SS22-SEM4:RMI-Shared-Lib:v35'
     implementation 'de.jensd:fontawesomefx-fontawesome:4.7.0-9.1.2'
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
