@@ -1,4 +1,4 @@
-package at.fhv.ec.javafxclient.view;
+package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
@@ -7,11 +7,17 @@ import at.fhv.ss22.ea.f.communication.api.AuthenticationService;
 import at.fhv.ss22.ea.f.communication.dto.LoginResultDTO;
 import at.fhv.ss22.ea.f.communication.exception.AuthenticationFailed;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+
+import java.awt.*;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -27,7 +33,6 @@ public class LoginController implements Initializable {
     private static final String REMOTE = "remote (port:12345)";
     private static final String LOCAL = "local (port:1099)";
 
-
     @FXML
     private ChoiceBox connectionType;
 
@@ -40,15 +45,15 @@ public class LoginController implements Initializable {
     private PasswordField passwordTextField;
 
     @FXML
-    private Label infoText;
+    private Label infoLabel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        usernameTextField.setText("test");
-//        passwordTextField.setText("test");
-
         connectionType.getItems().addAll(REMOTE, LOCAL);
         connectionType.setValue(REMOTE);
+
+        usernameTextField.setText("tf-test");
+        passwordTextField.setText("PssWrd");
     }
 
     @FXML
@@ -56,48 +61,41 @@ public class LoginController implements Initializable {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
 
+        infoLabel.getStyleClass().remove("alert");
+
         if (username.isEmpty() || password.isEmpty()) {
 
-            infoText.setTextFill(Color.web("#ff0000"));
-            infoText.setText("Empty username or password!");
+            infoLabel.getStyleClass().add("alert");
+            infoLabel.setText("Empty username or password!");
 
         } else {
 
-            infoText.setTextFill(Color.web("#ffffff"));
-            infoText.setText("Loading ...");
+            infoLabel.setText("Loading ...");
 
             Platform.runLater(() -> {
 
                 try {
 
-                    if (connectionType.getValue().toString().equals("local (port:1099)")) {
+                    if (connectionType.getValue().toString().equals(LOCAL)) {
                         RMIClient.getRmiClient().connect(HOST_LOCAL, PORT_LOCAL);
-                        System.out.println("LOCAL");
                     } else {
                         RMIClient.getRmiClient().connect(HOST_REMOTE, PORT_REMOTE);
-                        System.out.println("REMOTE");
                     }
 
                     authenticationService = RMIClient.getRmiClient().getRmiFactory().getAuthenticationService();
-
-                    // backdoor
-//                    LoginResultDTO loginResultDTO = authenticationService.login("tf-test", "PssWrd");
-
-                    // regular
                     LoginResultDTO loginResultDTO = authenticationService.login(username, password);
-
                     SessionManager.getInstance().login(loginResultDTO.getSessionId(), loginResultDTO.getRoles());
                     SceneManager.getInstance().switchView("shop");
 
                 } catch (RemoteException | NotBoundException e) {
 
-                    infoText.setTextFill(Color.web("#ff0000"));
-                    infoText.setText("Connection to the server could not be established!");
+                    infoLabel.getStyleClass().add("alert");
+                    infoLabel.setText("Connection to the server could not be established!");
 
                 } catch (AuthenticationFailed e) {
 
-                    infoText.setTextFill(Color.web("#ff0000"));
-                    infoText.setText("Invalid username or password!");
+                    infoLabel.getStyleClass().add("alert");
+                    infoLabel.setText("Invalid username or password!");
 
                 } catch (IOException e) {
 
@@ -107,5 +105,16 @@ public class LoginController implements Initializable {
             });
 
         }
+    }
+
+    public void onLinkClicked(ActionEvent actionEvent) {
+            try {
+
+                Desktop.getDesktop().browse(new URL("https://www.windows-faq.de/2018/07/28/bildschirmanzeige-bei-windows-10-skalieren-schriftgroesse-veraendern/").toURI());
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (URISyntaxException ex) {
+                throw new RuntimeException(ex);
+            }
     }
 }

@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Main extends javafx.application.Application {
+public class Application extends javafx.application.Application {
 
     private static final String STYLESHEET_DEFAULT = "style.css";
     private static final String STYLESHEET_LIGHT = "light.css";
@@ -15,43 +15,22 @@ public class Main extends javafx.application.Application {
     private static final String STYLESHEET_COLOR2 = "color2.css";
     private static final String STYLESHEET_COLOR3 = "color3.css";
 
-
     private static Stage window;
     private static ArrayList<String> stylesheets = new ArrayList<>();
 
-
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("views/login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("views/login.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-
         stylesheets.add(STYLESHEET_DEFAULT);
         scene.getStylesheets().add(STYLESHEET_DEFAULT);
-
 
         window = stage;
         window.getIcons().add(new Image("images/icon.png"));
         window.setTitle("Tomify");
         window.setScene(scene);
-        window.setMaximized(true);
+//        window.setMaximized(true);
         window.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
-    }
-
-    public static Stage getWindow() {
-        return window;
-    }
-
-
-    public static ArrayList<String> getStylesheets() {
-        return stylesheets;
-    }
-
-    public static void setStylesheets(ArrayList<String> stylesheets) {
-        Main.stylesheets = stylesheets;
     }
 
     public static String getStylesheetDefault() {
@@ -72,6 +51,22 @@ public class Main extends javafx.application.Application {
 
     public static String getStylesheetColor3() {
         return STYLESHEET_COLOR3;
+    }
+
+    public static ArrayList<String> getStylesheets() {
+        return stylesheets;
+    }
+
+    public static void setStylesheets(ArrayList<String> stylesheets) {
+        Application.stylesheets = stylesheets;
+    }
+
+    public static Stage getWindow() {
+        return window;
+    }
+
+    public static void main(String[] args) {
+        launch();
     }
 
 }

@@ -1,4 +1,4 @@
-package at.fhv.ec.javafxclient.view;
+package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static at.fhv.ec.javafxclient.view.ShoppingCartController.shoppingCart;
+import static at.fhv.ec.javafxclient.view.controller.ShoppingCartController.shoppingCart;
 
 public class CheckoutController {
     public static CustomerDTO customer;

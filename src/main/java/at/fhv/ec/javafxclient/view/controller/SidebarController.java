@@ -1,12 +1,15 @@
-package at.fhv.ec.javafxclient.view;
+package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,7 +20,8 @@ public class SidebarController implements Initializable {
     public ToggleGroup themeStyleToggleGroup;
     public ToggleGroup themeColorToggleGroup;
     public ToggleButton dark;
-    public ToggleButton color1;
+    public Button logoutButton;
+    public ImageView logoImageView;
 
     @FXML
     private void onLogoClicked() throws IOException {
@@ -51,6 +55,14 @@ public class SidebarController implements Initializable {
         ToggleButton toggleButtonColor = (ToggleButton) themeColorToggleGroup.getSelectedToggle();
         String themeColor = toggleButtonColor.getId();
 
+        if (themeColor.equals("color1")) {
+            logoImageView.setImage(new Image("images/logo_1.png"));
+        } else if (themeColor.equals("color2")) {
+            logoImageView.setImage(new Image("images/logo_2.png"));
+        } else if (themeColor.equals("color3")) {
+            logoImageView.setImage(new Image("images/logo_3.png"));
+        }
+
         SceneManager.getInstance().switchTheme(themeStyle, themeColor);
     }
 
@@ -71,5 +83,7 @@ public class SidebarController implements Initializable {
             if (newVal == null)
                 oldVal.setSelected(true);
         });
+
+        logoutButton.setText("Log out\njmo8620 FAKE");
     }
 }
