@@ -4,7 +4,7 @@ module at.fhv.ec.javafxclient {
     requires java.rmi;
     requires activemq.all;
     requires java.naming;
-    requires RMI.Shared.Lib.v36;
+    requires RMI.Shared.Lib.v38;
 
     opens at.fhv.ec.javafxclient to javafx.fxml;
     exports at.fhv.ec.javafxclient;
