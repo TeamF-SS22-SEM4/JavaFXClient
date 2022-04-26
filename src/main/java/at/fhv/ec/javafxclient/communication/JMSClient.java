@@ -1,6 +1,8 @@
 package at.fhv.ec.javafxclient.communication;
 
+import at.fhv.ec.javafxclient.model.CustomMessage;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.ActiveMQSession;
 
 import javax.jms.*;
 import java.util.*;
@@ -14,7 +16,8 @@ public class JMSClient {
     private Map<String, TopicConnection> connections;
     private Map<String, Session> sessions;
     private Map<String, MessageConsumer> consumers;
-    private Map<String, ArrayList<String>> messages;
+    private Map<String, ArrayList<CustomMessage>> messages;
+    private Map<String, Message> jmsMessages;
 
     private JMSClient() {}
 
@@ -25,6 +28,7 @@ public class JMSClient {
             jmsClient.sessions = new HashMap<>();
             jmsClient.consumers = new HashMap<>();
             jmsClient.messages = new HashMap<>();
+            jmsClient.jmsMessages = new HashMap<>();
         }
 
         return jmsClient;
@@ -43,7 +47,7 @@ public class JMSClient {
                 connection.setClientID(topic + "-" + employeeId);
                 connection.start();
 
-                TopicSession session = connection.createTopicSession(false, Session.CLIENT_ACKNOWLEDGE);
+                TopicSession session = connection.createTopicSession(false, ActiveMQSession.INDIVIDUAL_ACKNOWLEDGE);
 
                 Topic destination = session.createTopic(topic);
 
@@ -53,7 +57,11 @@ public class JMSClient {
                 consumer.setMessageListener(message -> {
                     TextMessage textMessage = (TextMessage) message;
                     try {
-                        addMessageToTopic(topic, textMessage.getText());
+                        jmsMessages.put(message.getJMSMessageID(), message); // Save original message to acknowledge it later
+
+                        String title = textMessage.getText().split("\n")[0];
+                        String content = textMessage.getText().split("\n")[1];
+                        addMessageToTopic(topic, new CustomMessage(message.getJMSMessageID(), title, content));
                     } catch (JMSException e) {
                         throw new RuntimeException(e);
                     }
@@ -68,8 +76,8 @@ public class JMSClient {
         });
     }
 
-    private void addMessageToTopic(String key, String value) {
-        ArrayList<String> tempList;
+    private void addMessageToTopic(String key, CustomMessage value) {
+        ArrayList<CustomMessage> tempList;
 
         if (messages.containsKey(key)) {
             tempList = messages.get(key);
@@ -84,6 +92,27 @@ public class JMSClient {
         messages.put(key,tempList);
     }
 
+    public List<CustomMessage> getMessagesByTopic(String topicName) {
+        List<CustomMessage> messageList = messages.get(topicName);
+        return messageList == null ? Collections.emptyList() : messageList;
+    }
+
+    public int getAmountOfMessagesByTopic(String topicName) {
+        return messages.get(topicName) == null ? 0 : messages.get(topicName).size();
+    }
+
+    public void acknowledgeMessage(String topicName, CustomMessage customMessage) throws JMSException, NoSuchElementException {
+        Message message = jmsMessages.get(customMessage.getJmsId());
+        List<CustomMessage> topicMessages = messages.get(topicName);
+
+        if(message == null) {
+           throw new NoSuchElementException("Couldn't find message");
+        }
+
+        message.acknowledge();
+        jmsMessages.remove(customMessage.getJmsId());
+        topicMessages.remove(customMessage);
+    }
     public void logout() {
         // TODO: Find better solution
         // Close all connections
@@ -110,9 +139,8 @@ public class JMSClient {
                 throw new RuntimeException(e);
             }
         });
-    }
 
-    public List<String> getMessagesByTopic(String topicName) {
-        return messages.get(topicName);
+        jmsMessages.clear();
+        messages.clear();
     }
 }

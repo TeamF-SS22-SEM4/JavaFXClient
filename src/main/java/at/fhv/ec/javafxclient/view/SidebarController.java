@@ -5,6 +5,7 @@ import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.JMSClient;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 
@@ -14,6 +15,8 @@ import java.util.ResourceBundle;
 
 public class SidebarController implements Initializable {
 
+    @FXML
+    private Button topicsButton;
 
     public ToggleGroup themeStyleToggleGroup;
     public ToggleGroup themeColorToggleGroup;
@@ -41,7 +44,12 @@ public class SidebarController implements Initializable {
 
     @FXML
     private void onMessageButtonClicked() throws IOException {
-        SceneManager.getInstance().switchView("topic-list");
+        SceneManager.getInstance().switchView("subscribed-topics-list");
+    }
+
+    @FXML
+    private void onTopicsButtonClicked() throws IOException {
+        SceneManager.getInstance().switchView("all-topics-list");
     }
 
     @FXML
@@ -73,5 +81,9 @@ public class SidebarController implements Initializable {
             if (newVal == null)
                 oldVal.setSelected(true);
         });
+
+        if(!SessionManager.getInstance().getRoles().contains("Operator")) {
+            topicsButton.setVisible(false);
+        }
     }
 }

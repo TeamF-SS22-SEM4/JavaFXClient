@@ -44,7 +44,12 @@
                               <Font size="30.0" />
                            </font>
                         </Text>
-                        <Button layoutX="652.0" layoutY="405.0" mnemonicParsing="false" styleClass="btn" text="Acknowledge" />
+                        <Button fx:id="acknowledgeButton" layoutX="652.0" layoutY="405.0" mnemonicParsing="false" onAction="#onAcknowledgeButtonClicked" styleClass="btn" text="Acknowledge" />
+                        <Label fx:id="statusLabel" layoutX="185.0" layoutY="433.0" text="Label" textFill="WHITE">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Label>
                      </children>
                   </Pane>
                </children></VBox>
