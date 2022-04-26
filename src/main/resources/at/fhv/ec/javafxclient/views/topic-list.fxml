@@ -36,13 +36,9 @@
                              <PropertyValueFactory property="name" />
                           </cellValueFactory>
                        </TableColumn>
-                       <TableColumn fx:id="subscribersButtonColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="">
-                       </TableColumn>
                        <TableColumn fx:id="viewMessagesButtonColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="">
                        </TableColumn>
                        <TableColumn fx:id="newMessageButtonColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="">
-                       </TableColumn>
-                       <TableColumn fx:id="unsubscribeButtonColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="">
                        </TableColumn>
                     </columns>
                   </TableView>

@@ -35,7 +35,7 @@ public class JMSClient {
     }
 
     public void startMessageListeners(List<String> topics, String employeeId) {
-        // TODO: Avoid try and catch
+        // TODO: find better solution
         topics.forEach(topic -> {
             try {
                 TopicConnection connection = (TopicConnection) connectionFactory.createConnection();
@@ -50,7 +50,6 @@ public class JMSClient {
                 MessageConsumer consumer = session.createDurableSubscriber(destination, topic + "-" + employeeId);
 
                 // Listening for messages from publisher
-                // TODO: Create something like a message storage
                 consumer.setMessageListener(message -> {
                     TextMessage textMessage = (TextMessage) message;
                     try {
@@ -70,7 +69,8 @@ public class JMSClient {
     }
 
     private void addMessageToTopic(String key, String value) {
-        ArrayList<String> tempList = null;
+        ArrayList<String> tempList;
+
         if (messages.containsKey(key)) {
             tempList = messages.get(key);
             if(tempList == null)
@@ -80,6 +80,7 @@ public class JMSClient {
             tempList = new ArrayList<>();
             tempList.add(value);
         }
+
         messages.put(key,tempList);
     }
 

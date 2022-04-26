@@ -31,6 +31,7 @@ public class SendMessageController {
     private void initialize() {
         topicNameLabel.setText(topicName);
         statusLabel.setVisible(false);
+        contentTextArea.setWrapText(true);
     }
 
     @FXML

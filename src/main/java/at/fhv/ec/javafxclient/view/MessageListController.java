@@ -1,5 +1,6 @@
 package at.fhv.ec.javafxclient.view;
 
+import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.JMSClient;
 import at.fhv.ec.javafxclient.model.Message;
 import javafx.collections.FXCollections;
@@ -11,6 +12,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +24,7 @@ public class MessageListController {
     private TableView<Message> messageTable;
 
     @FXML
-    private TableColumn<Message, Button> detailsButton;
+    private TableColumn<Message, Button> detailsButtonColumn;
 
     public void initialize() {
         // Get plain messages from jms and create Messages for the table
@@ -44,7 +46,7 @@ public class MessageListController {
     }
 
     private void initTable() {
-        detailsButton.setCellFactory(new Callback<>() {
+        detailsButtonColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<Message, Button> call(TableColumn<Message, Button> param) {
 
@@ -59,6 +61,16 @@ public class MessageListController {
                             setGraphic(null);
                             setText(null);
                         } else {
+                            detailsButton.setOnAction(event -> {
+                                try {
+                                    MessageDetailsController.topicName = topicName;
+                                    MessageDetailsController.message = getTableView().getItems().get(getIndex());
+                                    SceneManager.getInstance().switchView("message-details");
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            });
+
                             setGraphic(detailsButton);
                             setText(null);
                         }

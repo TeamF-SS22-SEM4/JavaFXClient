@@ -264,6 +264,19 @@
     -fx-min-height: 200;
     -fx-min-width: 400;
 }
+
+
+
+#contentTextArea {
+    -fx-font-family: Consolas;
+    -fx-font-size: 15;
+    -fx-text-fill: #ffffff;
+    -fx-display-caret:true;
+}
+
+
+
+
 /*****************************/
 /* ELEMENTS                  */
 /*****************************/

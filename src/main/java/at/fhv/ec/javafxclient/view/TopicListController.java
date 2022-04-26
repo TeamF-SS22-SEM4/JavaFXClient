@@ -2,6 +2,7 @@ package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
+import at.fhv.ec.javafxclient.communication.JMSClient;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ec.javafxclient.model.Topic;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
@@ -15,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
+import javax.jms.JMSException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -25,16 +27,10 @@ public class TopicListController {
     private TableView<Topic> topicTable;
 
     @FXML
-    private TableColumn<Topic, Button> subscribersButtonColumn;
-
-    @FXML
     private TableColumn<Topic, Button> viewMessagesButtonColumn;
 
     @FXML
     private TableColumn<Topic, Button> newMessageButtonColumn;
-
-    @FXML
-    private TableColumn<Topic, Button> unsubscribeButtonColumn;
 
     public void initialize() {
         initTable();
@@ -42,15 +38,11 @@ public class TopicListController {
         ObservableList<Topic> observableTopicList;
 
         // Set all buttons initially on not visible
-        subscribersButtonColumn.setVisible(false);
         viewMessagesButtonColumn.setVisible(false);
         newMessageButtonColumn.setVisible(false);
-        unsubscribeButtonColumn.setVisible(false);
 
         if(SessionManager.getInstance().getRoles().contains("Operator")) {
             // Whitelist of visible buttons
-            subscribersButtonColumn.setVisible(true);
-            viewMessagesButtonColumn.setVisible(true);
             newMessageButtonColumn.setVisible(true);
 
             // Add all existing topics so the operator can send messages
@@ -68,7 +60,6 @@ public class TopicListController {
         } else {
             // Whitelist of visible buttons
             viewMessagesButtonColumn.setVisible(true);
-            unsubscribeButtonColumn.setVisible(true);
 
             // Add all subscribed topics of a non operator user
             try {
@@ -95,29 +86,6 @@ public class TopicListController {
 
     private void initTable() {
         // Create buttons in table
-        subscribersButtonColumn.setCellFactory(new Callback<>() {
-            @Override
-            public TableCell<Topic, Button> call(TableColumn<Topic, Button> param) {
-
-                final Button subscriberButton = new Button("Subscribers");
-                subscriberButton.getStyleClass().add("btn");
-
-                return new TableCell<>() {
-                    @Override
-                    public void updateItem(Button item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                            setText(null);
-                        } else {
-                            setGraphic(subscriberButton);
-                            setText(null);
-                        }
-                    }
-                };
-            }
-        });
-
         viewMessagesButtonColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<Topic, Button> call(TableColumn<Topic, Button> param) {
@@ -174,49 +142,6 @@ public class TopicListController {
                                 }
                             });
                             setGraphic(newMessageButton);
-                            setText(null);
-                        }
-                    }
-                };
-            }
-        });
-
-        unsubscribeButtonColumn.setCellFactory(new Callback<>() {
-            @Override
-            public TableCell<Topic, Button> call(TableColumn<Topic, Button> param) {
-
-                final Button unsubscribeButton = new Button("Unsubscribe");
-                unsubscribeButton.getStyleClass().add("btn");
-
-                return new TableCell<>() {
-                    @Override
-                    public void updateItem(Button item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                            setText(null);
-                        } else {
-                            unsubscribeButton.setOnAction(event -> {
-                                String topicName = getTableView().getItems().get(getIndex()).getName();
-
-                                try {
-                                    RMIClient.getRmiClient().getRmiFactory().getMessagingService().unsubscribeFrom(
-                                            SessionManager.getInstance().getSessionId(),
-                                            topicName
-                                    );
-
-                                    SceneManager.getInstance().switchView("topic-list");
-                                } catch (RemoteException e) {
-                                    throw new RuntimeException(e);
-                                } catch (SessionExpired e) {
-                                    throw new RuntimeException(e);
-                                } catch (NoPermissionForOperation e) {
-                                    throw new RuntimeException(e);
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            });
-                            setGraphic(unsubscribeButton);
                             setText(null);
                         }
                     }

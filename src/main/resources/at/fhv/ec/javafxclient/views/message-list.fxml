@@ -41,7 +41,7 @@
                              <PropertyValueFactory property="content" />
                           </cellValueFactory>
                        </TableColumn>
-                       <TableColumn fx:id="detailsButton" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="">
+                       <TableColumn fx:id="detailsButtonColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="">
                        </TableColumn>
                     </columns>
                   </TableView>
