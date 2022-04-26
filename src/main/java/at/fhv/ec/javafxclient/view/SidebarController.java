@@ -2,6 +2,7 @@ package at.fhv.ec.javafxclient.view;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
+import at.fhv.ec.javafxclient.communication.JMSClient;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ToggleButton;
@@ -58,6 +59,7 @@ public class SidebarController implements Initializable {
     private void onLogoutButtonClicked() throws IOException {
         SessionManager.getInstance().logout();
         SceneManager.getInstance().logout();
+        JMSClient.getJmsClient().logout();
     }
 
     @Override

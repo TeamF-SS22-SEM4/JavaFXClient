@@ -3,60 +3,115 @@ package at.fhv.ec.javafxclient.communication;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
-import java.util.List;
+import java.util.*;
 
 public class JMSClient {
     private static JMSClient jmsClient;
     private final String PROTOCOL = "tcp";
     private final String PORT = "61616";
 
-    private String HOST;
+    private ActiveMQConnectionFactory connectionFactory;
+    private Map<String, TopicConnection> connections;
+    private Map<String, Session> sessions;
+    private Map<String, MessageConsumer> consumers;
+    private Map<String, ArrayList<String>> messages;
 
     private JMSClient() {}
 
     public static JMSClient getJmsClient() {
         if(jmsClient == null) {
             jmsClient = new JMSClient();
+            jmsClient.connections = new HashMap<>();
+            jmsClient.sessions = new HashMap<>();
+            jmsClient.consumers = new HashMap<>();
+            jmsClient.messages = new HashMap<>();
         }
 
         return jmsClient;
     }
 
     public void connect(String host) throws JMSException {
-        this.HOST = host;
+        connectionFactory = new ActiveMQConnectionFactory(PROTOCOL + "://" + host + ":" + PORT);
     }
 
     public void startMessageListeners(List<String> topics, String employeeId) {
         // TODO: Avoid try and catch
         topics.forEach(topic -> {
             try {
-                ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(PROTOCOL + "://" + HOST + ":" + PORT);
                 TopicConnection connection = (TopicConnection) connectionFactory.createConnection();
-                getMessagesByTopic(topic, connection, employeeId);
+
+                connection.setClientID(topic + "-" + employeeId);
+                connection.start();
+
+                TopicSession session = connection.createTopicSession(false, Session.CLIENT_ACKNOWLEDGE);
+
+                Topic destination = session.createTopic(topic);
+
+                MessageConsumer consumer = session.createDurableSubscriber(destination, topic + "-" + employeeId);
+
+                // Listening for messages from publisher
+                // TODO: Create something like a message storage
+                consumer.setMessageListener(message -> {
+                    TextMessage textMessage = (TextMessage) message;
+                    try {
+                        addMessageToTopic(topic, textMessage.getText());
+                    } catch (JMSException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+                connections.put(topic, connection);
+                sessions.put(topic, session);
+                consumers.put(topic, consumer);
             } catch (JMSException e) {
                 throw new RuntimeException(e);
             }
         });
     }
 
-    private void getMessagesByTopic(String topicName, TopicConnection connection, String employeeId) throws JMSException {
-        connection.setClientID(topicName + "-" + employeeId);
-        connection.start();
+    private void addMessageToTopic(String key, String value) {
+        ArrayList<String> tempList = null;
+        if (messages.containsKey(key)) {
+            tempList = messages.get(key);
+            if(tempList == null)
+                tempList = new ArrayList<>();
+            tempList.add(value);
+        } else {
+            tempList = new ArrayList<>();
+            tempList.add(value);
+        }
+        messages.put(key,tempList);
+    }
 
-        TopicSession session = connection.createTopicSession(false, Session.CLIENT_ACKNOWLEDGE);
+    public void logout() {
+        // TODO: Find better solution
+        // Close all connections
+        consumers.forEach((k , v) -> {
+            try {
+                v.close();
+            } catch (JMSException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
-        Topic destination = session.createTopic(topicName);
+        sessions.forEach((k , v) -> {
+            try {
+                v.close();
+            } catch (JMSException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
-        MessageConsumer consumer = session.createDurableSubscriber(destination, topicName + "-" + employeeId);
+        connections.forEach((k , v) -> {
+            try {
+                v.close();
+            } catch (JMSException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
 
-        // Listening for messages from publisher
-        // TODO: Create something like a message storage
-        consumer.setMessageListener(System.out::println);
-
-        /*
-        consumer.close();
-        session.close();
-        connection.close();
-        */
+    public List<String> getMessagesByTopic(String topicName) {
+        return messages.get(topicName);
     }
 }
