@@ -38,8 +38,6 @@ public class SendMessageController {
         statusLabel.setVisible(false);
 
         if((!titleTextField.getText().isEmpty()) && (!contentTextArea.getText().isEmpty())) {
-            System.out.println("On send button clicked");
-
             try {
                 MessagingService messagingService = RMIClient.getRmiClient().getRmiFactory().getMessagingService();
 

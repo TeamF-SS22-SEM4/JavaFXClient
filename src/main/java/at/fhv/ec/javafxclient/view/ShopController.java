@@ -1,11 +1,10 @@
 package at.fhv.ec.javafxclient.view;
 
-import at.fhv.ec.javafxclient.Main;
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
-import at.fhv.ec.javafxclient.view.animator.TextOutput;
 import at.fhv.ec.javafxclient.view.animator.TextAnimator;
+import at.fhv.ec.javafxclient.view.animator.TextOutput;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
@@ -17,7 +16,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.HBox;
-
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
@@ -26,7 +24,6 @@ import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-
 import java.util.ResourceBundle;
 
 public class ShopController implements Initializable{
