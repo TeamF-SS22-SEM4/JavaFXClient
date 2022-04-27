@@ -113,7 +113,7 @@ public class OrderingClient {
             message.acknowledge();
             //TODO replace, just first version of refreesh
             SceneManager.getInstance().switchView("order");
-        } catch (JMSException | IOException e) {
+        } catch (JMSException e) {
             e.printStackTrace();
         }
         System.out.println("denied");

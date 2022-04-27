@@ -19,6 +19,9 @@ public class SidebarController implements Initializable {
     @FXML
     private Button topicsButton;
 
+    @FXML
+    private Button orderButton;
+
     public ToggleGroup themeStyleToggleGroup;
     public ToggleGroup themeColorToggleGroup;
     public ToggleButton dark;
@@ -93,6 +96,7 @@ public class SidebarController implements Initializable {
 
         if(!SessionManager.getInstance().getRoles().contains("Operator")) {
             topicsButton.setVisible(false);
+            orderButton.setVisible(false);
         }
     }
 }
