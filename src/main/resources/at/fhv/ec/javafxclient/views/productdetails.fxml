@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.ProductDetailsController">
+<HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.ProductDetailsController">
    <children>
       <fx:include source="sidebar.fxml" />
       <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
@@ -27,7 +27,7 @@
                   <Pane HBox.hgrow="ALWAYS" />
                   <Button graphicTextGap="10.0" mnemonicParsing="false" onAction="#onShoppingCartButtonClicked" styleClass="btn" text="Shopping Cart">
                      <graphic>
-                        <FontAwesomeIconView glyphName="SHOPPING_BASKET" size="20" />
+                        <FontAwesomeIconView glyphName="SHOPPING_CART" size="20" />
                      </graphic></Button>
                   <Button mnemonicParsing="false" onAction="#onBackButtonClicked" styleClass="btn" text="Back" />
                </children>

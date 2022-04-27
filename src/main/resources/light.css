@@ -1,0 +1,10 @@
+* {
+    -fx-color-alert: rgba(255, 0, 0, 1) !important;
+    -fx-color-text-1: #262626 !important;
+    -fx-color-text-2: #434343 !important;
+    -fx-color-btn-text: -fx-color-text-1 !important;
+
+    -fx-color-bg-1: #aaaaaa !important;
+    -fx-color-bg-2: #e2e2e2 !important;
+    -fx-color-bg-3: #ffffff !important;
+}

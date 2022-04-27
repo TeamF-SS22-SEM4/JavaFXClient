@@ -1,4 +1,4 @@
-package at.fhv.ec.javafxclient.view;
+package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static at.fhv.ec.javafxclient.view.ShoppingCartController.shoppingCart;
+import static at.fhv.ec.javafxclient.view.controller.ShoppingCartController.shoppingCart;
 
 public class CheckoutController {
     public static CustomerDTO customer;
@@ -42,6 +42,9 @@ public class CheckoutController {
 
     @FXML
     private Label totalPriceLabel;
+
+    @FXML
+    private Button removeCustomerButton;
 
     @FXML
     private RadioButton cashRadioButton;
@@ -119,20 +122,7 @@ public class CheckoutController {
         creditCardRadioButton.setToggleGroup(paymentMethods);
         invoiceRadioButton.setToggleGroup(paymentMethods);
 
-        // Add customer information
-        if(customer != null) {
-            customerNameLabel.setText(customer.getGivenName() + " " + customer.getFamilyName());
-            customerAddressLabel.setText(customer.getStreet() + " " + customer.getHouseNumber() +
-                    ", " + customer.getPostalCode() + " " + customer.getCity());
-            customerMailAndPhoneLabel.setText("E-Mail: " + customer.getEmail() + "\nPhonenumber: " + customer.getPhoneNumber());
-
-            customerAddressLabel.setVisible(true);
-            customerMailAndPhoneLabel.setVisible(true);
-        } else {
-            customerNameLabel.setText("No customer selected");
-            customerAddressLabel.setVisible(false);
-            customerMailAndPhoneLabel.setVisible(false);
-        }
+        addCustomer();
     }
 
     @FXML
@@ -149,13 +139,14 @@ public class CheckoutController {
 
     @FXML
     protected void onSelectCustomerButtonClicked() {
-        try {
-            SceneManager.getInstance().switchView("customer-search");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            SceneManager.getInstance().switchView("customer");
     }
 
+    @FXML
+    protected void onRemoveCustomerButtonClicked() {
+        customer = null;
+        addCustomer();
+    }
 
     private void purchase(String selectedPaymentMethod, UUID customerId) {
         List<ShoppingCartProductDTO> shoppingCartProducts = new ArrayList<>();
@@ -183,7 +174,7 @@ public class CheckoutController {
 
             shoppingCart.clear();
             showPopup("Successful", "Invoice No.: " + invoiceNumber + "\nBill is printed...", Alert.AlertType.CONFIRMATION);
-            SceneManager.getInstance().switchView("product-search-view");
+            SceneManager.getInstance().switchView("shop");
         } catch (CarrierNotAvailableException cne) {
             showPopup("Error", "The selected amount is not available.", Alert.AlertType.ERROR);
             cne.printStackTrace();
@@ -205,5 +196,24 @@ public class CheckoutController {
     }
 
     public void onBackButtonClicked(ActionEvent actionEvent) {
+    }
+
+    private void addCustomer() {
+        // Add customer information
+        if(customer != null) {
+            customerNameLabel.setText(customer.getGivenName() + " " + customer.getFamilyName());
+            customerAddressLabel.setText(customer.getStreet() + " " + customer.getHouseNumber() +
+                    ", " + customer.getPostalCode() + " " + customer.getCity());
+            customerMailAndPhoneLabel.setText("E-Mail: " + customer.getEmail() + "\nPhonenumber: " + customer.getPhoneNumber());
+
+            customerAddressLabel.setVisible(true);
+            customerMailAndPhoneLabel.setVisible(true);
+            removeCustomerButton.setVisible(true);
+        } else {
+            customerNameLabel.setText("No customer selected");
+            customerAddressLabel.setVisible(false);
+            customerMailAndPhoneLabel.setVisible(false);
+            removeCustomerButton.setVisible(false);
+        }
     }
 }

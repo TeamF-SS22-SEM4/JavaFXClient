@@ -1,24 +1,23 @@
-package at.fhv.ec.javafxclient.view;
+package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ec.javafxclient.view.utils.ShoppingCartEntry;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
-import at.fhv.ss22.ea.f.communication.dto.*;
+import at.fhv.ss22.ea.f.communication.dto.ProductDetailsDTO;
+import at.fhv.ss22.ea.f.communication.dto.SongDTO;
+import at.fhv.ss22.ea.f.communication.dto.SoundCarrierDTO;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class ProductDetailsController {
@@ -234,9 +233,9 @@ public class ProductDetailsController {
         alert.show();
     }
 
-    @FXML
-    public void onBackButtonClicked() throws IOException {
-        SceneManager.getInstance().switchView("shop");
-    }
+//    @FXML
+//    public void onBackButtonClicked() throws IOException {
+//        SceneManager.getInstance().switchView("shop");
+//    }
 
 }

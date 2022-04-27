@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" styleClass="sidebar" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.SidebarController">
+<VBox alignment="CENTER" styleClass="sidebar" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.SidebarController">
     <children>
-        <VBox alignment="CENTER" styleClass="sidebar-top">
-            <children>
-                <ImageView fitWidth="150.0" onMouseClicked="#onLogoClicked" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../../../../images/logo.png" />
-                    </image>
-                </ImageView>
-            </children>
+        <VBox alignment="CENTER">
+         <styleClass>
+            <String fx:value="sidebar-top" />
+            <String fx:value="sidebar-logo" />
+         </styleClass>
+         <VBox.margin>
+            <Insets left="30.0" right="30.0" />
+         </VBox.margin>
         </VBox>
-        <VBox alignment="TOP_CENTER" styleClass="sidebar-body" VBox.vgrow="ALWAYS">
+        <VBox alignment="CENTER" styleClass="sidebar-body" VBox.vgrow="ALWAYS">
              <children>
             <Button alignment="BASELINE_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#onShopButtonClicked" styleClass="btn" text="Shop" VBox.vgrow="ALWAYS">
                <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="SHOPPING_CART" size="20" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="SHOPPING_BAG" size="20" />
                </graphic></Button>
             <Button alignment="BASELINE_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#onExchangeButtonClicked" styleClass="btn" text="Exchange" VBox.vgrow="ALWAYS">
                <graphic>
@@ -32,15 +35,69 @@
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="USERS" size="20" />
                </graphic></Button>
-            <Button alignment="BASELINE_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#onMessageButtonClicked" styleClass="btn" text="Messages" VBox.vgrow="ALWAYS">
+            <Button fx:id="messageButton" alignment="BASELINE_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#onMessageButtonClicked" styleClass="btn" text="Messages" VBox.vgrow="ALWAYS">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="ENVELOPE" size="20" />
                </graphic></Button>
-            <Pane VBox.vgrow="ALWAYS" />
-            <Button alignment="BASELINE_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#onLogoutButtonClicked" styleClass="btn" text="Log out" VBox.vgrow="ALWAYS">
+            <Button fx:id="topicsButton" alignment="BASELINE_LEFT" graphicTextGap="20.0" maxHeight="40.0" mnemonicParsing="false" onAction="#onTopicsButtonClicked" prefHeight="40.0" prefWidth="165.0" styleClass="btn" text="Topics">
                <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="ARROW_LEFT" size="20" />
-               </graphic></Button>
+                  <FontAwesomeIconView fill="WHITE" glyphName="ENVELOPE" size="20" />
+               </graphic>
+            </Button>
+            <Pane VBox.vgrow="ALWAYS" />
+            <VBox spacing="15.0">
+               <children>
+                  <HBox alignment="CENTER" spacing="1.0">
+                     <children>
+                        <ToggleButton fx:id="dark" mnemonicParsing="false" onAction="#onThemeButtonsClicked" selected="true" style="-fx-background-radius: 5 0 0 5;">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="SQUARE" stroke="BLACK" strokeWidth="2.0" />
+                           </graphic>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="themeStyleToggleGroup" />
+                           </toggleGroup>
+                        </ToggleButton>
+                        <ToggleButton fx:id="light" mnemonicParsing="false" onAction="#onThemeButtonsClicked" style="-fx-background-radius: 0 5 5 0;" toggleGroup="$themeStyleToggleGroup">
+                           <graphic>
+                              <FontAwesomeIconView fill="WHITE" glyphName="SQUARE" stroke="BLACK" strokeWidth="2.0" />
+                           </graphic>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </ToggleButton>
+                        <ToggleButton fx:id="color1" mnemonicParsing="false" onAction="#onThemeButtonsClicked" style="-fx-background-radius: 5 0 0 5;">
+                           <graphic>
+                              <FontAwesomeIconView fill="#640015" glyphName="SQUARE" stroke="BLACK" strokeWidth="2.0" />
+                           </graphic>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="themeColorToggleGroup" />
+                           </toggleGroup>
+                        </ToggleButton>
+                        <ToggleButton fx:id="color2" mnemonicParsing="false" onAction="#onThemeButtonsClicked" selected="true" style="-fx-background-radius: 0;" toggleGroup="$themeColorToggleGroup">
+                           <graphic>
+                              <FontAwesomeIconView fill="#C27F00" glyphName="SQUARE" stroke="BLACK" strokeWidth="2.0" />
+                           </graphic>
+                        </ToggleButton>
+                        <ToggleButton fx:id="color3" mnemonicParsing="false" onAction="#onThemeButtonsClicked" style="-fx-background-radius: 0 5 5 0;" toggleGroup="$themeColorToggleGroup">
+                           <graphic>
+                              <FontAwesomeIconView fill="#003246" glyphName="SQUARE" stroke="BLACK" strokeWidth="2.0" />
+                           </graphic>
+                        </ToggleButton>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <Button fx:id="logoutButton" alignment="BASELINE_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#onLogoutButtonClicked" style="-fx-padding: 2.5 5 2.5 10 !important;" styleClass="btn" wrapText="true">
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="ARROW_LEFT" size="20" />
+                     </graphic>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
              </children>
         </VBox>
     </children>
