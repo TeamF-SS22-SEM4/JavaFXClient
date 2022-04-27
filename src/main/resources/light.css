@@ -1,17 +1,10 @@
 * {
-    -fx-color-primary: #c27f00 !important;
+    -fx-color-alert: rgba(255, 0, 0, 1) !important;
+    -fx-color-text-1: #262626 !important;
+    -fx-color-text-2: #434343 !important;
+    -fx-color-btn-text: -fx-color-text-1 !important;
 
-    -fx-color-background1: #9E9E9E !important;
-    -fx-color-background2: #BDBDBD !important;
-    -fx-color-background3: #E0E0E0 !important;
-    -fx-color-background4: #EEEEEE !important;
-
-    -fx-color-background-hover: -fx-color-background4 !important;
-
-    -fx-color-text1: rgba(0, 0, 0, 1) !important;
-    -fx-color-text2: rgba(0, 0, 0, 0.75) !important;
-
-    -fx-color-buttontext: -fx-color-text1 !important;
-    -fx-color-btn-primary: -fx-color-primary !important;
-    -fx-color-btn-green: rgb(0, 173, 23) !important;
+    -fx-color-bg-1: #aaaaaa !important;
+    -fx-color-bg-2: #e2e2e2 !important;
+    -fx-color-bg-3: #ffffff !important;
 }

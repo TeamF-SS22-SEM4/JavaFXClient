@@ -2,14 +2,14 @@
 
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.control.cell.PropertyValueFactory?>
-<HBox fx:id="ct" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.TopicListController">
+<HBox fx:id="ct" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.SubscribedTopicsListController">
    <children>
       <fx:include source="sidebar.fxml" />
       <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
@@ -19,7 +19,7 @@
                   <HBox alignment="CENTER" />
                   <Pane HBox.hgrow="ALWAYS">
                      <children>
-                        <Text fill="WHITE" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Topics">
+                        <Text fill="WHITE" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscribed Topics">
                            <font>
                               <Font size="36.0" />
                            </font>
@@ -36,13 +36,12 @@
                              <PropertyValueFactory property="name" />
                           </cellValueFactory>
                        </TableColumn>
-                       <TableColumn fx:id="subscribersButtonColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="">
+                       <TableColumn fx:id="amountOfMessagesColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="Messages">
+                          <cellValueFactory>
+                             <PropertyValueFactory property="amountOfMessages" />
+                          </cellValueFactory>
                        </TableColumn>
                        <TableColumn fx:id="viewMessagesButtonColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="">
-                       </TableColumn>
-                       <TableColumn fx:id="newMessageButtonColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="">
-                       </TableColumn>
-                       <TableColumn fx:id="unsubscribeButtonColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="">
                        </TableColumn>
                     </columns>
                   </TableView>

@@ -1,4 +1,4 @@
-package at.fhv.ec.javafxclient.view;
+package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
@@ -70,11 +70,7 @@ public class CustomerController {
                             } else {
                                 addToSaleButton.setOnAction(event -> {
                                     CheckoutController.customer = getTableView().getItems().get(getIndex());
-                                    try {
                                         SceneManager.getInstance().switchView("checkout");
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
                                 });
                                 setGraphic(addToSaleButton);
                                 setText(null);

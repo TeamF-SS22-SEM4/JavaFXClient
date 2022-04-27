@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SessionManager {
+
     private static SessionManager session;
     private static String sessionId;
     private static List<String> roles;
@@ -16,7 +17,6 @@ public class SessionManager {
             roles = new ArrayList<>();
             topicNames = new ArrayList<>();
         }
-
         return session;
     }
 
