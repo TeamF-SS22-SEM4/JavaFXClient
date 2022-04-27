@@ -39,14 +39,17 @@ javafx {
 }
 
 dependencies {
-    implementation 'com.github.TeamF-SS22-SEM4:RMI-Shared-Lib:v31'
+    implementation 'com.github.TeamF-SS22-SEM4:RMI-Shared-Lib:v38'
     implementation 'de.jensd:fontawesomefx-fontawesome:4.7.0-9.1.2'
+    implementation 'org.apache.activemq:activemq-all:5.17.0'
+    implementation 'org.apache.logging.log4j:log4j-api:2.17.2'
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.2'
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 
     runtimeOnly "org.openjfx:javafx-graphics:$javafx.version:win"
-    runtimeOnly "org.openjfx:javafx-graphics:$javafx.version:linux"
+    runtimeOnly "org.openjfx:javafx-graphics:17.0.2:linux" // 11.0.2 doesn't work anymore on Ubuntu 22.04
     runtimeOnly "org.openjfx:javafx-graphics:$javafx.version:mac"
 }
 
