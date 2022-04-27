@@ -1,6 +1,7 @@
 package at.fhv.ec.javafxclient.communication;
 
 import at.fhv.ss22.ea.f.communication.api.RMIFactory;
+
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -30,5 +31,4 @@ public class RMIClient {
     public RMIFactory getRmiFactory() {
         return rmiFactory;
     }
-
 }

@@ -35,10 +35,15 @@
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="USERS" size="20" />
                </graphic></Button>
-            <Button alignment="BASELINE_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#onMessageButtonClicked" styleClass="btn" text="Messages" VBox.vgrow="ALWAYS">
+            <Button fx:id="messageButton" alignment="BASELINE_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#onMessageButtonClicked" styleClass="btn" text="Messages" VBox.vgrow="ALWAYS">
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="ENVELOPE" size="20" />
                </graphic></Button>
+            <Button fx:id="topicsButton" alignment="BASELINE_LEFT" graphicTextGap="20.0" maxHeight="40.0" mnemonicParsing="false" onAction="#onTopicsButtonClicked" prefHeight="40.0" prefWidth="165.0" styleClass="btn" text="Topics">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="ENVELOPE" size="20" />
+               </graphic>
+            </Button>
             <Pane VBox.vgrow="ALWAYS" />
             <VBox spacing="15.0">
                <children>

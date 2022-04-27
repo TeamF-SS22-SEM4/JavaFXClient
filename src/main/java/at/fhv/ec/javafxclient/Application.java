@@ -7,6 +7,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+// TODO: Try and catch!!!
+// TODO: Use consistent initialize
+// TODO: Remove Popups and use statusLabels
 public class Application extends javafx.application.Application {
 
     private static final String STYLESHEET_DEFAULT = "style.css";

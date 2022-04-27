@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<HBox fx:id="ct" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.MessageListController">
+   <children>
+      <fx:include source="sidebar.fxml" />
+      <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
+         <children>
+            <HBox alignment="CENTER_LEFT" styleClass="header" VBox.vgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER" />
+                  <Pane HBox.hgrow="ALWAYS">
+                     <children>
+                        <Text fill="WHITE" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Messages">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Text>
+                     </children></Pane>
+               </children>
+            </HBox>
+            <VBox styleClass="content" VBox.vgrow="ALWAYS">
+               <children>
+                  <TableView fx:id="messageTable" prefHeight="507.0" prefWidth="867.0">
+                    <columns>
+                       <TableColumn fx:id="titleColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="Title">
+                          <cellValueFactory>
+                             <PropertyValueFactory property="title" />
+                          </cellValueFactory>
+                       </TableColumn>
+                       <TableColumn fx:id="contentColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="Preview">
+                          <cellValueFactory>
+                             <PropertyValueFactory property="content" />
+                          </cellValueFactory>
+                       </TableColumn>
+                       <TableColumn fx:id="detailsButtonColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="">
+                       </TableColumn>
+                    </columns>
+                  </TableView>
+               </children></VBox>
+         </children>
+      </VBox>
+   </children>
+</HBox>

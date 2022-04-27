@@ -2,6 +2,7 @@ package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
+import at.fhv.ec.javafxclient.communication.JMSClient;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -15,6 +16,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SidebarController implements Initializable {
+
+    @FXML
+    private Button topicsButton;
 
     public ToggleGroup themeStyleToggleGroup;
     public ToggleGroup themeColorToggleGroup;
@@ -43,7 +47,11 @@ public class SidebarController implements Initializable {
 
     @FXML
     private void onMessageButtonClicked() {
-        SceneManager.getInstance().switchView("shop");
+        SceneManager.getInstance().switchView("subscribed-topics-list");
+
+    @FXML
+    private void onTopicsButtonClicked() throws IOException {
+        SceneManager.getInstance().switchView("all-topics-list");
     }
 
     @FXML
@@ -61,6 +69,7 @@ public class SidebarController implements Initializable {
     private void onLogoutButtonClicked() throws IOException {
         SessionManager.getInstance().logout();
         SceneManager.getInstance().logout();
+        JMSClient.getJmsClient().logout();
     }
 
     @Override
@@ -76,5 +85,9 @@ public class SidebarController implements Initializable {
         });
 
         logoutButton.setText("Log out\njmo8620 FAKE");
+
+        if(!SessionManager.getInstance().getRoles().contains("Operator")) {
+            topicsButton.setVisible(false);
+        }
     }
 }

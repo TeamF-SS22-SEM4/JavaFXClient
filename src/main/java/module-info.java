@@ -2,7 +2,9 @@ module at.fhv.ec.javafxclient {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.rmi;
-    requires RMI.Shared.Lib.v31;
+    requires activemq.all;
+    requires java.naming;
+    requires RMI.Shared.Lib.v38;
     requires java.datatransfer;
     requires java.desktop;
 
