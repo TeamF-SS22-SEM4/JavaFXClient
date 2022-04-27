@@ -350,15 +350,11 @@ public class ShopControllerNew implements Initializable {
                                                                            .withAmount(amount)
                                                                            .build();
 
+                                                                   boolean orderingSuccess = false;
                                                                    try {
-                                                                       boolean orderingSuccess = RMIClient.getRmiClient().getRmiFactory().getOrderingService()
+                                                                       orderingSuccess = RMIClient.getRmiClient().getRmiFactory().getOrderingService()
                                                                                .placeOrder(SessionManager.getInstance().getSessionId(), orderDTO);
 
-                                                                       if (orderingSuccess) {
-                                                                           //TODO success/fail notification (NOT popup) for ordering
-                                                                       } else {
-
-                                                                       }
                                                                    } catch (RemoteException e) {
                                                                        //TODO error handling,
                                                                        e.printStackTrace();
@@ -367,6 +363,7 @@ public class ShopControllerNew implements Initializable {
                                                                    } catch (NoPermissionForOperation e) {
                                                                        e.printStackTrace();
                                                                    }
+                                                                   displayOrderingSuccess(orderingSuccess);
                                                                }
                                                            });
 
@@ -582,5 +579,15 @@ public class ShopControllerNew implements Initializable {
         }
 
         checkIfShoppingCartIsFilled();
+    }
+
+    public void displayOrderingSuccess(boolean success) {
+        if (success) {
+            feedbackLabel.getStyleClass().remove("alert");
+            feedbackLabel.setText("Success - Placed Order");
+        } else {
+            feedbackLabel.getStyleClass().add("alert");
+            feedbackLabel.setText("Failed - while placing order");
+        }
     }
 }
