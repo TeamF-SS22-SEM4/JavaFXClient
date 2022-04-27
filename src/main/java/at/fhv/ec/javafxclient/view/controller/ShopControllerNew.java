@@ -8,10 +8,7 @@ import at.fhv.ec.javafxclient.view.animator.TextAnimator;
 import at.fhv.ec.javafxclient.view.animator.TextOutput;
 import at.fhv.ec.javafxclient.view.utils.ShoppingCartEntry;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
-import at.fhv.ss22.ea.f.communication.dto.ProductDetailsDTO;
-import at.fhv.ss22.ea.f.communication.dto.ProductOverviewDTO;
-import at.fhv.ss22.ea.f.communication.dto.SongDTO;
-import at.fhv.ss22.ea.f.communication.dto.SoundCarrierDTO;
+import at.fhv.ss22.ea.f.communication.dto.*;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
@@ -51,6 +48,7 @@ public class ShopControllerNew implements Initializable {
     private TableColumn<ProductOverviewDTO, Button> detailsButtonColumn;
     @FXML
     private TableColumn<ProductOverviewDTO, Button> buyButtonColumn;
+
     @FXML
     private VBox rootContainer;
     @FXML
@@ -298,14 +296,96 @@ public class ShopControllerNew implements Initializable {
                                     addToCartColumn.setMaxWidth(110);
                                     addToCartColumn.setStyle("-fx-alignment: center-right;");
 
+                                    TableColumn<SoundCarrierDTO, Button> orderColumn = new TableColumn<>();
+                                    orderColumn.setStyle("-fx-alignment: center-right;");
+                                    orderColumn.setMinWidth(200);
+                                    orderColumn.setMaxWidth(200);
+
                                     ObservableList<SoundCarrierDTO> priceList = FXCollections.observableArrayList(productDetails.getSoundCarriers());
                                     priceTable.setItems(priceList);
-                                    priceTable.getColumns().addAll(soundCarrierNameColumn, amountAvailableColumn, pricePerCarrierColumn, selectAmountColumn, addToCartColumn);
+                                    priceTable.getColumns().addAll(soundCarrierNameColumn, amountAvailableColumn, pricePerCarrierColumn, selectAmountColumn, addToCartColumn, orderColumn);
                                     priceTable.getSortOrder().add(soundCarrierNameColumn);
                                     priceTable.sort();
                                     priceTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
                                     heading.setText(productDetails.getName() + " - " + productDetails.getArtistName());
+
+                                    orderColumn.setCellFactory(new Callback<>() {
+                                           @Override
+                                           public TableCell<SoundCarrierDTO, Button> call(TableColumn<SoundCarrierDTO, Button> param) {
+                                               return new TableCell<>() {
+                                                   private final Pane wrappingPane = new Pane();
+                                                   private Button startButton = new Button("Order");
+                                                   private HBox replacement = new HBox();
+                                                   private Spinner amountInput = new Spinner();
+                                                   private Button orderButton = new Button("->");
+                                                   private Button quitButton = new Button("X");
+
+                                                   @Override
+                                                   protected void updateItem(Button item, boolean empty) {
+                                                       super.updateItem(item, empty);
+                                                       if (empty) {
+                                                           setGraphic(null);
+                                                       } else {
+                                                           wrappingPane.getChildren().add(startButton);
+                                                           quitButton.setOnAction(quitEvent -> {
+                                                               wrappingPane.getChildren().remove(replacement);
+                                                               wrappingPane.getChildren().add(startButton);
+                                                           });
+                                                           quitButton.getStyleClass().add("btn");
+                                                           replacement.getChildren().add(quitButton);
+                                                           replacement.getChildren().add(amountInput);
+                                                           replacement.getChildren().add(orderButton);
+                                                           orderButton.getStyleClass().add("btn-success");
+                                                           orderButton.setOnAction(orderEvent -> {
+                                                               int amount = (Integer) amountInput.getValue();
+                                                               if (amount > 0) {
+                                                                   wrappingPane.getChildren().remove(replacement);
+                                                                   wrappingPane.getChildren().add(startButton);
+
+                                                                   SoundCarrierOrderDTO orderDTO = SoundCarrierOrderDTO.builder()
+                                                                           .withOrderId(UUID.randomUUID())
+                                                                           .withCarrierId(getTableView().getItems().get(getIndex()).getSoundCarrierId())
+                                                                           .withAmount(amount)
+                                                                           .build();
+
+                                                                   try {
+                                                                       boolean orderingSuccess = RMIClient.getRmiClient().getRmiFactory().getOrderingService()
+                                                                               .placeOrder(SessionManager.getInstance().getSessionId(), orderDTO);
+
+                                                                       if (orderingSuccess) {
+                                                                           //TODO success/fail notification (NOT popup) for ordering
+                                                                       } else {
+
+                                                                       }
+                                                                   } catch (RemoteException e) {
+                                                                       //TODO error handling,
+                                                                       e.printStackTrace();
+                                                                   } catch (SessionExpired e) {
+                                                                       e.printStackTrace();
+                                                                   } catch (NoPermissionForOperation e) {
+                                                                       e.printStackTrace();
+                                                                   }
+                                                               }
+                                                           });
+
+                                                           startButton.setOnAction(event -> {
+                                                               amountInput.setMaxWidth(100);
+                                                               amountInput.setValueFactory(
+                                                                       new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                                                                               0,
+                                                                               100
+                                                                       )
+                                                               );
+                                                               wrappingPane.getChildren().remove(startButton);
+                                                               wrappingPane.getChildren().add(replacement);
+                                                           });
+                                                           setGraphic(wrappingPane);
+                                                       }
+                                                   }
+                                               };
+                                           }
+                                       });
 
                                     pricePerCarrierColumn.setCellFactory(new Callback<>() {
                                         @Override
