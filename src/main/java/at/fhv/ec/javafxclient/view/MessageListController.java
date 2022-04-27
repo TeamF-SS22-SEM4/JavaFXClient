@@ -26,7 +26,6 @@ public class MessageListController {
     private TableColumn<CustomMessage, Button> detailsButtonColumn;
 
     public void initialize() {
-        // Get plain messages from jms and create Messages for the table
         initTable();
 
         List<CustomMessage> customMessages = JMSClient.getJmsClient().getMessagesByTopic(topicName);

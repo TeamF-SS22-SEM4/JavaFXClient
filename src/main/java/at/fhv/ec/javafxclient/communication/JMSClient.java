@@ -1,10 +1,16 @@
 package at.fhv.ec.javafxclient.communication;
 
+import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.model.CustomMessage;
+import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
+import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.ActiveMQSession;
 
 import javax.jms.*;
+import java.rmi.RemoteException;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class JMSClient {
@@ -61,8 +67,28 @@ public class JMSClient {
 
                         String title = textMessage.getText().split("\n")[0];
                         String content = textMessage.getText().split("\n")[1];
-                        addMessageToTopic(topic, new CustomMessage(message.getJMSMessageID(), title, content));
+                        addMessageToTopic(topic, new CustomMessage(message.getJMSMessageID(), title, content, new Date(message.getJMSTimestamp())));
+
+                        LocalDateTime lastViewed = RMIClient.getRmiClient()
+                                .getRmiFactory()
+                                .getMessagingService()
+                                .getLastViewed(SessionManager.getInstance().getSessionId());
+
+                        LocalDateTime messageDateTime = LocalDateTime.ofInstant(
+                                Instant.ofEpochMilli(message.getJMSTimestamp()),
+                                TimeZone.getDefault().toZoneId()
+                        );
+
+                        if(messageDateTime.isAfter(lastViewed)) {
+                            SessionManager.getInstance().onNewMessageReceived();
+                        }
                     } catch (JMSException e) {
+                        throw new RuntimeException(e);
+                    } catch (SessionExpired e) {
+                        throw new RuntimeException(e);
+                    } catch (NoPermissionForOperation e) {
+                        throw new RuntimeException(e);
+                    } catch (RemoteException e) {
                         throw new RuntimeException(e);
                     }
                 });
