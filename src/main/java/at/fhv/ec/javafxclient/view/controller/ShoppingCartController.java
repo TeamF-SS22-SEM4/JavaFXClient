@@ -1,4 +1,4 @@
-package at.fhv.ec.javafxclient.view;
+package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.view.utils.ShoppingCartEntry;
@@ -56,11 +56,7 @@ public class ShoppingCartController {
     @FXML
     protected void onCheckoutButtonClicked() {
         if(shoppingCart.size() > 0) {
-            try {
                 SceneManager.getInstance().switchView("checkout");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         } else {
             showPopup(
                     "Error",

@@ -1,31 +1,30 @@
-/*****************************/
-/* DEFAULT VALUES            */
-/*****************************/
+/********************************************************************************/
+/* DEFAULT VALUES                                                               */
+/********************************************************************************/
 * {
-    -fx-color-primary: #c27f00;
+    -fx-color-primary: rgb(194, 127, 0);
+    -fx-color-success: #006708;
+    -fx-color-alert: rgba(255, 0, 0, 1);
+    -fx-color-text-1: #fafafa;
+    -fx-color-text-2: #c2c2c2;
+    -fx-color-btn-text: #262626;
 
-    -fx-color-background1: #212121;
-    -fx-color-background2: #424242;
-    -fx-color-background3: #616161;
-    -fx-color-background4: #757575;
-    -fx-color-background-hover: -fx-color-background4;
-
-    -fx-color-text1: rgba(255, 255, 255, 1);
-    -fx-color-text2: rgba(255, 255, 255, 0.75);
-
-    -fx-color-buttontext: -fx-color-text1;
-    -fx-color-btn-primary: -fx-color-primary;
-    -fx-color-btn-green: rgb(0, 173, 23);
+    -fx-color-bg-1: #282828;
+    -fx-color-bg-2: #424242;
+    -fx-color-bg-3: #616161;
+    -fx-color-bg-hover: rgba(194, 127, 0, 0.15);
 }
 
 .root {
     -fx-pref-height: 648;
     -fx-pref-width: 1152;
     -fx-font: 14px "Helvetica";
+    -fx-focus-color: -fx-color-primary;
+    -fx-faint-focus-color: transparent;
 }
-/*****************************/
-/* LOGIN                     */
-/*****************************/
+/********************************************************************************/
+/* LOGIN                                                                        */
+/********************************************************************************/
 .login-background {
     -fx-background-image: url("images/background.jpg");
     -fx-background-size: cover;
@@ -33,63 +32,67 @@
 }
 
 .login-content {
-    -fx-background-color: -fx-color-background2;
+    -fx-background-color: -fx-color-bg-2;
     -fx-background-radius: 5;
     -fx-padding: 40 50 40 50;
     -fx-spacing: 15;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,1), 10, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, -fx-color-bg-2, 15, 0, 0, 0);
 }
 
-.login-textfield {
-    -fx-background-color: transparent;
-    -fx-text-fill: -fx-color-text2;
-    -fx-prompt-text-fill: -fx-color-text2;
-    -fx-border-color: -fx-color-text2;
-    -fx-border-width: 0 0 2 0;
-    -fx-min-width: 200;
-    -fx-max-width: 200;
-}
-
-
-
-.login-textfield:focused {
-    -fx-text-fill: -fx-color-text1;
-    -fx-prompt-text-fill: -fx-color-text1;
-    -fx-border-color: -fx-color-btn-primary;
-}
-
-.login-icon {
-    -fx-fill: -fx-color-text2;
-}
-
-/* LOGIN TEXT COLORS ALSO SET STATIC WHITE AND RED IN CONTROLLER */
 .login-text {
-    -fx-text-fill: -fx-color-text1;
+    -fx-text-fill: -fx-color-text-1;
     -fx-max-width: 200;
     -fx-padding: 10 0 10 0;
 }
 
-.login-button {
-    -fx-text-fill: -fx-color-text2;
+.login-icon {
+    -fx-fill: -fx-color-text-2;
+}
+
+.login-textfield {
     -fx-background-color: transparent;
-    -fx-border-color: -fx-color-btn-primary;
+    -fx-text-fill: -fx-color-text-2;
+    -fx-prompt-text-fill: -fx-color-text-2;
+    -fx-border-color: -fx-color-text-2;
+    -fx-border-width: 0 0 2 0;
+    -fx-min-width: 225;
+    -fx-max-width: 225;
+}
+
+.login-textfield:focused {
+    -fx-text-fill: -fx-color-text-1;
+    -fx-prompt-text-fill: -fx-color-text-1;
+    -fx-border-color: -fx-color-primary;
+}
+
+.login-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-color-text-2;
+    -fx-border-color: -fx-color-primary;
     -fx-border-width: 2;
     -fx-border-radius: 5;
 }
 
 .login-button:pressed, .login-button:focused, .login-button:hover {
+    -fx-background-color: -fx-color-primary;
+    -fx-text-fill: -fx-color-text-1;
     -fx-font-weight: bold;
-    -fx-text-fill: -fx-color-text1;
-    -fx-background-color: -fx-color-btn-primary;
     -fx-background-radius: 5;
 }
-/*****************************/
-/* SIDEBAR                   */
-/*****************************/
+/********************************************************************************/
+/* SIDEBAR                                                                      */
+/********************************************************************************/
 .sidebar {
     -fx-min-width: 225;
     -fx-max-width: 225;
-    -fx-background-color: -fx-color-background1;
+    -fx-background-color: -fx-color-bg-1;
+}
+
+.sidebar-logo {
+    -fx-background-image: url(images/logo_2.png);
+    -fx-background-size: contain;
+    -fx-background-repeat: stretch;
+    -fx-background-position: center;
 }
 
 .sidebar-top {
@@ -103,17 +106,29 @@
 }
 
 .sidebar-body Button {
-    -fx-max-height: 20;
     -fx-max-width: infinity;
-    -fx-padding: 10 10 10 20;
+    -fx-padding: 10 10 10 15;
 }
-/*****************************/
-/* HEADER                    */
-/*****************************/
+
+.sidebar-body ToggleButton {
+    -fx-max-width: infinity;
+    -fx-background-color: -fx-color-primary;
+    -fx-opacity: 0.5;
+}
+
+.sidebar-body ToggleButton:selected,
+.sidebar-body ToggleButton:selected FontAwesomeIconView,
+.sidebar-body ToggleButton:hover,
+.sidebar-body ToggleButton:hover FontAwesomeIconView {
+    -fx-opacity: 1;
+}
+/********************************************************************************/
+/* HEADER                                                                       */
+/********************************************************************************/
 .header {
     -fx-min-height: 100;
     -fx-max-height: 100;
-    -fx-background-color: -fx-color-background2;
+    -fx-background-color: -fx-color-bg-2;
     -fx-padding: 32.5 30 32.5 30;
     -fx-spacing: 20;
     -fx-alignment: center;
@@ -130,95 +145,118 @@
 .searchbar-textfield {
     -fx-background-radius: 0;
     -fx-min-width: 300;
-    -fx-prompt-text-fill: -fx-color-text2;
-    -fx-font-weight: bold;
-    -fx-text-fill: -fx-color-text1;
-    -fx-background-color: -fx-color-background3;
+    -fx-text-fill: -fx-color-text-1;
+    -fx-prompt-text-fill: -fx-color-text-2;
+    -fx-background-color: -fx-color-bg-3;
 
 }
 
 .header Button, .header TextField {
     -fx-max-height: infinity;
 }
-/*****************************/
-/* CONTENT                   */
-/*****************************/
+/********************************************************************************/
+/* CONTENT                                                                      */
+/********************************************************************************/
 .content {
-    -fx-padding: 30;
-    -fx-background-color: -fx-color-background3;
+    -fx-padding: 15;
+    -fx-background-color: -fx-color-bg-3;
 }
-/*****************************/
-/* BUTTONS                   */
-/*****************************/
+/********************************************************************************/
+/* BUTTONS                                                                      */
+/********************************************************************************/
+Button, ToggleButton {
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2 !important;
+    -fx-border-insets: 0 0 -1 0, 0, 1, 2 !important;
+}
+
 .btn, .btn FontAwesomeIconView {
-    -fx-text-fill: -fx-color-buttontext;
-    -fx-fill: -fx-color-buttontext;
-    -fx-font-weight: bold;
-    -fx-background-color: -fx-color-btn-primary;
+    -fx-text-fill: -fx-color-btn-text;
+    -fx-fill: -fx-color-btn-text;
+    -fx-background-color: -fx-color-primary;
     -fx-background-radius: 5;
-    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
 }
 
-.btn-green, .btn-green FontAwesomeIconView {
-    -fx-text-fill: -fx-color-buttontext;
-    -fx-fill: -fx-color-buttontext;
-    -fx-font-weight: bold;
-    -fx-background-color: -fx-color-btn-green;
+.btn-success, .btn-success FontAwesomeIconView {
+    -fx-text-fill: -fx-color-btn-text;
+    -fx-fill: -fx-color-btn-text;
+    -fx-background-color: -fx-color-success;
     -fx-background-radius: 5;
-    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
-
 }
 
-.btn-toggle, .btn-toggle FontAwesomeIconView {
-
-    -fx-background-color: -fx-color-btn-primary;
-    -fx-background-radius: 0;
-    -fx-opacity: 0.7;
-    -fx-pref-width: 50;
-    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
-
+.btn-alert, .btn-alert FontAwesomeIconView {
+    -fx-text-fill: -fx-color-primary !important;
+    -fx-fill: -fx-color-primary !important;
+    -fx-background-color: -fx-color-btn-text !important;
+    -fx-border-color: -fx-color-primary !important;
+    -fx-background-radius: 10 !important;
+    -fx-border-width: 3 !important;
+    -fx-border-radius: 5 !important;
+}
+/********************************************************************************/
+/* CHOICE BOX                                                                   */
+/********************************************************************************/
+.choice-box {
+    -fx-background-color: transparent;
+    -fx-mark-color: -fx-color-text-2;
 }
 
-.btn-toggle:selected, .btn-toggle:hover,
-.btn-toggle:selected FontAwesomeIconView, .btn-toggle:hover FontAwesomeIconView {
-    -fx-opacity: 1;
+.choice-box > .label {
+    -fx-text-fill: -fx-color-text-2;
 }
-/*****************************/
-/* TABLE                     */
-/*****************************/
+
+.choice-box:focused > .label {
+    -fx-text-fill: -fx-color-text-1;
+}
+
+.choice-box .context-menu {
+    -fx-background-color: -fx-color-bg-3;
+}
+
+.choice-box .menu-item > .label {
+    -fx-text-fill: -fx-color-text-2;
+}
+
+.choice-box .menu-item:focused {
+    -fx-background-color: -fx-color-primary;
+}
+
+.choice-box .menu-item:focused > .label {
+    -fx-text-fill: -fx-color-text-1;
+}
+/********************************************************************************/
+/* TABLE                                                                        */
+/********************************************************************************/
 .table-view,
 .table-view .column-header,
 .table-view .column-header-background,
 .table-view .column-header-background .filler,
 .table-view .corner {
-    -fx-background-color: -fx-color-background2;
+    -fx-background-color: -fx-color-bg-2;
 }
 
 .table-view {
-    -fx-padding: 0  10 0 10;
+    -fx-padding: 0 10 10 10;
 }
 
 .table-view .column-header-background{
     -fx-padding: 5;
-    -fx-text-background-color: -fx-color-text2;
+    -fx-text-background-color: -fx-color-text-1;
     -fx-font-size: 16;
-    -fx-border-color: -fx-color-text2;
+    -fx-border-color: -fx-color-text-2;
     -fx-border-width: 0 0 2 0;
 }
 
 .table-view .table-row-cell, .table-view .table-cell {
     -fx-border-color: transparent;
     -fx-background-color: transparent;
-    -fx-text-background-color: -fx-color-text2;
-    -fx-cell-size: 50;
-    -fx-padding: 0 5 0 5;
+    -fx-text-background-color: -fx-color-text-2;
+    -fx-cell-size: 40;
     -fx-alignment: center-left;
 }
 
 .table-view .table-row-cell:filled:hover .table-cell, .table-view .column-header:hover{
-    -fx-background-color: -fx-color-background-hover;
-    -fx-text-background-color: -fx-color-text1;
-    -fx-text-fill: -fx-color-text1;
+    -fx-background-color: -fx-color-bg-hover;
+    -fx-text-fill: -fx-color-text-1;
     -fx-font-weight: bold;
 }
 
@@ -226,46 +264,39 @@
 .table-view .scroll-bar {
     -fx-background-color: transparent;
 }
+/********************************************************************************/
+/* MODAL                                                                        */
+/********************************************************************************/
+.modal-header {
+    -fx-padding: 15;
+    -fx-border-color: -fx-color-primary;
+    -fx-border-width: 2 2 0 2;
+    -fx-background-color: -fx-color-bg-2;
+    -fx-alignment: center-left;
+}
 
-
-
-
-
-
-.choice-box .context-menu { -fx-background-color: -fx-color-background3; }
-
-
-.choice-box .menu-item:focused { -fx-background-color: -fx-color-primary; }
-.choice-box .menu-item > .label { -fx-text-fill: -fx-color-text2; }
-.choice-box .menu-item:focused > .label { -fx-text-fill: -fx-color-text1; }
-.choice-box {
+.modal-content {
+    -fx-padding: 15;
+    -fx-border-color: -fx-color-primary;
+    -fx-border-width: 0 2 2 2;
+    -fx-background-color: -fx-color-bg-3;
+    -fx-alignment: center;
+}
+/********************************************************************************/
+/* SPINNER                                                                      */
+/********************************************************************************/
+.spinner {
     -fx-background-color: transparent;
-    -fx-mark-color: -fx-color-text2;
+    -fx-base: transparent;
 }
 
-.choice-box > .label { -fx-text-fill: -fx-color-text2; }
+.spinner:focused {
+    -fx-border-width: 1;
+    -fx-background-insets: 2;
+    -fx-border-radius: 4;
+    -fx-border-color: -fx-color-primary;
 
-.choice-box:focused > .label { -fx-text-fill: -fx-color-text1; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-.modal {
-    -fx-background-color: green;
-    -fx-min-height: 200;
-    -fx-min-width: 400;
 }
-
-
 
 #contentTextArea {
     -fx-font-family: Consolas;
@@ -280,18 +311,80 @@
 /*****************************/
 /* ELEMENTS                  */
 /*****************************/
+.spinner .text-field {
+    -fx-alignment: center-right;
+    -fx-background-color: -fx-color-bg-3;
+    -fx-text-fill: -fx-color-text-1;
+    -fx-background-insets: 0;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: -fx-color-primary;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-opacity: 0.8;
+}
+.spinner .increment-arrow-button:hover:pressed,
+.spinner .decrement-arrow-button:hover:pressed,
+.spinner .increment-arrow-button:pressed,
+.spinner .decrement-arrow-button:pressed {
+    -fx-opacity: 1;
+}
+
+.spinner .increment-arrow-button .increment-arrow,
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: -fx-color-btn-text;
+}
+/********************************************************************************/
+/* HYPERLINK                                                                    */
+/********************************************************************************/
+Hyperlink {
+    -fx-text-fill: -fx-color-primary;
+    -fx-padding: 0 !important;
+}
+
+Hyperlink:hover {
+    -fx-text-fill: -fx-color-primary;
+}
+
+Hyperlink:focused {
+    -fx-border-width: 0;
+}
+/********************************************************************************/
+/* ELEMENTS                                                                     */
+/********************************************************************************/
 .h1 {
     -fx-font-size: 28;
-    -fx-text-fill: -fx-color-text1;
+    -fx-text-fill: -fx-color-text-1;
     -fx-font-weight: bold;
 }
 
 .h2 {
     -fx-font-size: 16;
-    -fx-text-fill: -fx-color-text1;
+    -fx-text-fill: -fx-color-text-1;
     -fx-font-weight: bold;
 }
 
-.p {
-    -fx-text-fill: -fx-color-text1;
+.color-text-1 {
+    -fx-text-fill: -fx-color-text-1;
+}
+
+.color-text-2 {
+    -fx-text-fill: -fx-color-text-2;
+}
+
+.p-1 {
+    -fx-text-fill: -fx-color-text-1;
+}
+
+.p-1-bold {
+    -fx-text-fill: -fx-color-text-1;
+    -fx-font-weight: bold;
+}
+
+.alert {
+    -fx-text-fill: -fx-color-alert !important;
 }

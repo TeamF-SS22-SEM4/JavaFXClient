@@ -1,4 +1,4 @@
-package at.fhv.ec.javafxclient.view;
+package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.communication.JMSClient;
@@ -13,7 +13,6 @@ import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MessageListController {
@@ -51,13 +50,9 @@ public class MessageListController {
                             setText(null);
                         } else {
                             detailsButton.setOnAction(event -> {
-                                try {
-                                    MessageDetailsController.topicName = topicName;
-                                    MessageDetailsController.customMessage = getTableView().getItems().get(getIndex());
-                                    SceneManager.getInstance().switchView("message-details");
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                MessageDetailsController.topicName = topicName;
+                                MessageDetailsController.customMessage = getTableView().getItems().get(getIndex());
+                                SceneManager.getInstance().switchView("message-details");
                             });
 
                             setGraphic(detailsButton);

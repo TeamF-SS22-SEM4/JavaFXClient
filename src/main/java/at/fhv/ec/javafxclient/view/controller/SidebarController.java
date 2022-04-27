@@ -1,4 +1,4 @@
-package at.fhv.ec.javafxclient.view;
+package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,24 +22,25 @@ public class SidebarController implements Initializable {
     public ToggleGroup themeStyleToggleGroup;
     public ToggleGroup themeColorToggleGroup;
     public ToggleButton dark;
-    public ToggleButton color1;
+    public Button logoutButton;
+    public ImageView logoImageView;
 
     @FXML
-    private void onLogoClicked() throws IOException {
+    private void onLogoClicked() {
         SceneManager.getInstance().switchView("shop");
     }
     @FXML
-    private void onShopButtonClicked() throws IOException {
+    private void onShopButtonClicked() {
         SceneManager.getInstance().switchView("shop");
     }
 
     @FXML
-    private void onExchangeButtonClicked() throws IOException {
+    private void onExchangeButtonClicked() {
         SceneManager.getInstance().switchView("exchange");
     }
 
     @FXML
-    private void onCustomerButtonClicked() throws IOException {
+    private void onCustomerButtonClicked() {
         SceneManager.getInstance().switchView("customer");
     }
 
@@ -85,5 +87,7 @@ public class SidebarController implements Initializable {
         if(!SessionManager.getInstance().getRoles().contains("Operator")) {
             topicsButton.setVisible(false);
         }
+
+        logoutButton.setText("Log out\njmo8620 FAKE");
     }
 }

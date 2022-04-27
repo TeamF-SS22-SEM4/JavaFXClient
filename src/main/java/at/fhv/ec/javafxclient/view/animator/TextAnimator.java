@@ -25,29 +25,26 @@ public class TextAnimator implements Runnable{
         textOutput.writeText(fixedTextElement);
 
         try {
+
             Thread.sleep(initialWaitingTime);
 
             while (!firstRun || endless) {
 
-                for (int i = 0; i < dynamicTextElements.length; i++) {
+                for (String dynamicTextElement : dynamicTextElements) {
 
-
-                    for (int j = 0; j <= dynamicTextElements[i].length(); j++) {
-                        String textAtThisPoint = dynamicTextElements[i].substring(0,j);
+                    for (int j = 0; j <= dynamicTextElement.length(); j++) {
+                        String textAtThisPoint = dynamicTextElement.substring(0, j);
                         textOutput.writeText(fixedTextElement + textAtThisPoint);
                         Thread.sleep(animationTime);
                     }
-
                     Thread.sleep(3000);
 
-                    for (int j = dynamicTextElements[i].length(); j >= 0; j--) {
-                        String textAtThisPoint = dynamicTextElements[i].substring(0,j);
+                    for (int j = dynamicTextElement.length(); j >= 0; j--) {
+                        String textAtThisPoint = dynamicTextElement.substring(0, j);
                         textOutput.writeText(fixedTextElement + textAtThisPoint);
                         Thread.sleep(animationTime);
                     }
-
                     Thread.sleep(750);
-
                 }
 
                 firstRun = true;
@@ -56,6 +53,6 @@ public class TextAnimator implements Runnable{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
+
 }

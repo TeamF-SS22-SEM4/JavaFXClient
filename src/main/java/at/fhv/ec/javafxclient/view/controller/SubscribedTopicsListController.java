@@ -1,4 +1,4 @@
-package at.fhv.ec.javafxclient.view;
+package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
@@ -77,12 +77,8 @@ public class SubscribedTopicsListController {
                             setText(null);
                         } else {
                             viewMessagesButton.setOnAction(event -> {
-                                try {
-                                    MessageListController.topicName = getTableView().getItems().get(getIndex()).getName();
-                                    SceneManager.getInstance().switchView("message-list");
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                MessageListController.topicName = getTableView().getItems().get(getIndex()).getName();
+                                SceneManager.getInstance().switchView("message-list");
                             });
 
                             setGraphic(viewMessagesButton);

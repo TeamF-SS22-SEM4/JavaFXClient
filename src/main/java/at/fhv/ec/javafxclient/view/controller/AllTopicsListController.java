@@ -1,4 +1,4 @@
-package at.fhv.ec.javafxclient.view;
+package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.model.Topic;
@@ -61,12 +61,8 @@ public class AllTopicsListController {
                             setText(null);
                         } else {
                             newMessageButton.setOnAction(event -> {
-                                try {
-                                    SendMessageController.topicName = getTableView().getItems().get(getIndex()).getName();
-                                    SceneManager.getInstance().switchView("send-message");
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                SendMessageController.topicName = getTableView().getItems().get(getIndex()).getName();
+                                SceneManager.getInstance().switchView("send-message");
                             });
                             setGraphic(newMessageButton);
                             setText(null);

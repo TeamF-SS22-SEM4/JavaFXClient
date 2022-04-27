@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Text?>
 
 <?import javafx.scene.control.cell.PropertyValueFactory?>
-<HBox fx:id="ct" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.MessageListController">
+<HBox fx:id="ct" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.MessageListController">
    <children>
       <fx:include source="sidebar.fxml" />
       <VBox minWidth="400.0" HBox.hgrow="ALWAYS">

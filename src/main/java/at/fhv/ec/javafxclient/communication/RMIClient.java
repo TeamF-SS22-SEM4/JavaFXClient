@@ -9,10 +9,11 @@ import java.rmi.RemoteException;
 
 public class RMIClient {
 
-    private static RMIClient rmiClient;
-    private RMIFactory rmiFactory;
     private static final String PROTOCOL = "rmi://";
     private static final String STUB = "/RMIFactory";
+
+    private static RMIClient rmiClient;
+    private RMIFactory rmiFactory;
 
     private RMIClient() {}
 

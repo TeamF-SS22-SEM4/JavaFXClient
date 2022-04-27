@@ -1,4 +1,4 @@
-package at.fhv.ec.javafxclient.view;
+package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
@@ -233,9 +233,9 @@ public class ProductDetailsController {
         alert.show();
     }
 
-    @FXML
-    public void onBackButtonClicked() throws IOException {
-        SceneManager.getInstance().switchView("shop");
-    }
+//    @FXML
+//    public void onBackButtonClicked() throws IOException {
+//        SceneManager.getInstance().switchView("shop");
+//    }
 
 }
