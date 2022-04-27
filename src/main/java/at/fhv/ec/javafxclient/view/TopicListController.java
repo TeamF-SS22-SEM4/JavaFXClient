@@ -200,19 +200,20 @@ public class TopicListController {
                                 String topicName = getTableView().getItems().get(getIndex()).getName();
 
                                 try {
-                                    RMIClient.getRmiClient().getRmiFactory().getMessagingService().unsubscribeFrom(
-                                            SessionManager.getInstance().getSessionId(),
-                                            topicName
-                                    );
+//                                    RMIClient.getRmiClient().getRmiFactory().getMessagingService().unsubscribeFrom(
+//                                            SessionManager.getInstance().getSessionId(),
+//                                            topicName
+//                                    );
 
                                     SceneManager.getInstance().switchView("topic-list");
                                 } catch (RemoteException e) {
                                     throw new RuntimeException(e);
-                                } catch (SessionExpired e) {
-                                    throw new RuntimeException(e);
-                                } catch (NoPermissionForOperation e) {
-                                    throw new RuntimeException(e);
-                                } catch (IOException e) {
+                                } //catch (SessionExpired e) {
+//                                    throw new RuntimeException(e);
+//                                } catch (NoPermissionForOperation e) {
+//                                    throw new RuntimeException(e);
+//                                }
+                                catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
                             });

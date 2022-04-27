@@ -8,6 +8,7 @@ import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.ProductDetailsDTO;
 import at.fhv.ss22.ea.f.communication.dto.SongDTO;
 import at.fhv.ss22.ea.f.communication.dto.SoundCarrierDTO;
+import at.fhv.ss22.ea.f.communication.dto.SoundCarrierOrderDTO;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
@@ -142,9 +143,7 @@ public class ProductDetailsController {
                                             0
                                     )
                             );
-
                             selectAmountSpinner.setId(getTableView().getItems().get(getIndex()).getSoundCarrierName());
-
                             setGraphic(selectAmountSpinner);
                         }
                     }
