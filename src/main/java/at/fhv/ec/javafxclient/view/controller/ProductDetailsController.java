@@ -8,12 +8,15 @@ import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.ProductDetailsDTO;
 import at.fhv.ss22.ea.f.communication.dto.SongDTO;
 import at.fhv.ss22.ea.f.communication.dto.SoundCarrierDTO;
+import at.fhv.ss22.ea.f.communication.dto.SoundCarrierOrderDTO;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -23,6 +26,8 @@ import java.util.UUID;
 public class ProductDetailsController {
     public static UUID productId;
     private static ProductDetailsDTO productDetails;
+
+    //TODO can this class be deleted?
 
     // Services
     ProductSearchService productSearchService;
@@ -64,6 +69,9 @@ public class ProductDetailsController {
     private TableColumn<SoundCarrierDTO, Button> addToCartColumn;
 
     @FXML
+    private TableColumn<SoundCarrierDTO, Integer> orderButtonColumn;
+
+    @FXML
     public void initialize() {
         try {
             productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
@@ -89,14 +97,10 @@ public class ProductDetailsController {
         fillSoundCarrierTable();
     }
 
-
-
     @FXML
     private void onShoppingCartButtonClicked() throws IOException {
         SceneManager.getInstance().switchView("shoppingcart");
     }
-
-
 
     private void createSoundCarrierTable() {
         // Initialize Table Columns
@@ -141,15 +145,86 @@ public class ProductDetailsController {
                                             0
                                     )
                             );
-
                             selectAmountSpinner.setId(getTableView().getItems().get(getIndex()).getSoundCarrierName());
-
                             setGraphic(selectAmountSpinner);
                         }
                     }
                 };
             }
         };
+
+        orderButtonColumn.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<SoundCarrierDTO, Integer> call(TableColumn<SoundCarrierDTO, Integer> param) {
+                return new TableCell<>() {
+
+                    private final Pane wrappingPane = new Pane();
+                    private Button startButton = new Button("Order");
+                    private HBox replacement = new HBox();
+                    private Spinner amountInput = new Spinner();
+                    private Button orderButton = new Button("->");
+                    private Button quitButton = new Button("X");
+
+                    @Override
+                    public void updateItem(Integer item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            wrappingPane.getChildren().add(startButton);
+                            quitButton.setOnAction(quitEvent -> {
+                                wrappingPane.getChildren().remove(replacement);
+                                wrappingPane.getChildren().add(startButton);
+                            });
+                            replacement.getChildren().add(quitButton);
+                            replacement.getChildren().add(amountInput);
+                            replacement.getChildren().add(orderButton);
+                            orderButton.setOnAction(orderEvent -> {
+                                int amount = (Integer) amountInput.getValue();
+                                if (amount > 0) {
+                                    //TODO success/fail notification (NOT popup) for ordering
+                                    wrappingPane.getChildren().remove(replacement);
+                                    wrappingPane.getChildren().add(startButton);
+
+                                    SoundCarrierOrderDTO orderDTO = SoundCarrierOrderDTO.builder()
+                                            .withOrderId(UUID.randomUUID())
+                                            .withCarrierId(getTableView().getItems().get(getIndex()).getSoundCarrierId())
+                                            .withAmount(amount)
+                                            .build();
+
+                                    try {
+                                        RMIClient.getRmiClient().getRmiFactory().getOrderingService()
+                                                .placeOrder(SessionManager.getInstance().getSessionId(), orderDTO);
+                                    } catch (RemoteException e) {
+                                        //TODO error handling,
+                                        e.printStackTrace();
+                                    } catch (SessionExpired e) {
+                                        e.printStackTrace();
+                                    } catch (NoPermissionForOperation e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+                            startButton.setOnAction(event -> {
+                                amountInput.setMaxWidth(100);
+                                amountInput.setValueFactory(
+                                        new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                                                0,
+                                                100
+                                        )
+                                );
+                                wrappingPane.getChildren().remove(startButton);;
+                                wrappingPane.getChildren().add(replacement);
+                            });
+                            setGraphic(wrappingPane);
+                            setText(null);
+                        }
+                    }
+                };
+            }
+        });
 
         // TODO: use a more beautiful solution
         addToCartColumn.setCellFactory(new Callback<>() {
