@@ -34,27 +34,27 @@
                           <PropertyValueFactory property="productName" />
                       </cellValueFactory>
                   </TableColumn>
-                  <TableColumn prefWidth="50.0" maxWidth="200" fx:id="carrierTypeColumn" text="Carriertype" >
+                  <TableColumn prefWidth="50.0" maxWidth="200" fx:id="carrierTypeColumn" text="Carriertype" style="-fx-alignment: center;">
                       <cellValueFactory>
                           <PropertyValueFactory property="carrierType" />
                       </cellValueFactory>
                   </TableColumn>
-                  <TableColumn prefWidth="80.0" maxWidth="100" fx:id="employeeColumn" text="Ordered by" >
+                  <TableColumn prefWidth="80.0" maxWidth="100" fx:id="employeeColumn" text="Ordered by" style="-fx-alignment: center;">
                       <cellValueFactory>
                           <PropertyValueFactory property="employeeName" />
                       </cellValueFactory>
                   </TableColumn>
-                  <TableColumn prefWidth="80.0" maxWidth="100" fx:id="amountColumn" text="Amount" >
+                  <TableColumn prefWidth="80.0" maxWidth="100" fx:id="amountColumn" text="Amount" style="-fx-alignment: center;">
                       <cellValueFactory>
                           <PropertyValueFactory property="amount" />
                       </cellValueFactory>
                   </TableColumn>
-                  <TableColumn prefWidth="40.0" maxWidth="200" fx:id="denyColumn"  text="deny">
+                  <TableColumn prefWidth="40.0" maxWidth="200" fx:id="denyColumn"  text="Deny" style="-fx-alignment: center;">
                       <cellValueFactory>
                           <PropertyValueFactory property="orderId" />
                       </cellValueFactory>
                   </TableColumn>
-                  <TableColumn prefWidth="40.0" maxWidth="200" fx:id="approveColumn" text="approve">
+                  <TableColumn prefWidth="40.0" maxWidth="200" fx:id="approveColumn" text="Approve" style="-fx-alignment: center;">
                       <cellValueFactory>
                           <PropertyValueFactory property="orderId" />
                       </cellValueFactory>

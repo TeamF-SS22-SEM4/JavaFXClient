@@ -332,6 +332,7 @@ public class ShopControllerNew implements Initializable {
                                                                wrappingPane.getChildren().remove(replacement);
                                                                wrappingPane.getChildren().add(startButton);
                                                            });
+                                                           startButton.getStyleClass().add("btn");
                                                            quitButton.getStyleClass().add("btn");
                                                            replacement.getChildren().add(quitButton);
                                                            replacement.getChildren().add(amountInput);

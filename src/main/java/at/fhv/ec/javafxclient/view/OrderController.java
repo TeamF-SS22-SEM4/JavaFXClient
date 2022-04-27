@@ -55,7 +55,7 @@ public class OrderController {
             @Override
             public TableCell<DetailedOrderDTO, UUID> call(TableColumn<DetailedOrderDTO, UUID> param) {
                 return new TableCell<>() {
-                    private final Button denyButton = new Button("Approve");
+                    private final Button approveButton = new Button("Approve");
 
                     @Override
                     protected void updateItem(UUID id, boolean empty) {
@@ -64,10 +64,11 @@ public class OrderController {
                             setText(null);
                             setGraphic(null);
                         } else {
-                            denyButton.setOnAction(event -> {
+                            approveButton.getStyleClass().add("btn-success");
+                            approveButton.setOnAction(event -> {
                                 orderingClient.approveOrder(id);
                             });
-                            setGraphic(denyButton);
+                            setGraphic(approveButton);
                         }
                     }
                 };
@@ -87,6 +88,7 @@ public class OrderController {
                             setText(null);
                             setGraphic(null);
                         } else {
+                            denyButton.getStyleClass().add("btn");
                             denyButton.setOnAction(event -> {
                                 orderingClient.denyOrder(id);
                             });
