@@ -70,11 +70,7 @@ public class CustomerController {
                             } else {
                                 addToSaleButton.setOnAction(event -> {
                                     CheckoutController.customer = getTableView().getItems().get(getIndex());
-                                    try {
                                         SceneManager.getInstance().switchView("checkout");
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
                                 });
                                 setGraphic(addToSaleButton);
                                 setText(null);

@@ -7,14 +7,11 @@ import at.fhv.ss22.ea.f.communication.api.AuthenticationService;
 import at.fhv.ss22.ea.f.communication.dto.LoginResultDTO;
 import at.fhv.ss22.ea.f.communication.exception.AuthenticationFailed;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
-
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -25,39 +22,43 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-    private static final String HOST_REMOTE = "10.0.40.170";
-    private static final String PORT_REMOTE = "12345";
-    private static final String HOST_LOCAL = "localhost";
-    private static final String PORT_LOCAL = "1099";
+    private static final String REMOTE_HOST = "10.0.40.170";
+    private static final String REMOTE_PORT = "12345";
+    private static final String REMOTE_INFORMATION_TEXT = "remote (port:12345)";
 
-    private static final String REMOTE = "remote (port:12345)";
-    private static final String LOCAL = "local (port:1099)";
-
-    @FXML
-    private ChoiceBox connectionType;
+    private static final String LOCAL_HOST = "localhost";
+    private static final String LOCAL_PORT = "1099";
+    private static final String LOCAL_INFORMATION_TEXT = "local (port:1099)";
 
     private AuthenticationService authenticationService;
 
+    //////////////////////////////////////////////////////////////////////////////////////////
+
+    @FXML
+    private ChoiceBox<String> connectionTypeChoiceBox;
     @FXML
     private TextField usernameTextField;
-
     @FXML
     private PasswordField passwordTextField;
-
     @FXML
     private Label infoLabel;
 
+    //////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        connectionType.getItems().addAll(REMOTE, LOCAL);
-        connectionType.setValue(REMOTE);
+        connectionTypeChoiceBox.getItems().addAll(REMOTE_INFORMATION_TEXT, LOCAL_INFORMATION_TEXT);
+        connectionTypeChoiceBox.setValue(REMOTE_INFORMATION_TEXT);
 
+        // backdoor user
         usernameTextField.setText("tf-test");
         passwordTextField.setText("PssWrd");
     }
 
     @FXML
-    private void onLoginButtonClicked() {
+    public void onLoginButtonClicked() {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
 
@@ -75,11 +76,10 @@ public class LoginController implements Initializable {
             Platform.runLater(() -> {
 
                 try {
-
-                    if (connectionType.getValue().toString().equals(LOCAL)) {
-                        RMIClient.getRmiClient().connect(HOST_LOCAL, PORT_LOCAL);
+                    if (connectionTypeChoiceBox.getValue().equals(LOCAL_INFORMATION_TEXT)) {
+                        RMIClient.getRmiClient().connect(LOCAL_HOST, LOCAL_PORT);
                     } else {
-                        RMIClient.getRmiClient().connect(HOST_REMOTE, PORT_REMOTE);
+                        RMIClient.getRmiClient().connect(REMOTE_HOST, REMOTE_PORT);
                     }
 
                     authenticationService = RMIClient.getRmiClient().getRmiFactory().getAuthenticationService();
@@ -103,18 +103,14 @@ public class LoginController implements Initializable {
 
                 }
             });
-
         }
     }
 
-    public void onLinkClicked(ActionEvent actionEvent) {
-            try {
-
-                Desktop.getDesktop().browse(new URL("https://www.windows-faq.de/2018/07/28/bildschirmanzeige-bei-windows-10-skalieren-schriftgroesse-veraendern/").toURI());
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            } catch (URISyntaxException ex) {
-                throw new RuntimeException(ex);
-            }
+    public void onLinkClicked() {
+        try {
+            Desktop.getDesktop().browse(new URL("https://www.windows-faq.de/2018/07/28/bildschirmanzeige-bei-windows-10-skalieren-schriftgroesse-veraendern/").toURI());
+        } catch (IOException | URISyntaxException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

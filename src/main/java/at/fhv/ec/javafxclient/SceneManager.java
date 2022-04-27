@@ -2,6 +2,7 @@ package at.fhv.ec.javafxclient;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,19 +22,23 @@ public class SceneManager {
         return instance;
     }
 
-    public void switchView(String viewName) throws IOException {
-        String view = "views/" + viewName + ".fxml";
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(view));
-        Scene scene = new Scene(loader.load());
+    public void switchView(String viewName) {
+        try {
+            String view = "views/" + viewName + ".fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(view));
+            Scene scene = new Scene(loader.load());
 
-        for (int i = 0; i < Application.getStylesheets().size(); i++) {
-            scene.getStylesheets().add(Application.getStylesheets().get(i));
+            for (int i = 0; i < Application.getStylesheets().size(); i++) {
+                scene.getStylesheets().add(Application.getStylesheets().get(i));
+            }
+
+            window.setHeight(window.getHeight());
+            window.setWidth(window.getWidth());
+            window.setScene(scene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        window.setHeight(window.getHeight());
-        window.setWidth(window.getWidth());
-        window.setScene(scene);
-        window.show();
     }
 
     public void switchTheme(String themeStyle, String themeColor) {

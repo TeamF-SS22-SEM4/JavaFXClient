@@ -26,7 +26,7 @@
             <HBox alignment="CENTER">
                <children>
                   <FontAwesomeIconView glyphName="SIGNAL" size="20" styleClass="login-icon" />
-                  <ChoiceBox fx:id="connectionType" styleClass="login-textfield">
+                  <ChoiceBox fx:id="connectionTypeChoiceBox" styleClass="login-textfield">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>

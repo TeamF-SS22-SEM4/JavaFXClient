@@ -12,10 +12,10 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="ct" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.ShopController">
+<HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.ShopControllerNew">
    <children>
       <fx:include source="sidebar.fxml" />
-      <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
+      <VBox fx:id="rootContainer" HBox.hgrow="ALWAYS">
          <children>
             <HBox alignment="CENTER_LEFT" styleClass="header" VBox.vgrow="ALWAYS">
                <children>
@@ -49,7 +49,7 @@
                      </children>
                   </HBox>
                   <Pane HBox.hgrow="ALWAYS" />
-                  <Button graphicTextGap="10.0" mnemonicParsing="false" onAction="#onShoppingCartButtonClicked" styleClass="btn" text="Shopping Cart">
+                  <Button fx:id="shoppingCartButton" graphicTextGap="10.0" mnemonicParsing="false" onAction="#onShoppingCartButtonClicked" styleClass="btn" text="Shopping Cart">
                      <graphic>
                         <FontAwesomeIconView glyphName="SHOPPING_CART" size="20" />
                      </graphic></Button>
@@ -59,7 +59,7 @@
                <children>
                   <TableView fx:id="productTable" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="nameColumn" minWidth="200.0" prefWidth="200.0" text="Album">
+                        <TableColumn fx:id="albumColumn" minWidth="200.0" prefWidth="200.0" text="Album">
                            <cellValueFactory>
                               <PropertyValueFactory property="name" />
                            </cellValueFactory>
@@ -69,19 +69,15 @@
                               <PropertyValueFactory property="artistName" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn minWidth="100.0" prefWidth="100.0" text="Genre">
-                           <cellValueFactory>
-                              <PropertyValueFactory property="releaseYear" />
-                           </cellValueFactory>
-                     </TableColumn>
+                        <TableColumn minWidth="100.0" prefWidth="100.0" text="Genre" />
                      <TableColumn fx:id="releaseYearColumn" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" text="Release">
                            <cellValueFactory>
                               <PropertyValueFactory property="releaseYear" />
                            </cellValueFactory>
                         </TableColumn>
                         <TableColumn minWidth="100.0" prefWidth="100.0" text="Price" />
-                        <TableColumn fx:id="detailsColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" />
-                        <TableColumn fx:id="addToCartColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" />
+                        <TableColumn fx:id="detailsButtonColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center-right;" />
+                        <TableColumn fx:id="buyButtonColumn" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: center-left;" />
                      </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

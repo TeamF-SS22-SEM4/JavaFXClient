@@ -4,9 +4,7 @@
     -fx-color-text-2: #434343 !important;
     -fx-color-btn-text: -fx-color-text-1 !important;
 
-    -fx-color-bg-1: #9E9E9E !important;
-    -fx-color-bg-2: #BDBDBD !important;
-    -fx-color-bg-3: #E0E0E0 !important;
-    -fx-color-bg-4: #EEEEEE !important;
-    -fx-color-bg-hover: rgba(194, 127, 0, 0.25) !important;
+    -fx-color-bg-1: #aaaaaa !important;
+    -fx-color-bg-2: #e2e2e2 !important;
+    -fx-color-bg-3: #ffffff !important;
 }

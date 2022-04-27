@@ -3,3 +3,7 @@
     -fx-color-btn-text: #fafafa !important;
     -fx-color-bg-hover: rgba(0, 50, 70, 0.15) !important;
 }
+
+.sidebar-logo {
+    -fx-background-image: url(images/logo_3.png) !important;
+}

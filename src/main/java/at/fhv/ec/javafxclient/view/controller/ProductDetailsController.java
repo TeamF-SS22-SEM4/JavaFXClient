@@ -231,9 +231,9 @@ public class ProductDetailsController {
         alert.show();
     }
 
-    @FXML
-    public void onBackButtonClicked() throws IOException {
-        SceneManager.getInstance().switchView("shop");
-    }
+//    @FXML
+//    public void onBackButtonClicked() throws IOException {
+//        SceneManager.getInstance().switchView("shop");
+//    }
 
 }

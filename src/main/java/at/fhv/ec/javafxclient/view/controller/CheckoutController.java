@@ -139,11 +139,7 @@ public class CheckoutController {
 
     @FXML
     protected void onSelectCustomerButtonClicked() {
-        try {
             SceneManager.getInstance().switchView("customer");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML

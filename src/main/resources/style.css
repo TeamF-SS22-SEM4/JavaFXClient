@@ -2,23 +2,25 @@
 /* DEFAULT VALUES                                                               */
 /********************************************************************************/
 * {
-    -fx-color-primary: rgba(194, 127, 0, 1);
+    -fx-color-primary: rgb(194, 127, 0);
+    -fx-color-success: #006708;
     -fx-color-alert: rgba(255, 0, 0, 1);
     -fx-color-text-1: #fafafa;
     -fx-color-text-2: #c2c2c2;
-    -fx-color-btn-text: -fx-color-text-1;
+    -fx-color-btn-text: #262626;
 
-    -fx-color-bg-1: #212121;
+    -fx-color-bg-1: #282828;
     -fx-color-bg-2: #424242;
     -fx-color-bg-3: #616161;
-    -fx-color-bg-4: #757575;
-    -fx-color-bg-hover: rgba(194, 127, 0, 0.10);
+    -fx-color-bg-hover: rgba(194, 127, 0, 0.15);
 }
 
 .root {
     -fx-pref-height: 648;
     -fx-pref-width: 1152;
     -fx-font: 14px "Helvetica";
+    -fx-focus-color: -fx-color-primary;
+    -fx-faint-focus-color: transparent;
 }
 /********************************************************************************/
 /* LOGIN                                                                        */
@@ -84,6 +86,13 @@
     -fx-min-width: 225;
     -fx-max-width: 225;
     -fx-background-color: -fx-color-bg-1;
+}
+
+.sidebar-logo {
+    -fx-background-image: url(images/logo_2.png);
+    -fx-background-size: contain;
+    -fx-background-repeat: stretch;
+    -fx-background-position: center;
 }
 
 .sidebar-top {
@@ -157,6 +166,7 @@
 /********************************************************************************/
 Button, ToggleButton {
     -fx-background-insets: 0 0 -1 0, 0, 1, 2 !important;
+    -fx-border-insets: 0 0 -1 0, 0, 1, 2 !important;
 }
 
 .btn, .btn FontAwesomeIconView {
@@ -164,6 +174,23 @@ Button, ToggleButton {
     -fx-fill: -fx-color-btn-text;
     -fx-background-color: -fx-color-primary;
     -fx-background-radius: 5;
+}
+
+.btn-success, .btn-success FontAwesomeIconView {
+    -fx-text-fill: -fx-color-btn-text;
+    -fx-fill: -fx-color-btn-text;
+    -fx-background-color: -fx-color-success;
+    -fx-background-radius: 5;
+}
+
+.btn-alert, .btn-alert FontAwesomeIconView {
+    -fx-text-fill: -fx-color-primary !important;
+    -fx-fill: -fx-color-primary !important;
+    -fx-background-color: -fx-color-btn-text !important;
+    -fx-border-color: -fx-color-primary !important;
+    -fx-background-radius: 10 !important;
+    -fx-border-width: 3 !important;
+    -fx-border-radius: 5 !important;
 }
 /********************************************************************************/
 /* CHOICE BOX                                                                   */
@@ -223,7 +250,7 @@ Button, ToggleButton {
     -fx-border-color: transparent;
     -fx-background-color: transparent;
     -fx-text-background-color: -fx-color-text-2;
-    -fx-cell-size: 50;
+    -fx-cell-size: 40;
     -fx-alignment: center-left;
 }
 
@@ -236,6 +263,82 @@ Button, ToggleButton {
 
 .table-view .scroll-bar {
     -fx-background-color: transparent;
+}
+/********************************************************************************/
+/* MODAL                                                                        */
+/********************************************************************************/
+.modal-header {
+    -fx-padding: 15;
+    -fx-border-color: -fx-color-primary;
+    -fx-border-width: 2 2 0 2;
+    -fx-background-color: -fx-color-bg-2;
+    -fx-alignment: center-left;
+}
+
+.modal-content {
+    -fx-padding: 15;
+    -fx-border-color: -fx-color-primary;
+    -fx-border-width: 0 2 2 2;
+    -fx-background-color: -fx-color-bg-3;
+    -fx-alignment: center;
+}
+/********************************************************************************/
+/* SPINNER                                                                      */
+/********************************************************************************/
+.spinner {
+    -fx-background-color: transparent;
+    -fx-base: transparent;
+}
+
+.spinner:focused {
+    -fx-border-width: 1;
+    -fx-background-insets: 2;
+    -fx-border-radius: 4;
+    -fx-border-color: -fx-color-primary;
+
+}
+
+.spinner .text-field {
+    -fx-alignment: center-right;
+    -fx-background-color: -fx-color-bg-3;
+    -fx-text-fill: -fx-color-text-1;
+    -fx-background-insets: 0;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: -fx-color-primary;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-opacity: 0.8;
+}
+.spinner .increment-arrow-button:hover:pressed,
+.spinner .decrement-arrow-button:hover:pressed,
+.spinner .increment-arrow-button:pressed,
+.spinner .decrement-arrow-button:pressed {
+    -fx-opacity: 1;
+}
+
+.spinner .increment-arrow-button .increment-arrow,
+.spinner .decrement-arrow-button .decrement-arrow {
+    -fx-background-color: -fx-color-btn-text;
+}
+/********************************************************************************/
+/* HYPERLINK                                                                    */
+/********************************************************************************/
+Hyperlink {
+    -fx-text-fill: -fx-color-primary;
+    -fx-padding: 0 !important;
+}
+
+Hyperlink:hover {
+    -fx-text-fill: -fx-color-primary;
+}
+
+Hyperlink:focused {
+    -fx-border-width: 0;
 }
 /********************************************************************************/
 /* ELEMENTS                                                                     */
@@ -252,13 +355,6 @@ Button, ToggleButton {
     -fx-font-weight: bold;
 }
 
-
-
-
-/**********************************************************/
-
-
-
 .color-text-1 {
     -fx-text-fill: -fx-color-text-1;
 }
@@ -267,29 +363,15 @@ Button, ToggleButton {
     -fx-text-fill: -fx-color-text-2;
 }
 
+.p-1 {
+    -fx-text-fill: -fx-color-text-1;
+}
+
+.p-1-bold {
+    -fx-text-fill: -fx-color-text-1;
+    -fx-font-weight: bold;
+}
+
 .alert {
     -fx-text-fill: -fx-color-alert !important;
-}
-
-
-
-Hyperlink {
-    -fx-text-fill: -fx-color-primary;
-    -fx-padding: 0 !important;
-}
-
-Hyperlink:hover {
-    -fx-text-fill: -fx-color-primary;
-}
-
-Hyperlink:focused {
-    -fx-border-width: 0;
-}
-
-.modal {
-    -fx-background-color: red;
-    -fx-padding: 10;
-    -fx-pref-width: 400;
-    -fx-pref-height: 200;
-    -fx-alignment: center;
 }

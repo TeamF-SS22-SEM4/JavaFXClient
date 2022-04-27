@@ -16,7 +16,6 @@ import java.util.ResourceBundle;
 
 public class SidebarController implements Initializable {
 
-
     public ToggleGroup themeStyleToggleGroup;
     public ToggleGroup themeColorToggleGroup;
     public ToggleButton dark;
@@ -24,26 +23,26 @@ public class SidebarController implements Initializable {
     public ImageView logoImageView;
 
     @FXML
-    private void onLogoClicked() throws IOException {
+    private void onLogoClicked() {
         SceneManager.getInstance().switchView("shop");
     }
     @FXML
-    private void onShopButtonClicked() throws IOException {
+    private void onShopButtonClicked() {
         SceneManager.getInstance().switchView("shop");
     }
 
     @FXML
-    private void onExchangeButtonClicked() throws IOException {
+    private void onExchangeButtonClicked() {
         SceneManager.getInstance().switchView("exchange");
     }
 
     @FXML
-    private void onCustomerButtonClicked() throws IOException {
+    private void onCustomerButtonClicked() {
         SceneManager.getInstance().switchView("customer");
     }
 
     @FXML
-    private void onMessageButtonClicked() throws IOException {
+    private void onMessageButtonClicked() {
         SceneManager.getInstance().switchView("shop");
     }
 
@@ -54,14 +53,6 @@ public class SidebarController implements Initializable {
 
         ToggleButton toggleButtonColor = (ToggleButton) themeColorToggleGroup.getSelectedToggle();
         String themeColor = toggleButtonColor.getId();
-
-        if (themeColor.equals("color1")) {
-            logoImageView.setImage(new Image("images/logo_1.png"));
-        } else if (themeColor.equals("color2")) {
-            logoImageView.setImage(new Image("images/logo_2.png"));
-        } else if (themeColor.equals("color3")) {
-            logoImageView.setImage(new Image("images/logo_3.png"));
-        }
 
         SceneManager.getInstance().switchTheme(themeStyle, themeColor);
     }
