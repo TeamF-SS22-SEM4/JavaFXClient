@@ -2,6 +2,7 @@ package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
+import at.fhv.ec.javafxclient.communication.JMSClient;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.AuthenticationService;
 import at.fhv.ss22.ea.f.communication.dto.LoginResultDTO;
@@ -12,6 +13,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+
+import javax.jms.JMSException;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -78,14 +81,21 @@ public class LoginController implements Initializable {
                 try {
                     if (connectionTypeChoiceBox.getValue().equals(LOCAL_INFORMATION_TEXT)) {
                         RMIClient.getRmiClient().connect(LOCAL_HOST, LOCAL_PORT);
+                        JMSClient.getJmsClient().connect(LOCAL_HOST);
+
                     } else {
                         RMIClient.getRmiClient().connect(REMOTE_HOST, REMOTE_PORT);
+                        JMSClient.getJmsClient().connect(REMOTE_HOST);
                     }
+
 
                     authenticationService = RMIClient.getRmiClient().getRmiFactory().getAuthenticationService();
                     LoginResultDTO loginResultDTO = authenticationService.login(username, password);
-                    SessionManager.getInstance().login(loginResultDTO.getSessionId(), loginResultDTO.getRoles());
+                    JMSClient.getJmsClient().startMessageListeners(loginResultDTO.getTopicNames(), loginResultDTO.getEmployeeId());
+
+                    SessionManager.getInstance().login(loginResultDTO.getSessionId(), loginResultDTO.getRoles(), loginResultDTO.getTopicNames());
                     SceneManager.getInstance().switchView("shop");
+
 
                 } catch (RemoteException | NotBoundException e) {
 
@@ -101,6 +111,9 @@ public class LoginController implements Initializable {
 
                     e.printStackTrace();
 
+                } catch (JMSException e) {
+
+                    throw new RuntimeException(e);
                 }
             });
         }

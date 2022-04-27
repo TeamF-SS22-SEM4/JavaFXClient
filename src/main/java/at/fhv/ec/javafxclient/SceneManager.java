@@ -71,7 +71,7 @@ public class SceneManager {
         window.show();
     }
 
-    public void logout() throws IOException {
+    public void logout() {
         switchTheme("dark","color2");
         switchView("login");
     }

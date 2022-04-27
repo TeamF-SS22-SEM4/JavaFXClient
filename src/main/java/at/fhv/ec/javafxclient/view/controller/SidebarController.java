@@ -8,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.IOException;
@@ -48,9 +47,10 @@ public class SidebarController implements Initializable {
     @FXML
     private void onMessageButtonClicked() {
         SceneManager.getInstance().switchView("subscribed-topics-list");
+    }
 
     @FXML
-    private void onTopicsButtonClicked() throws IOException {
+    private void onTopicsButtonClicked() {
         SceneManager.getInstance().switchView("all-topics-list");
     }
 
@@ -66,7 +66,7 @@ public class SidebarController implements Initializable {
     }
 
     @FXML
-    private void onLogoutButtonClicked() throws IOException {
+    private void onLogoutButtonClicked() {
         SessionManager.getInstance().logout();
         SceneManager.getInstance().logout();
         JMSClient.getJmsClient().logout();

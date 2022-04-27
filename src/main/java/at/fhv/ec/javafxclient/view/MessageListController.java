@@ -51,13 +51,9 @@ public class MessageListController {
                             setText(null);
                         } else {
                             detailsButton.setOnAction(event -> {
-                                try {
-                                    MessageDetailsController.topicName = topicName;
-                                    MessageDetailsController.customMessage = getTableView().getItems().get(getIndex());
-                                    SceneManager.getInstance().switchView("message-details");
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                MessageDetailsController.topicName = topicName;
+                                MessageDetailsController.customMessage = getTableView().getItems().get(getIndex());
+                                SceneManager.getInstance().switchView("message-details");
                             });
 
                             setGraphic(detailsButton);

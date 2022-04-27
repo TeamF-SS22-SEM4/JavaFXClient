@@ -106,7 +106,7 @@ public class JMSClient {
         List<CustomMessage> topicMessages = messages.get(topicName);
 
         if(message == null) {
-           throw new NoSuchElementException("Couldn't find message");
+            throw new NoSuchElementException("Couldn't find message");
         }
 
         message.acknowledge();
