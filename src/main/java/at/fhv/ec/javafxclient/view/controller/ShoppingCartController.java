@@ -1,19 +1,14 @@
-package at.fhv.ec.javafxclient.view;
+package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
-import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.view.utils.ShoppingCartEntry;
-import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
-import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +24,6 @@ public class ShoppingCartController {
 
     @FXML
     private TableColumn<ShoppingCartEntry, Spinner<Integer>> selectedAmountColumn;
-
-    @FXML
-    private TableColumn<ShoppingCartEntry, Float> pricePerCarrierColumn;
 
     @FXML
     private TableColumn<ShoppingCartEntry, Float> totalProductPriceColumn;
@@ -58,18 +50,13 @@ public class ShoppingCartController {
     protected void onClearCartButtonClicked() {
         shoppingCartTable.getItems().clear();
         shoppingCart.clear();
+        updateTotalPrice();
     }
-
-
 
     @FXML
     protected void onCheckoutButtonClicked() {
         if(shoppingCart.size() > 0) {
-            try {
-                SceneManager.getInstance().switchView("checkout-view");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                SceneManager.getInstance().switchView("checkout");
         } else {
             showPopup(
                     "Error",
@@ -128,25 +115,6 @@ public class ShoppingCartController {
         };
 
         selectedAmountColumn.setCellFactory(spinnerCellFactory);
-
-        pricePerCarrierColumn.setCellFactory(new Callback<>() {
-            @Override
-            public TableCell<ShoppingCartEntry, Float> call(TableColumn<ShoppingCartEntry, Float> param) {
-                return new TableCell<>() {
-                    @Override
-                    protected void updateItem(Float pricePerCarrier, boolean empty) {
-                        super.updateItem(pricePerCarrier, empty);
-                        if (empty || pricePerCarrier == null) {
-                            setText("");
-                        } else {
-                            String pricePerCarrierStr = pricePerCarrier + "€";
-
-                            setText(pricePerCarrierStr);
-                        }
-                    }
-                };
-            }
-        });
 
         totalProductPriceColumn.setCellFactory(new Callback<>() {
             @Override
