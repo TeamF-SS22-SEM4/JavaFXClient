@@ -27,6 +27,8 @@ public class ProductDetailsController {
     public static UUID productId;
     private static ProductDetailsDTO productDetails;
 
+    //TODO can this class be deleted?
+
     // Services
     ProductSearchService productSearchService;
 
@@ -155,7 +157,7 @@ public class ProductDetailsController {
             @Override
             public TableCell<SoundCarrierDTO, Integer> call(TableColumn<SoundCarrierDTO, Integer> param) {
                 return new TableCell<>() {
-//                    TODO amount to order
+
                     private final Pane wrappingPane = new Pane();
                     private Button startButton = new Button("Order");
                     private HBox replacement = new HBox();
@@ -166,7 +168,7 @@ public class ProductDetailsController {
                     @Override
                     public void updateItem(Integer item, boolean empty) {
                         super.updateItem(item, empty);
-                        if (empty) {
+                        if (empty || item == null) {
                             setGraphic(null);
                             setText(null);
                         } else {
