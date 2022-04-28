@@ -10,12 +10,15 @@ public class SessionManager {
     private static List<String> roles;
     private static List<String> topicNames;
 
+    private static boolean newMessagesReceived;
+
     public static SessionManager getInstance() {
         if(session == null) {
             session = new SessionManager();
             sessionId = "";
             roles = new ArrayList<>();
             topicNames = new ArrayList<>();
+            newMessagesReceived = false;
         }
         return session;
     }
@@ -32,6 +35,14 @@ public class SessionManager {
         topicNames.clear();
     }
 
+    public void onNewMessageReceived() {
+        newMessagesReceived = true;
+    }
+
+    public void onMessageViewed() {
+        newMessagesReceived = false;
+    }
+
     public String getSessionId() {
         return sessionId;
     }
@@ -40,7 +51,11 @@ public class SessionManager {
         return roles;
     }
 
-    public static List<String> getTopicNames() {
+    public List<String> getTopicNames() {
         return topicNames;
+    }
+
+    public boolean isNewMessagesReceived() {
+        return newMessagesReceived;
     }
 }
