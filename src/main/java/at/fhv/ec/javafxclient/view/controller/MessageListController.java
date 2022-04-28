@@ -50,7 +50,7 @@ public class MessageListController {
                             detailsButton.setOnAction(event -> {
                                 MessageDetailsController.topicName = topicName;
                                 MessageDetailsController.customMessage = getTableView().getItems().get(getIndex());
-                                SceneManager.getInstance().switchView("message-details");
+                                SceneManager.getInstance().switchView(SceneManager.VIEW_MESSAGES_READ_DETAIL);
                             });
 
                             setGraphic(detailsButton);

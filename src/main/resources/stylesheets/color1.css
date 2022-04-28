@@ -5,5 +5,5 @@
 }
 
 .sidebar-logo {
-    -fx-background-image: url(images/logo_1.png) !important;
+    -fx-background-image: url(../images/logo_1.png) !important;
 }

@@ -56,7 +56,7 @@ public class ShoppingCartController {
     @FXML
     protected void onCheckoutButtonClicked() {
         if(shoppingCart.size() > 0) {
-                SceneManager.getInstance().switchView("checkout");
+                SceneManager.getInstance().switchView(SceneManager.VIEW_CHECKOUT);
         } else {
             showPopup(
                     "Error",
@@ -172,7 +172,7 @@ public class ShoppingCartController {
     }
 
     @FXML
-    public void onBackButtonClicked() throws IOException {
-        SceneManager.getInstance().switchView("shop");
+    public void onBackButtonClicked() {
+        SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
     }
 }

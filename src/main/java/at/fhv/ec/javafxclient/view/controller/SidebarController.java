@@ -31,36 +31,36 @@ public class SidebarController implements Initializable {
 
     @FXML
     private void onLogoClicked() {
-        SceneManager.getInstance().switchView("shop");
+        SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
     }
     @FXML
     private void onShopButtonClicked() {
-        SceneManager.getInstance().switchView("shop");
+        SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
     }
 
     @FXML
     private void onExchangeButtonClicked() {
-        SceneManager.getInstance().switchView("exchange");
+        SceneManager.getInstance().switchView(SceneManager.VIEW_EXCHANGE);
     }
 
     @FXML
     private void onCustomerButtonClicked() {
-        SceneManager.getInstance().switchView("customer");
+        SceneManager.getInstance().switchView(SceneManager.VIEW_CUSTOMER);
     }
 
     @FXML
-    private void onOrderButtonClicked() throws IOException {
-        SceneManager.getInstance().switchView("order");
+    private void onOrderButtonClicked() {
+        SceneManager.getInstance().switchView(SceneManager.VIEW_ORDERS);
     }
 
     @FXML
     private void onMessageButtonClicked() {
-        SceneManager.getInstance().switchView("subscribed-topics-list");
+        SceneManager.getInstance().switchView(SceneManager.VIEW_MESSAGES);
     }
 
     @FXML
     private void onTopicsButtonClicked() {
-        SceneManager.getInstance().switchView("all-topics-list");
+        SceneManager.getInstance().switchView(SceneManager.VIEW_TOPICS);
     }
 
     @FXML

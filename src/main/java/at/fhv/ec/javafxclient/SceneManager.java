@@ -9,6 +9,20 @@ import java.util.ArrayList;
 
 public class SceneManager {
 
+    public static final String VIEW_SHOP = "shop";
+    public static final String VIEW_EXCHANGE = "exchange";
+    public static final String VIEW_CUSTOMER = "customer";
+    public static final String VIEW_MESSAGES = "subscribed-topics-list";
+    public static final String VIEW_TOPICS = "all-topics-list";
+    public static final String VIEW_ORDERS = "order";
+
+    public static final String VIEW_SHOPPING_CART = "shoppingcart";
+    public static final String VIEW_CHECKOUT = "shoppingcart";
+
+    public static final String VIEW_MESSAGES_SEND = "send-message";
+    public static final String VIEW_MESSAGES_READ_OVERVIEW = "message-list";
+    public static final String VIEW_MESSAGES_READ_DETAIL = "message-details";
+
     private static SceneManager instance;
     private static Stage window;
 

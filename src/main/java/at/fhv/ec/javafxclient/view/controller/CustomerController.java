@@ -70,7 +70,7 @@ public class CustomerController {
                             } else {
                                 addToSaleButton.setOnAction(event -> {
                                     CheckoutController.customer = getTableView().getItems().get(getIndex());
-                                        SceneManager.getInstance().switchView("checkout");
+                                        SceneManager.getInstance().switchView(SceneManager.VIEW_CHECKOUT);
                                 });
                                 setGraphic(addToSaleButton);
                                 setText(null);
@@ -100,7 +100,7 @@ public class CustomerController {
         }
     }
 
-    public void onHomeButtonClicked() throws IOException {
-        SceneManager.getInstance().switchView("customer");
+    public void onHomeButtonClicked() {
+        SceneManager.getInstance().switchView(SceneManager.VIEW_CUSTOMER);
     }
 }

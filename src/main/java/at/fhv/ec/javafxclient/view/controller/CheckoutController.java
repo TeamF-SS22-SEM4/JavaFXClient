@@ -139,7 +139,7 @@ public class CheckoutController {
 
     @FXML
     protected void onSelectCustomerButtonClicked() {
-            SceneManager.getInstance().switchView("customer");
+            SceneManager.getInstance().switchView(SceneManager.VIEW_CUSTOMER);
     }
 
     @FXML
@@ -174,7 +174,7 @@ public class CheckoutController {
 
             shoppingCart.clear();
             showPopup("Successful", "Invoice No.: " + invoiceNumber + "\nBill is printed...", Alert.AlertType.CONFIRMATION);
-            SceneManager.getInstance().switchView("shop");
+            SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
         } catch (CarrierNotAvailableException cne) {
             showPopup("Error", "The selected amount is not available.", Alert.AlertType.ERROR);
             cne.printStackTrace();

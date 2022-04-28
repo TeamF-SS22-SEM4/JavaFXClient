@@ -77,7 +77,7 @@ public class SubscribedTopicsListController {
                         } else {
                             viewMessagesButton.setOnAction(event -> {
                                 MessageListController.topicName = getTableView().getItems().get(getIndex()).getName();
-                                SceneManager.getInstance().switchView("message-list");
+                                SceneManager.getInstance().switchView(SceneManager.VIEW_MESSAGES_READ_OVERVIEW);
                             });
 
                             setGraphic(viewMessagesButton);

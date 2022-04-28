@@ -124,7 +124,7 @@ public class ExchangeController {
     }
 
     public void onHomeButtonClicked() throws IOException {
-        SceneManager.getInstance().switchView("exchange");
+        SceneManager.getInstance().switchView(SceneManager.VIEW_EXCHANGE);
     }
 
     @FXML

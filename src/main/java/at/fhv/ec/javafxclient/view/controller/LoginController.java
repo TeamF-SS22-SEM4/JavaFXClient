@@ -103,7 +103,7 @@ public class LoginController implements Initializable {
                         }
                     }
 
-                    SceneManager.getInstance().switchView("shop");
+                    SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
 
 
                 } catch (RemoteException | NotBoundException e) {

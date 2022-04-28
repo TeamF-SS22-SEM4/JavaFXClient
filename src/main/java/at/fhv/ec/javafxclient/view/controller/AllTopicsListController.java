@@ -61,7 +61,7 @@ public class AllTopicsListController {
                         } else {
                             newMessageButton.setOnAction(event -> {
                                 SendMessageController.topicName = getTableView().getItems().get(getIndex()).getName();
-                                SceneManager.getInstance().switchView("send-message");
+                                SceneManager.getInstance().switchView(SceneManager.VIEW_MESSAGES_SEND);
                             });
                             setGraphic(newMessageButton);
                             setText(null);

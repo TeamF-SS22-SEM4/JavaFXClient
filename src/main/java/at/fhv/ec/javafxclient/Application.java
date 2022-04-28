@@ -12,11 +12,11 @@ import java.util.ArrayList;
 // TODO: Remove Popups and use statusLabels
 public class Application extends javafx.application.Application {
 
-    private static final String STYLESHEET_DEFAULT = "style.css";
-    private static final String STYLESHEET_LIGHT = "light.css";
-    private static final String STYLESHEET_COLOR1 = "color1.css";
-    private static final String STYLESHEET_COLOR2 = "color2.css";
-    private static final String STYLESHEET_COLOR3 = "color3.css";
+    private static final String STYLESHEET_DEFAULT = "stylesheets/style.css";
+    private static final String STYLESHEET_LIGHT = "stylesheets/light.css";
+    private static final String STYLESHEET_COLOR1 = "stylesheets/color1.css";
+    private static final String STYLESHEET_COLOR2 = "stylesheets/color2.css";
+    private static final String STYLESHEET_COLOR3 = "stylesheets/color3.css";
 
     private static Stage window;
     private static ArrayList<String> stylesheets = new ArrayList<>();

@@ -32,7 +32,7 @@ import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
-public class ShopControllerNew implements Initializable {
+public class ShopController implements Initializable {
 
     private TextAnimator textAnimator;
 
@@ -107,7 +107,7 @@ public class ShopControllerNew implements Initializable {
 
     @FXML
     public void onShoppingCartButtonClicked() {
-        SceneManager.getInstance().switchView("shoppingcart");
+        SceneManager.getInstance().switchView(SceneManager.VIEW_SHOPPING_CART);
     }
 
     private void searchInProductTable(String searchTerm) {
