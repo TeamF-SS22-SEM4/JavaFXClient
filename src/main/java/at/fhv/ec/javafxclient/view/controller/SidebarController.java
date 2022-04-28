@@ -24,7 +24,6 @@ public class SidebarController implements Initializable {
     public ToggleGroup themeColorToggleGroup;
     public ToggleButton dark;
     public Button logoutButton;
-    public ImageView logoImageView;
 
     @FXML
     private void onLogoClicked() {

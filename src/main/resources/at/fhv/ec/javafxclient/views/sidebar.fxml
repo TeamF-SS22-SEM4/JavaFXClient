@@ -12,7 +12,7 @@
 
 <VBox alignment="CENTER" styleClass="sidebar" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.SidebarController">
     <children>
-        <VBox alignment="CENTER">
+        <VBox alignment="CENTER" onMouseClicked="#onLogoClicked">
          <styleClass>
             <String fx:value="sidebar-top" />
             <String fx:value="sidebar-logo" />
