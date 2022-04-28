@@ -465,10 +465,14 @@ public class ShopControllerNew implements Initializable {
     }
 
     private void checkIfShoppingCartIsFilled () {
-        if (ShoppingCartController.shoppingCart.size() > 0) {
+        int items = ShoppingCartController.shoppingCart.size();
+
+        if (items > 0) {
             shoppingCartButton.getStyleClass().add("btn-alert");
+            shoppingCartButton.setText("Shopping Cart (" + items + ")");
         } else {
             shoppingCartButton.getStyleClass().remove("btn-alert");
+            shoppingCartButton.setText("Shopping Cart");
         }
     }
 
