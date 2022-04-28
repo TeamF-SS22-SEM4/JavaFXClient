@@ -3,6 +3,7 @@ package at.fhv.ec.javafxclient.view.controller;
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.JMSClient;
+import at.fhv.ec.javafxclient.communication.OrderingClient;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.AuthenticationService;
 import at.fhv.ss22.ea.f.communication.dto.LoginResultDTO;
@@ -88,12 +89,20 @@ public class LoginController implements Initializable {
                         JMSClient.getJmsClient().connect(REMOTE_HOST);
                     }
 
-
                     authenticationService = RMIClient.getRmiClient().getRmiFactory().getAuthenticationService();
                     LoginResultDTO loginResultDTO = authenticationService.login(username, password);
                     JMSClient.getJmsClient().startMessageListeners(loginResultDTO.getTopicNames(), loginResultDTO.getEmployeeId());
 
                     SessionManager.getInstance().login(loginResultDTO.getSessionId(), loginResultDTO.getRoles(), loginResultDTO.getTopicNames());
+
+                    if (loginResultDTO.getRoles().contains("Operator")) {
+                        if (connectionTypeChoiceBox.getValue().equals(LOCAL_INFORMATION_TEXT)) {
+                            OrderingClient.getInstance().connect(LOCAL_HOST);
+                        } else {
+                            OrderingClient.getInstance().connect(REMOTE_HOST);
+                        }
+                    }
+
                     SceneManager.getInstance().switchView("shop");
 
 
