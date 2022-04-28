@@ -3,6 +3,7 @@ package at.fhv.ec.javafxclient.view.controller;
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.JMSClient;
+import at.fhv.ec.javafxclient.communication.OrderingClient;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -78,6 +79,7 @@ public class SidebarController implements Initializable {
         SessionManager.getInstance().logout();
         SceneManager.getInstance().logout();
         JMSClient.getJmsClient().logout();
+        OrderingClient.getInstance().disconnect();
     }
 
     @Override

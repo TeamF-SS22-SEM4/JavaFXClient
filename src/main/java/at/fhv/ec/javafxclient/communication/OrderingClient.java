@@ -23,6 +23,7 @@ public class OrderingClient {
     private static final String ORDER_TOPIC_NAME = "Orders";
     private static final String ORDER_CLIENT_CONNECTION_ID = "system_ordering_client";
     private static final String ORDER_CLIENT_NAME = "ordering_client";
+    private static final String JMS_PORT = "61616";
 
     private ActiveMQConnectionFactory connectionFactory;
     private TopicConnection connection;
@@ -32,11 +33,21 @@ public class OrderingClient {
     private List<ObjectMessage> messageList = new LinkedList<>();
 
     private OrderingClient() {
-        this.connect();
     }
-    public void connect() {
+    public void disconnect() {
         try {
-            this.connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+            this.session.close();
+            this.connection.stop();
+            this.connection.close();
+        } catch (JMSException | NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+    public void connect(String host) {
+
+        //TODO just load when logged in as operator
+        try {
+            this.connectionFactory = new ActiveMQConnectionFactory("tcp://" + host + ":" + JMS_PORT);
             this.connectionFactory.setTrustAllPackages(true);
             connection = connectionFactory.createTopicConnection();
             connection.setClientID(ORDER_CLIENT_CONNECTION_ID);
@@ -46,7 +57,6 @@ public class OrderingClient {
             connection.start();
             subscriber.setMessageListener(message -> {
                 messageList.add((ObjectMessage) message);
-                System.out.println(message);
             });
         } catch (JMSException e) {
             e.printStackTrace();
@@ -95,7 +105,6 @@ public class OrderingClient {
         } catch (NoPermissionForOperation noPermissionForOperation) {
             noPermissionForOperation.printStackTrace();
         }
-        System.out.println("approved");
     }
 
     public void denyOrder(UUID orderId) {
@@ -116,8 +125,6 @@ public class OrderingClient {
         } catch (JMSException e) {
             e.printStackTrace();
         }
-        System.out.println("denied");
-
     }
 
     //Singleton implementation
