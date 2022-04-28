@@ -69,13 +69,21 @@
                               <PropertyValueFactory property="artistName" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn minWidth="100.0" prefWidth="100.0" text="Genre" />
-                     <TableColumn fx:id="releaseYearColumn" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" text="Release">
+                        <TableColumn fx:id="genreColumn" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" text="Genre">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="genre" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="releaseYearColumn" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" text="Release">
                            <cellValueFactory>
                               <PropertyValueFactory property="releaseYear" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn minWidth="100.0" prefWidth="100.0" text="Price" />
+                        <TableColumn fx:id="priceColumn" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" text="Price">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="smallestPrice" />
+                           </cellValueFactory>
+                        </TableColumn>
                         <TableColumn fx:id="detailsButtonColumn" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center-right;" />
                         <TableColumn fx:id="buyButtonColumn" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" style="-fx-alignment: center-left;" />
                      </columns>

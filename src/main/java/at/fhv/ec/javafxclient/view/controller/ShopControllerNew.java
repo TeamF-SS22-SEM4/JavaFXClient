@@ -48,6 +48,8 @@ public class ShopControllerNew implements Initializable {
     @FXML
     private TableColumn<ProductOverviewDTO, String> albumColumn;
     @FXML
+    private TableColumn<ProductOverviewDTO, Float> priceColumn;
+    @FXML
     private TableColumn<ProductOverviewDTO, Button> detailsButtonColumn;
     @FXML
     private TableColumn<ProductOverviewDTO, Button> buyButtonColumn;
@@ -71,6 +73,25 @@ public class ShopControllerNew implements Initializable {
         textAnimator = new TextAnimator(1000, 75, "Search for ", texts, textOutput, true);
         Thread th = new Thread(textAnimator);
         th.start();
+
+        // Modify price column
+        priceColumn.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<ProductOverviewDTO, Float> call(TableColumn<ProductOverviewDTO, Float> param) {
+                return new TableCell<>() {
+                    @Override
+                    protected void updateItem(Float minPrice, boolean empty) {
+                        super.updateItem(minPrice, empty);
+                        if (empty || minPrice == null) {
+                            setText("");
+                        } else {
+                            String minPriceStr = "from " + minPrice + "€";
+                            setText(minPriceStr);
+                        }
+                    }
+                };
+            }
+        });
 
         searchInProductTable("");
         checkIfShoppingCartIsFilled();
@@ -162,11 +183,6 @@ public class ShopControllerNew implements Initializable {
                                 Label label = new Label();
                                 label.getStyleClass().add("p-1-bold");
 
-                                Label storageLabel = new Label("Storage");
-                                storageLabel.getStyleClass().add("p-1");
-                                Label storage = new Label("FAKE-FAKE-FAKE");
-                                storage.getStyleClass().add("p-1-bold");
-
                                 try {
                                     productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
                                     UUID productID = getTableView().getItems().get(getIndex()).getProductId();
@@ -199,11 +215,11 @@ public class ShopControllerNew implements Initializable {
                                     throw new RuntimeException(e);
                                 }
 
-                                VBox labels = new VBox(albumLabel, artistLabel, genreLabel, releaseLabel, durationLabel, labelLabel, storageLabel);
+                                VBox labels = new VBox(albumLabel, artistLabel, genreLabel, releaseLabel, durationLabel, labelLabel);
                                 labels.setSpacing(19);
                                 labels.setStyle("-fx-padding: 58 0 0 20;");
 
-                                VBox infos = new VBox(album, artist, genre, release, duration, label, storage);
+                                VBox infos = new VBox(album, artist, genre, release, duration, label);
                                 infos.setSpacing(19);
                                 infos.setStyle("-fx-padding: 58 40 0 20;");
 
@@ -280,6 +296,10 @@ public class ShopControllerNew implements Initializable {
                                     TableColumn<SoundCarrierDTO, String> soundCarrierNameColumn = new TableColumn<>("Type");
                                     soundCarrierNameColumn.setCellValueFactory(new PropertyValueFactory<>("soundCarrierName"));
 
+                                    TableColumn<SoundCarrierDTO, String> locationColumn = new TableColumn<>("Location");
+                                    locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+                                    locationColumn.setStyle("-fx-alignment: center;");
+
                                     TableColumn<SoundCarrierDTO, String> amountAvailableColumn = new TableColumn<>("Available");
                                     amountAvailableColumn.setCellValueFactory(new PropertyValueFactory<>("amountAvailable"));
                                     amountAvailableColumn.setStyle("-fx-alignment: center;");
@@ -300,7 +320,7 @@ public class ShopControllerNew implements Initializable {
 
                                     ObservableList<SoundCarrierDTO> priceList = FXCollections.observableArrayList(productDetails.getSoundCarriers());
                                     priceTable.setItems(priceList);
-                                    priceTable.getColumns().addAll(soundCarrierNameColumn, amountAvailableColumn, pricePerCarrierColumn, selectAmountColumn, addToCartColumn);
+                                    priceTable.getColumns().addAll(soundCarrierNameColumn, locationColumn, amountAvailableColumn, pricePerCarrierColumn, selectAmountColumn, addToCartColumn);
                                     priceTable.getSortOrder().add(soundCarrierNameColumn);
                                     priceTable.sort();
                                     priceTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
