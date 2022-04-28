@@ -16,7 +16,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SidebarController implements Initializable {
-
+    @FXML
+    private Button messageButton;
     @FXML
     private Button topicsButton;
 
@@ -99,6 +100,11 @@ public class SidebarController implements Initializable {
         if(!SessionManager.getInstance().getRoles().contains("Operator")) {
             topicsButton.setVisible(false);
             orderButton.setVisible(false);
+        }
+
+        // Check if new messages were received
+        if(SessionManager.getInstance().isNewMessagesReceived()) {
+            messageButton.setText("Messages\nNew messages!");
         }
     }
 }
