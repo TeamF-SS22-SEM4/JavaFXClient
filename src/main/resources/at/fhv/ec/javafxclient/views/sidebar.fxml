@@ -44,6 +44,11 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="ENVELOPE" size="20" />
                </graphic>
             </Button>
+<!--                 TODO only display for operators-->
+             <Button fx:id="orderButton" alignment="BASELINE_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#onOrderButtonClicked" styleClass="btn" text="Orders" VBox.vgrow="ALWAYS">
+                 <graphic>
+                     <FontAwesomeIconView fill="WHITE" glyphName="CUBE" size="20" />
+                 </graphic></Button>
             <Pane VBox.vgrow="ALWAYS" />
             <VBox spacing="15.0">
                <children>

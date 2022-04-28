@@ -3,6 +3,7 @@ package at.fhv.ec.javafxclient.view.controller;
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.JMSClient;
+import at.fhv.ec.javafxclient.communication.OrderingClient;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -19,6 +20,9 @@ public class SidebarController implements Initializable {
     private Button messageButton;
     @FXML
     private Button topicsButton;
+
+    @FXML
+    private Button orderButton;
 
     public ToggleGroup themeStyleToggleGroup;
     public ToggleGroup themeColorToggleGroup;
@@ -42,6 +46,11 @@ public class SidebarController implements Initializable {
     @FXML
     private void onCustomerButtonClicked() {
         SceneManager.getInstance().switchView("customer");
+    }
+
+    @FXML
+    private void onOrderButtonClicked() throws IOException {
+        SceneManager.getInstance().switchView("order");
     }
 
     @FXML
@@ -70,6 +79,7 @@ public class SidebarController implements Initializable {
         SessionManager.getInstance().logout();
         SceneManager.getInstance().logout();
         JMSClient.getJmsClient().logout();
+        OrderingClient.getInstance().disconnect();
     }
 
     @Override
@@ -88,6 +98,7 @@ public class SidebarController implements Initializable {
 
         if(!SessionManager.getInstance().getRoles().contains("Operator")) {
             topicsButton.setVisible(false);
+            orderButton.setVisible(false);
         }
 
         // Check if new messages were received
