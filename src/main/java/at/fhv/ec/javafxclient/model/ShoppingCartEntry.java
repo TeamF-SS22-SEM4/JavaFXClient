@@ -1,5 +1,6 @@
-package at.fhv.ec.javafxclient.view.utils;
+package at.fhv.ec.javafxclient.model;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class ShoppingCartEntry {
@@ -69,5 +70,19 @@ public class ShoppingCartEntry {
 
     public int getAmountAvailable() {
         return amountAvailable;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ShoppingCartEntry that = (ShoppingCartEntry) o;
+        return Objects.equals(soundCarrierId, that.soundCarrierId);
+    }
+
+    @Override
+    public int hashCode() {
+        // Only soundCarrierId because it should not be possible to add same sound carrier twice to shopping cart
+        return Objects.hash(soundCarrierId);
     }
 }

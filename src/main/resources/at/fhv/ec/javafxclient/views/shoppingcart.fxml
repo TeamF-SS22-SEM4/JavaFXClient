@@ -41,15 +41,15 @@
                               <PropertyValueFactory property="soundCarrierName" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn fx:id="selectedAmountColumn" prefWidth="137.0" text="Selected Amount">
-                  </TableColumn>
-                        <TableColumn fx:id="totalProductPriceColumn" prefWidth="110.0" text="Total">
+                        <TableColumn fx:id="pricePerCarrierColumn" prefWidth="110.0" text="Price per Carrier">
                            <cellValueFactory>
-                              <PropertyValueFactory property="totalProductPrice" />
+                              <PropertyValueFactory property="pricePerCarrier" />
                            </cellValueFactory>
                         </TableColumn>
+                        <TableColumn fx:id="selectedAmountColumn" prefWidth="137.0" text="Selected Amount">
+                        </TableColumn>
                         <TableColumn fx:id="actionColumn" prefWidth="110.0" text="Action">
-                  </TableColumn>
+                        </TableColumn>
                      </columns>
                   </TableView>
                   <Pane prefHeight="215.0" prefWidth="638.0">

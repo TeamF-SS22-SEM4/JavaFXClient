@@ -25,6 +25,8 @@ public class JMSClient {
     private Map<String, ArrayList<CustomMessage>> messages;
     private Map<String, Message> jmsMessages;
 
+    private int amountOfNewMessages;
+
     private JMSClient() {}
 
     public static JMSClient getJmsClient() {
@@ -35,6 +37,7 @@ public class JMSClient {
             jmsClient.consumers = new HashMap<>();
             jmsClient.messages = new HashMap<>();
             jmsClient.jmsMessages = new HashMap<>();
+            jmsClient.amountOfNewMessages = 0;
         }
 
         return jmsClient;
@@ -81,6 +84,7 @@ public class JMSClient {
 
                         if(messageDateTime.isAfter(lastViewed)) {
                             SessionManager.getInstance().onNewMessageReceived();
+                            amountOfNewMessages += 1;
                         }
                     } catch (JMSException | SessionExpired | RemoteException | NoPermissionForOperation e) {
                         throw new RuntimeException(e);
@@ -119,6 +123,10 @@ public class JMSClient {
 
     public int getAmountOfMessagesByTopic(String topicName) {
         return messages.get(topicName) == null ? 0 : messages.get(topicName).size();
+    }
+
+    public int getAmountOfNewMessages() {
+        return this.amountOfNewMessages;
     }
 
     public void acknowledgeMessage(String topicName, CustomMessage customMessage) throws JMSException, NoSuchElementException {

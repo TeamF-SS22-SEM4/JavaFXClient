@@ -3,7 +3,7 @@ package at.fhv.ec.javafxclient.view.controller;
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
-import at.fhv.ec.javafxclient.view.utils.ShoppingCartEntry;
+import at.fhv.ec.javafxclient.model.ShoppingCartEntry;
 import at.fhv.ss22.ea.f.communication.dto.CustomerDTO;
 import at.fhv.ss22.ea.f.communication.dto.ShoppingCartProductDTO;
 import at.fhv.ss22.ea.f.communication.exception.CarrierNotAvailableException;

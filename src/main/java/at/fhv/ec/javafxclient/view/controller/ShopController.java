@@ -6,7 +6,7 @@ import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ec.javafxclient.view.animator.TextAnimator;
 import at.fhv.ec.javafxclient.view.animator.TextOutput;
-import at.fhv.ec.javafxclient.view.utils.ShoppingCartEntry;
+import at.fhv.ec.javafxclient.model.ShoppingCartEntry;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.*;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
@@ -458,6 +458,7 @@ public class ShopController implements Initializable {
                                                         addToCartButton.setOnAction(event -> {
                                                             Spinner<Integer> selectedAmountSpinner = (Spinner<Integer>) priceTable.lookup("#" + getTableView().getItems().get(getIndex()).getSoundCarrierName());
                                                             addProductToCart(getTableView().getItems().get(getIndex()).getSoundCarrierName(), selectedAmountSpinner.getValue(), productDetails);
+                                                            selectedAmountSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, getTableView().getItems().get(getIndex()).getAmountAvailable(), 0));
                                                         });
                                                         setGraphic(addToCartButton);
                                                     }
@@ -592,13 +593,18 @@ public class ShopController implements Initializable {
                     selectedSoundCarrier.getAmountAvailable()
             );
 
-            ShoppingCartController.shoppingCart.add(cartEntry);
+            if(!ShoppingCartController.shoppingCart.contains(cartEntry)) {
+                ShoppingCartController.shoppingCart.add(cartEntry);
 
-            feedbackLabel.getStyleClass().remove("alert");
-            feedbackLabel.setText("Success - Your article(s) are now in the shopping cart!");
+                feedbackLabel.getStyleClass().remove("alert");
+                feedbackLabel.setText("Success - Your article(s) are now in the shopping cart!");
+            } else {
+                feedbackLabel.getStyleClass().add("alert");
+                feedbackLabel.setText("Failed - This product is already in the cart!");
+            }
         } else {
             feedbackLabel.getStyleClass().add("alert");
-            feedbackLabel.setText("Fail - You have to choose at least one item!");
+            feedbackLabel.setText("Failed - You have to choose at least one item!");
         }
 
         checkIfShoppingCartIsFilled();

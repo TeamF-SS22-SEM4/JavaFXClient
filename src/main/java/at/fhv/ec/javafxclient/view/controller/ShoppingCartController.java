@@ -1,14 +1,13 @@
 package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
-import at.fhv.ec.javafxclient.view.utils.ShoppingCartEntry;
+import at.fhv.ec.javafxclient.model.ShoppingCartEntry;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class ShoppingCartController {
     private TableColumn<ShoppingCartEntry, Spinner<Integer>> selectedAmountColumn;
 
     @FXML
-    private TableColumn<ShoppingCartEntry, Float> totalProductPriceColumn;
+    private TableColumn<ShoppingCartEntry, Float> pricePerCarrierColumn;
 
     @FXML
     private TableColumn<ShoppingCartEntry, Button> actionColumn;
@@ -116,19 +115,19 @@ public class ShoppingCartController {
 
         selectedAmountColumn.setCellFactory(spinnerCellFactory);
 
-        totalProductPriceColumn.setCellFactory(new Callback<>() {
+        pricePerCarrierColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<ShoppingCartEntry, Float> call(TableColumn<ShoppingCartEntry, Float> param) {
                 return new TableCell<>() {
                     @Override
-                    protected void updateItem(Float totalProductPrice, boolean empty) {
-                        super.updateItem(totalProductPrice, empty);
-                        if (empty || totalProductPrice == null) {
+                    protected void updateItem(Float pricePerCarrier, boolean empty) {
+                        super.updateItem(pricePerCarrier, empty);
+                        if (empty || pricePerCarrier == null) {
                             setText("");
                         } else {
-                            String ptotalProductPriceStr = totalProductPrice + "€";
+                            String pricePerCarrierStr = pricePerCarrier + "€";
 
-                            setText(ptotalProductPriceStr);
+                            setText(pricePerCarrierStr);
                         }
                     }
                 };

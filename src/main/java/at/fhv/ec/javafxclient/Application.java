@@ -32,7 +32,8 @@ public class Application extends javafx.application.Application {
         window.getIcons().add(new Image("images/icon.png"));
         window.setTitle("Tomify");
         window.setScene(scene);
-//        window.setMaximized(true);
+        window.setHeight(800);
+        window.setWidth(1400);
         window.show();
     }
 
