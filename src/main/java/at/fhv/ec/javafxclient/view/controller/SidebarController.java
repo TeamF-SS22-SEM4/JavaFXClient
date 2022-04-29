@@ -84,6 +84,8 @@ public class SidebarController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
         themeStyleToggleGroup.selectedToggleProperty().addListener((obsVal, oldVal, newVal) -> {
             if (newVal == null)
                 oldVal.setSelected(true);
@@ -94,7 +96,7 @@ public class SidebarController implements Initializable {
                 oldVal.setSelected(true);
         });
 
-        logoutButton.setText("Log out\njmo8620 FAKE");
+        logoutButton.setText("Log out\n" + SessionManager.getInstance().getUsername());
 
         if(!SessionManager.getInstance().getRoles().contains("Operator")) {
             topicsButton.setVisible(false);

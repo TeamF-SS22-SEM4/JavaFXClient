@@ -92,7 +92,7 @@ public class LoginController implements Initializable {
                     authenticationService = RMIClient.getRmiClient().getRmiFactory().getAuthenticationService();
                     LoginResultDTO loginResultDTO = authenticationService.login(username, password);
 
-                    SessionManager.getInstance().login(loginResultDTO.getSessionId(), loginResultDTO.getRoles(), loginResultDTO.getTopicNames());
+                    SessionManager.getInstance().login(loginResultDTO.getUsername(), loginResultDTO.getSessionId(), loginResultDTO.getRoles(), loginResultDTO.getTopicNames());
                     JMSClient.getJmsClient().startMessageListeners(loginResultDTO.getTopicNames(), loginResultDTO.getEmployeeId());
 
                     if (loginResultDTO.getRoles().contains("Operator")) {
