@@ -82,13 +82,7 @@ public class JMSClient {
                         if(messageDateTime.isAfter(lastViewed)) {
                             SessionManager.getInstance().onNewMessageReceived();
                         }
-                    } catch (JMSException e) {
-                        throw new RuntimeException(e);
-                    } catch (SessionExpired e) {
-                        throw new RuntimeException(e);
-                    } catch (NoPermissionForOperation e) {
-                        throw new RuntimeException(e);
-                    } catch (RemoteException e) {
+                    } catch (JMSException | SessionExpired | RemoteException | NoPermissionForOperation e) {
                         throw new RuntimeException(e);
                     }
                 });
