@@ -8,16 +8,14 @@ import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.ActiveMQSession;
-import org.springframework.beans.factory.support.ScopeNotActiveException;
 
 import javax.jms.*;
+import javax.naming.NamingException;
 import java.io.IOException;
 import java.lang.IllegalStateException;
-import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class OrderingClient {
     private static final String ORDER_TOPIC_NAME = "Orders";
@@ -95,15 +93,17 @@ public class OrderingClient {
                     .withAmount(detailedOrderDTO.getAmount())
                     .withCarrierId(detailedOrderDTO.getSoundCarrierId())
                     .build();
-            RMIClient.getRmiClient().getRmiFactory().getOrderingService().approveOrder(SessionManager.getInstance().getSessionId(), orderDTO);
+            EJBClient.getEjbClient().getOrderingService().approveOrder(SessionManager.getInstance().getSessionId(), orderDTO);
             //TODO replace, just first version of refreesh
             SceneManager.getInstance().switchView("order");
-        } catch (JMSException | IOException e) {
+        } catch (JMSException e) {
             e.printStackTrace();
         } catch (SessionExpired sessionExpired) {
             sessionExpired.printStackTrace();
         } catch (NoPermissionForOperation noPermissionForOperation) {
             noPermissionForOperation.printStackTrace();
+        } catch (NamingException e) {
+            throw new RuntimeException(e);
         }
     }
 

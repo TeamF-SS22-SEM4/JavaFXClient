@@ -2,7 +2,7 @@ package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
-import at.fhv.ec.javafxclient.communication.RMIClient;
+import at.fhv.ec.javafxclient.communication.EJBClient;
 import at.fhv.ss22.ea.f.communication.api.CustomerService;
 import at.fhv.ss22.ea.f.communication.dto.CustomerDTO;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
@@ -13,8 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 
-import java.io.IOException;
-import java.rmi.RemoteException;
+import javax.naming.NamingException;
 import java.util.List;
 
 public class CustomerController {
@@ -39,17 +38,19 @@ public class CustomerController {
 
         String searchTerm = "b";
         try {
-            customerService = RMIClient.getRmiClient().getRmiFactory().getCustomerSearchService();
+            customerService = EJBClient.getEjbClient().getCustomerService();
             List<CustomerDTO> customers = customerService.search(SessionManager.getInstance().getSessionId(), searchTerm);
 
             ObservableList<CustomerDTO> customerTableData = FXCollections.observableArrayList(customers);
             customerTable.setItems(customerTableData);
             customerTable.getSortOrder().add(lastNameColumn);
             customerTable.sort();
-        } catch (RemoteException | NoPermissionForOperation e) {
+        } catch (NoPermissionForOperation e) {
             e.printStackTrace();
         } catch (SessionExpired e) {
             e.printStackTrace();
+        } catch (NamingException e) {
+            throw new RuntimeException(e);
         }
 
 
@@ -88,15 +89,17 @@ public class CustomerController {
     protected void onSearchButtonClicked() {
         String searchTerm = searchTextField.getText();
         try {
-            customerService = RMIClient.getRmiClient().getRmiFactory().getCustomerSearchService();
+            customerService = EJBClient.getEjbClient().getCustomerService();
             List<CustomerDTO> customers = customerService.search(SessionManager.getInstance().getSessionId(), searchTerm);
 
             ObservableList<CustomerDTO> customerTableData = FXCollections.observableArrayList(customers);
             customerTable.setItems(customerTableData);
             customerTable.getSortOrder().add(lastNameColumn);
             customerTable.sort();
-        } catch (RemoteException | NoPermissionForOperation | SessionExpired e) {
+        } catch (NoPermissionForOperation | SessionExpired e) {
             e.printStackTrace();
+        } catch (NamingException e) {
+            throw new RuntimeException(e);
         }
     }
 

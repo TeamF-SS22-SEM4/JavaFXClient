@@ -3,10 +3,10 @@ package at.fhv.ec.javafxclient.view.controller;
 import at.fhv.ec.javafxclient.Application;
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
-import at.fhv.ec.javafxclient.communication.RMIClient;
+import at.fhv.ec.javafxclient.communication.EJBClient;
+import at.fhv.ec.javafxclient.model.ShoppingCartEntry;
 import at.fhv.ec.javafxclient.view.animator.TextAnimator;
 import at.fhv.ec.javafxclient.view.animator.TextOutput;
-import at.fhv.ec.javafxclient.model.ShoppingCartEntry;
 import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.*;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
@@ -22,13 +22,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+
+import javax.naming.NamingException;
 import java.net.URL;
-import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
@@ -112,14 +116,16 @@ public class ShopController implements Initializable {
 
     private void searchInProductTable(String searchTerm) {
         try {
-            productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
+            productSearchService = EJBClient.getEjbClient().getProductSearchService();
             ObservableList<ProductOverviewDTO> productList = FXCollections.observableArrayList(productSearchService.fullTextSearch(SessionManager.getInstance().getSessionId(), searchTerm));
             productTable.setItems(productList);
             productTable.getSortOrder().add(albumColumn);
             productTable.sort();
             addButtonsToProductTable();
-        } catch (RemoteException | SessionExpired | NoPermissionForOperation e) {
+        } catch (SessionExpired | NoPermissionForOperation e) {
             e.printStackTrace();
+        } catch (NamingException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -181,7 +187,7 @@ public class ShopController implements Initializable {
                                 label.getStyleClass().add("p-1-bold");
 
                                 try {
-                                    productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
+                                    productSearchService = EJBClient.getEjbClient().getProductSearchService();
                                     UUID productID = getTableView().getItems().get(getIndex()).getProductId();
                                     ProductDetailsDTO productDetails = productSearchService.productById(SessionManager.getInstance().getSessionId(), productID);
 
@@ -208,7 +214,9 @@ public class ShopController implements Initializable {
                                     duration.setText(productDetails.getDuration());
                                     label.setText(productDetails.getLabelName());
 
-                                } catch (RemoteException | SessionExpired | NoPermissionForOperation e) {
+                                } catch (SessionExpired | NoPermissionForOperation e) {
+                                    throw new RuntimeException(e);
+                                } catch (NamingException e) {
                                     throw new RuntimeException(e);
                                 }
 
@@ -286,7 +294,7 @@ public class ShopController implements Initializable {
                                 heading.getStyleClass().add("h2");
 
                                 try {
-                                    productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
+                                    productSearchService = EJBClient.getEjbClient().getProductSearchService();
                                     UUID productID = getTableView().getItems().get(getIndex()).getProductId();
                                     ProductDetailsDTO productDetails = productSearchService.productById(SessionManager.getInstance().getSessionId(), productID);
 
@@ -371,16 +379,13 @@ public class ShopController implements Initializable {
 
                                                                    boolean orderingSuccess = false;
                                                                    try {
-                                                                       orderingSuccess = RMIClient.getRmiClient().getRmiFactory().getOrderingService()
+                                                                       orderingSuccess = EJBClient.getEjbClient().getOrderingService()
                                                                                .placeOrder(SessionManager.getInstance().getSessionId(), orderDTO);
 
-                                                                   } catch (RemoteException e) {
-                                                                       //TODO error handling,
+                                                                   } catch (SessionExpired | NoPermissionForOperation e) {
                                                                        e.printStackTrace();
-                                                                   } catch (SessionExpired e) {
-                                                                       e.printStackTrace();
-                                                                   } catch (NoPermissionForOperation e) {
-                                                                       e.printStackTrace();
+                                                                   } catch (NamingException e) {
+                                                                       throw new RuntimeException(e);
                                                                    }
                                                                    displayOrderingSuccess(orderingSuccess);
                                                                }
@@ -467,7 +472,9 @@ public class ShopController implements Initializable {
                                         }
                                     });
 
-                                } catch (RemoteException | NoPermissionForOperation | SessionExpired e) {
+                                } catch (NoPermissionForOperation | SessionExpired e) {
+                                    throw new RuntimeException(e);
+                                } catch (NamingException e) {
                                     throw new RuntimeException(e);
                                 }
 

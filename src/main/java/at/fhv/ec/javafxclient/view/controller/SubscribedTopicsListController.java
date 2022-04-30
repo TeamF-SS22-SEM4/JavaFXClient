@@ -2,8 +2,8 @@ package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
+import at.fhv.ec.javafxclient.communication.EJBClient;
 import at.fhv.ec.javafxclient.communication.JMSClient;
-import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ec.javafxclient.model.Topic;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
@@ -16,7 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
-import java.rmi.RemoteException;
+import javax.naming.NamingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,10 +36,10 @@ public class SubscribedTopicsListController {
         // Add all subscribed topics of user
         try {
             List<Topic> topics = new ArrayList<>();
-            List<String> subscribedTopics = RMIClient.getRmiClient()
-                                                        .getRmiFactory()
-                                                        .getMessagingService()
-                                                        .getSubscribedTopics(SessionManager.getInstance().getSessionId());
+            List<String> subscribedTopics = EJBClient
+                                                .getEjbClient()
+                                                .getMessagingService()
+                                                .getSubscribedTopics(SessionManager.getInstance().getSessionId());
 
             subscribedTopics.forEach(name ->
                     topics.add(new Topic(name, JMSClient.getJmsClient().getAmountOfMessagesByTopic(name)))
@@ -49,11 +49,11 @@ public class SubscribedTopicsListController {
             topicTable.setItems(observableTopicList);
             topicTable.getSortOrder().add(nameColumn);
             topicTable.sort();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
         } catch (SessionExpired e) {
             throw new RuntimeException(e);
         } catch (NoPermissionForOperation e) {
+            throw new RuntimeException(e);
+        } catch (NamingException e) {
             throw new RuntimeException(e);
         }
     }
