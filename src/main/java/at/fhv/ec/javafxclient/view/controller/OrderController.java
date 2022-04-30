@@ -1,4 +1,4 @@
-package at.fhv.ec.javafxclient.view;
+package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.communication.OrderingClient;
 import at.fhv.ss22.ea.f.communication.dto.DetailedOrderDTO;
