@@ -32,49 +32,49 @@ public class EJBClient {
 
     public AuthenticationService getAuthenticationService() throws NamingException {
         return (AuthenticationService) initialContext.lookup(
-                "ejb:/MusicShopBackend-1.0-SNAPSHOT/AuthenticationServiceImpl!at.fhv.ss22.ea.f.communication.api.AuthenticationService"
+                "ejb:/ROOT/AuthenticationServiceImpl!at.fhv.ss22.ea.f.communication.api.AuthenticationService"
         );
     }
 
     public BuyingService getBuyingService() throws NamingException {
         return (BuyingService) initialContext.lookup(
-                "ejb:/MusicShopBackend-1.0-SNAPSHOT/BuyingServiceImpl!at.fhv.ss22.ea.f.communication.api.BuyingService"
+                "ejb:/ROOT/BuyingServiceImpl!at.fhv.ss22.ea.f.communication.api.BuyingService"
         );
     }
 
     public CustomerService getCustomerService() throws NamingException {
         return (CustomerService) initialContext.lookup(
-                "ejb:/MusicShopBackend-1.0-SNAPSHOT/CustomerSearchService!at.fhv.ss22.ea.f.communication.api.CustomerService"
+                "ejb:/ROOT/CustomerSearchService!at.fhv.ss22.ea.f.communication.api.CustomerService"
         );
     }
 
     public MessagingService getMessagingService() throws NamingException {
         return (MessagingService) initialContext.lookup(
-                "ejb:/MusicShopBackend-1.0-SNAPSHOT/MessagingServiceServant!at.fhv.ss22.ea.f.communication.api.MessagingService"
+                "ejb:/ROOT/MessagingServiceServant!at.fhv.ss22.ea.f.communication.api.MessagingService"
         );
     }
 
     public OrderingService getOrderingService() throws NamingException {
         return (OrderingService) initialContext.lookup(
-                "ejb:/MusicShopBackend-1.0-SNAPSHOT/OrderingServiceImpl!at.fhv.ss22.ea.f.communication.api.OrderingService"
+                "ejb:/ROOT/OrderingServiceImpl!at.fhv.ss22.ea.f.communication.api.OrderingService"
         );
     }
 
     public ProductSearchService getProductSearchService() throws NamingException {
         return (ProductSearchService) initialContext.lookup(
-                "ejb:/MusicShopBackend-1.0-SNAPSHOT/ProductSearchServiceImpl!at.fhv.ss22.ea.f.communication.api.ProductSearchService"
+                "ejb:/ROOT/ProductSearchServiceImpl!at.fhv.ss22.ea.f.communication.api.ProductSearchService"
         );
     }
 
     public RefundSaleService getRefundSaleService() throws NamingException {
         return (RefundSaleService) initialContext.lookup(
-                "ejb:/MusicShopBackend-1.0-SNAPSHOT/RefundSaleServiceImpl!at.fhv.ss22.ea.f.communication.api.RefundSaleService"
+                "ejb:/ROOT/RefundSaleServiceImpl!at.fhv.ss22.ea.f.communication.api.RefundSaleService"
         );
     }
 
     public SaleSearchService getSaleSearchService() throws NamingException {
         return (SaleSearchService) initialContext.lookup(
-                "ejb:/MusicShopBackend-1.0-SNAPSHOT/SaleSearchServiceImpl!at.fhv.ss22.ea.f.communication.api.SaleSearchService"
+                "ejb:/ROOT/SaleSearchServiceImpl!at.fhv.ss22.ea.f.communication.api.SaleSearchService"
         );
     }
 }
