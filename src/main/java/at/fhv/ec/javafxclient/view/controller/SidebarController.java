@@ -9,9 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.ImageView;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -78,7 +76,7 @@ public class SidebarController implements Initializable {
     private void onLogoutButtonClicked() {
         SessionManager.getInstance().logout();
         SceneManager.getInstance().logout();
-        JMSClient.getJmsClient().logout();
+        JMSClient.getJmsClient().disconnect();
         OrderingClient.getInstance().disconnect();
     }
 
