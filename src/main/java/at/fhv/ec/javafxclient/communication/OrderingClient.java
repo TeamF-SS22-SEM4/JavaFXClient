@@ -39,8 +39,8 @@ public class OrderingClient {
             this.session.close();
             this.connection.stop();
             this.connection.close();
-        } catch (JMSException | NullPointerException e) {
-            e.printStackTrace();
+        } catch (JMSException | NullPointerException ignored) {
+
         }
     }
     public void connect(String host) {
