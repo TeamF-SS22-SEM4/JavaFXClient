@@ -72,7 +72,7 @@ public class SidebarController implements Initializable {
     private void onLogoutButtonClicked() {
         SessionManager.getInstance().logout();
         SceneManager.getInstance().logout();
-        JMSClient.getJmsClient().logout();
+        JMSClient.getJmsClient().disconnect();
         OrderingClient.getInstance().disconnect();
     }
 

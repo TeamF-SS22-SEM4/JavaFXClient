@@ -66,6 +66,7 @@ public class JMSClient {
                 consumer.setMessageListener(message -> {
                     TextMessage textMessage = (TextMessage) message;
                     try {
+                        System.out.println("New Message: " + textMessage.getText());
                         jmsMessages.put(message.getJMSMessageID(), message); // Save original message to acknowledge it later
 
                         String title = textMessage.getText().split("\n")[0];
@@ -91,6 +92,7 @@ public class JMSClient {
                     }
                 });
 
+                System.out.println("Started Listener for topic " + topic);
                 connections.put(topic, connection);
                 sessions.put(topic, session);
                 consumers.put(topic, consumer);
@@ -141,34 +143,41 @@ public class JMSClient {
         jmsMessages.remove(customMessage.getJmsId());
         topicMessages.remove(customMessage);
     }
-    public void logout() {
-        // TODO: Find better solution
+
+    public void disconnect() {
         // Close all connections
-        consumers.forEach((k , v) -> {
+        consumers.forEach((topic , consumer) -> {
             try {
-                v.close();
-            } catch (JMSException e) {
-                throw new RuntimeException(e);
+                consumer.close();
+                System.out.println("Closed consumer for " + topic);
+            } catch (JMSException ignored) {
+
             }
         });
 
-        sessions.forEach((k , v) -> {
+        sessions.forEach((topic , session) -> {
             try {
-                v.close();
-            } catch (JMSException e) {
-                throw new RuntimeException(e);
+                session.close();
+                System.out.println("Closed session for " + topic);
+            } catch (JMSException ignored) {
+
             }
         });
 
-        connections.forEach((k , v) -> {
+        connections.forEach((topic , connection) -> {
             try {
-                v.close();
-            } catch (JMSException e) {
-                throw new RuntimeException(e);
+                connection.close();
+                System.out.println("Closed connection for " + topic);
+            } catch (JMSException ignored) {
+
             }
         });
 
+        consumers.clear();
+        sessions.clear();
+        connections.clear();
         jmsMessages.clear();
         messages.clear();
+        amountOfNewMessages = 0;
     }
 }
