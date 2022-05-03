@@ -4,7 +4,7 @@
 * {
     -fx-color-primary: rgb(194, 127, 0);
     -fx-color-success: #006708;
-    -fx-color-alert: rgba(255, 0, 0, 1);
+    -fx-color-alert: rgb(200, 0, 0);
     -fx-color-text-1: #fafafa;
     -fx-color-text-2: #c2c2c2;
     -fx-color-btn-text: #fafafa;
@@ -16,8 +16,8 @@
 }
 
 .root {
-    -fx-pref-height: 648;
-    -fx-pref-width: 1152;
+    -fx-pref-height: 720;
+    -fx-pref-width: 1280;
     -fx-font: 14px "Helvetica";
     -fx-focus-color: -fx-color-primary;
     -fx-faint-focus-color: transparent;
@@ -169,6 +169,10 @@ Button, ToggleButton {
     -fx-border-insets: 0 0 -1 0, 0, 1, 2 !important;
 }
 
+Button:pressed, ToggleButton:pressed {
+    -fx-background-insets: 1 1 0 1 !important;
+}
+
 .btn, .btn FontAwesomeIconView {
     -fx-text-fill: -fx-color-btn-text;
     -fx-fill: -fx-color-btn-text;
@@ -184,6 +188,13 @@ Button, ToggleButton {
 }
 
 .btn-alert, .btn-alert FontAwesomeIconView {
+    -fx-text-fill: -fx-color-btn-text;
+    -fx-fill: -fx-color-btn-text;
+    -fx-background-color: -fx-color-alert;
+    -fx-background-radius: 5;
+}
+
+.btn-notify, .btn-notify FontAwesomeIconView {
     -fx-text-fill: -fx-color-primary !important;
     -fx-fill: -fx-color-primary !important;
     -fx-background-color: -fx-color-btn-text !important;

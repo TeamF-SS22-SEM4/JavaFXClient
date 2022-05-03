@@ -2,7 +2,6 @@ package at.fhv.ec.javafxclient;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,12 +11,11 @@ public class SceneManager {
     public static final String VIEW_SHOP = "shop";
     public static final String VIEW_EXCHANGE = "exchange";
     public static final String VIEW_CUSTOMER = "customer";
-    public static final String VIEW_MESSAGES = "subscribed-topics-list";
-    public static final String VIEW_TOPICS = "all-topics-list";
+    public static final String VIEW_MESSAGES_READ_CHANNELS = "messages-read-channels";
+    public static final String VIEW_MESSAGES_WRITE_CHANNELS = "messages-write-channels";
     public static final String VIEW_ORDERS = "order";
 
     public static final String VIEW_SHOPPING_CART = "shoppingcart";
-    public static final String VIEW_CHECKOUT = "shoppingcart";
 
     public static final String VIEW_MESSAGES_SEND = "send-message";
     public static final String VIEW_MESSAGES_READ_OVERVIEW = "message-list";

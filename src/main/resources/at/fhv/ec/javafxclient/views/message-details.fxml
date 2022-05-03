@@ -12,7 +12,7 @@
 
 <HBox fx:id="ct" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.MessageDetailsController">
    <children>
-      <fx:include source="sidebar.fxml" />
+      <fx:include source="elements/sidebar.fxml" />
       <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
          <children>
             <HBox alignment="CENTER_LEFT" styleClass="header" VBox.vgrow="ALWAYS">

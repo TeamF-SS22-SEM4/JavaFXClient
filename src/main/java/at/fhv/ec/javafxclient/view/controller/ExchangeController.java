@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -28,9 +29,6 @@ public class ExchangeController {
 
     @FXML
     private TextField searchTextField;
-
-    @FXML
-    private Pane contentPaneTop;
 
     @FXML
     private Label invoiceNumberLabel;
@@ -48,17 +46,17 @@ public class ExchangeController {
     private TableColumn<SaleItemEntry, Spinner<Integer>> refundCarrierColumn;
 
     @FXML
-    private Pane contentPaneBottom;
+    private VBox refundBox;
 
     @FXML
     private Label totalPriceLabel;
 
     @FXML
     public void initialize() {
-        // Hide elements
-        contentPaneTop.setVisible(false);
+
+        invoiceNumberLabel.setVisible(false);
         saleItemsTable.setVisible(false);
-        contentPaneBottom.setVisible(false);
+        refundBox.setVisible(false);
 
         // Fomat table columns
         pricePerCarrierColumn.setCellFactory(new Callback<>() {
@@ -123,13 +121,12 @@ public class ExchangeController {
         refundCarrierColumn.setCellFactory(spinnerCellFactory);
     }
 
-    public void onHomeButtonClicked() throws IOException {
+    public void onHomeButtonClicked() {
         SceneManager.getInstance().switchView(SceneManager.VIEW_EXCHANGE);
     }
 
     @FXML
     protected void onSearchButtonClicked() {
-        onClearButtonClicked();
 
         try {
             SaleSearchService saleSearchService = RMIClient.getRmiClient().getRmiFactory().getSaleSearchService();
@@ -156,9 +153,9 @@ public class ExchangeController {
 
             totalPriceLabel.setText(sale.getTotalPrice() + "€");
 
-            contentPaneTop.setVisible(true);
+            refundBox.setVisible(true);
             saleItemsTable.setVisible(true);
-            contentPaneBottom.setVisible(true);
+            refundBox.setVisible(true);
         } catch (RemoteException e) {
             showPopup("Connection Error", "A connection error occured.", Alert.AlertType.ERROR);
         } catch (NoSuchElementException ne) {
@@ -168,16 +165,6 @@ public class ExchangeController {
         }
     }
 
-    @FXML
-    protected void onClearButtonClicked() {
-        contentPaneTop.setVisible(false);
-        saleItemsTable.setVisible(false);
-        contentPaneBottom.setVisible(false);
-
-        invoiceNumberLabel.setText("");
-        saleItemsTable.getItems().clear();
-        totalPriceLabel.setText("");
-    }
 
     @FXML
     protected void onRefundButtonClicked() {
@@ -197,7 +184,6 @@ public class ExchangeController {
 
             if(refundedSaleItemDTOs.size() > 0) {
                 refundSaleService.refundSale(SessionManager.getInstance().getSessionId(), invoiceNumberLabel.getText(), refundedSaleItemDTOs);
-                onClearButtonClicked();
                 onSearchButtonClicked();
                 showPopup("Sale Items refunded", "Refund successful", Alert.AlertType.INFORMATION);
             } else {

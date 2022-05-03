@@ -13,15 +13,15 @@ import javafx.util.Callback;
 
 import java.util.List;
 
-public class AllTopicsListController {
+public class MessagesWriteChannelsController {
     @FXML
-    private TableView<Topic> topicTable;
+    private TableView<Topic> channelTable;
 
     @FXML
     private TableColumn<Topic, String> nameColumn;
 
     @FXML
-    private TableColumn<Topic, Button> newMessageButtonColumn;
+    private TableColumn<Topic, Button> actionColumn;
 
     public void initialize() {
         initTable();
@@ -37,14 +37,14 @@ public class AllTopicsListController {
         );
 
         ObservableList<Topic> observableTopicList = FXCollections.observableArrayList(topics);
-        topicTable.setItems(observableTopicList);
-        topicTable.getSortOrder().add(nameColumn);
-        topicTable.sort();
+        channelTable.setItems(observableTopicList);
+        channelTable.getSortOrder().add(nameColumn);
+        channelTable.sort();
     }
 
     private void initTable() {
         // Create buttons in table
-        newMessageButtonColumn.setCellFactory(new Callback<>() {
+        actionColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<Topic, Button> call(TableColumn<Topic, Button> param) {
 

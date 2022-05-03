@@ -20,7 +20,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubscribedTopicsListController {
+public class MessagesReadChannelsController {
     @FXML
     private TableView<Topic> topicTable;
 

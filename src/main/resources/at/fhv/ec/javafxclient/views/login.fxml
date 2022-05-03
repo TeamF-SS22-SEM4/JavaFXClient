@@ -67,7 +67,7 @@
                   </FontAwesomeIconView>
                   <VBox>
                      <children>
-                        <Label styleClass="color-text-2" text="For LUKAS KAUFMANN: make sure the scaling is at 100%!" wrapText="true" />
+                        <Label styleClass="color-text-2" text="For best experience make sure the scaling is at 100%!" wrapText="true" />
                         <Hyperlink focusTraversable="false" onAction="#onLinkClicked" text="Tutorial" />
                      </children>
                   </VBox>

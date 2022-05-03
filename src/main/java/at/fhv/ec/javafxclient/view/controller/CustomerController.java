@@ -34,8 +34,6 @@ public class CustomerController {
 
     @FXML
     public void initialize() {
-        addToSaleColumn.setVisible(false);
-
 
         String searchTerm = "b";
         try {
@@ -54,12 +52,10 @@ public class CustomerController {
 
 
         // Show add to sale button only when user comes from checkout view
-        if(ShoppingCartController.shoppingCart.size() > 0) {
             addToSaleColumn.setCellFactory(new Callback<>() {
                 @Override
                 public TableCell<CustomerDTO, Button> call(TableColumn<CustomerDTO, Button> param) {
                     return new TableCell<>() {
-                        private final Button addToSaleButton = new Button("Add to sale");
 
                         @Override
                         public void updateItem(Button item, boolean empty) {
@@ -68,9 +64,11 @@ public class CustomerController {
                                 setGraphic(null);
                                 setText(null);
                             } else {
+                                Button addToSaleButton = new Button("Add to sale");
+                                addToSaleButton.getStyleClass().add("btn-success");
                                 addToSaleButton.setOnAction(event -> {
-                                    CheckoutController.customer = getTableView().getItems().get(getIndex());
-                                        SceneManager.getInstance().switchView(SceneManager.VIEW_CHECKOUT);
+                                    ShoppingCartController.customer = getTableView().getItems().get(getIndex());
+                                        SceneManager.getInstance().switchView(SceneManager.VIEW_SHOPPING_CART);
                                 });
                                 setGraphic(addToSaleButton);
                                 setText(null);
@@ -80,8 +78,6 @@ public class CustomerController {
                 }
             });
 
-            addToSaleColumn.setVisible(true);
-        }
     }
 
     @FXML

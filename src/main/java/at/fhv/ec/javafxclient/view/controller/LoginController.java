@@ -54,7 +54,7 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         connectionTypeChoiceBox.getItems().addAll(REMOTE_INFORMATION_TEXT, LOCAL_INFORMATION_TEXT);
-        connectionTypeChoiceBox.setValue(REMOTE_INFORMATION_TEXT);
+        connectionTypeChoiceBox.setValue(LOCAL_INFORMATION_TEXT);
 
         // backdoor user
         usernameTextField.setText("tf-test");

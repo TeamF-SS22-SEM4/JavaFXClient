@@ -9,17 +9,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.ImageView;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SidebarController implements Initializable {
+    public Button readMessageButton;
+    public Button writeMessageButton;
     @FXML
     private Button messageButton;
-    @FXML
-    private Button topicsButton;
+
 
     @FXML
     private Button orderButton;
@@ -44,23 +43,18 @@ public class SidebarController implements Initializable {
     }
 
     @FXML
-    private void onCustomerButtonClicked() {
-        SceneManager.getInstance().switchView(SceneManager.VIEW_CUSTOMER);
-    }
-
-    @FXML
     private void onOrderButtonClicked() {
         SceneManager.getInstance().switchView(SceneManager.VIEW_ORDERS);
     }
 
     @FXML
     private void onMessageButtonClicked() {
-        SceneManager.getInstance().switchView(SceneManager.VIEW_MESSAGES);
+        SceneManager.getInstance().switchView(SceneManager.VIEW_MESSAGES_READ_CHANNELS);
     }
 
     @FXML
     private void onTopicsButtonClicked() {
-        SceneManager.getInstance().switchView(SceneManager.VIEW_TOPICS);
+        SceneManager.getInstance().switchView(SceneManager.VIEW_MESSAGES_WRITE_CHANNELS);
     }
 
     @FXML
@@ -98,14 +92,28 @@ public class SidebarController implements Initializable {
 
         logoutButton.setText("Log out\n" + SessionManager.getInstance().getUsername());
 
-        if(!SessionManager.getInstance().getRoles().contains("Operator")) {
-            topicsButton.setVisible(false);
+        if (!SessionManager.getInstance().getRoles().contains("Operator")) {
+            readMessageButton.setVisible(false);
+            writeMessageButton.setVisible(false);
             orderButton.setVisible(false);
+        } else {
+
+            messageButton.setVisible(false);
+            messageButton.setManaged(false);
+//
+//            FadeTransition fadeTransition = new FadeTransition(
+//                    Duration.millis(5000),
+//                    messageButton);
+//            fadeTransition.setToValue(0);
+//            fadeTransition.play();
         }
 
+
+
+        // TODO when not remove notify !!
         // Check if new messages were received
         if(SessionManager.getInstance().isNewMessagesReceived()) {
-            messageButton.getStyleClass().add("btn-alert");
+            messageButton.getStyleClass().add("btn-notify");
             int amountOfNewMessages = JMSClient.getJmsClient().getAmountOfNewMessages();
             messageButton.setText("Messages (" + amountOfNewMessages + ")");
         }

@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<HBox fx:id="ct" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.AllTopicsListController">
+<HBox fx:id="ct" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.MessagesReadChannelsController">
    <children>
-      <fx:include source="sidebar.fxml" />
+      <fx:include source="elements/sidebar.fxml" />
       <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
          <children>
             <HBox alignment="CENTER_LEFT" styleClass="header" VBox.vgrow="ALWAYS">
@@ -15,7 +15,7 @@
                   <HBox alignment="CENTER" />
                   <Pane HBox.hgrow="ALWAYS">
                      <children>
-                        <Text fill="WHITE" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All-Topics-List">
+                        <Text fill="WHITE" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscribed Topics-list">
                            <font>
                               <Font size="36.0" />
                            </font>
@@ -32,7 +32,12 @@
                              <PropertyValueFactory property="name" />
                           </cellValueFactory>
                        </TableColumn>
-                       <TableColumn fx:id="newMessageButtonColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="">
+                       <TableColumn fx:id="amountOfMessagesColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="Messages">
+                          <cellValueFactory>
+                             <PropertyValueFactory property="amountOfMessages" />
+                          </cellValueFactory>
+                       </TableColumn>
+                       <TableColumn fx:id="viewMessagesButtonColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="">
                        </TableColumn>
                     </columns>
                   </TableView>
