@@ -14,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -31,6 +32,14 @@ public class ExchangeController {
     @FXML
     private Label invoiceNumberLabel;
     @FXML
+    private Label priceLabel;
+    @FXML
+    private Label totalPriceLabel;
+    @FXML
+    private Label feedbackLabel;
+    @FXML
+    private HBox bottomBox;
+    @FXML
     private TableView<SaleItemEntry> saleItemsTable;
     @FXML
     private TableColumn<SaleItemEntry, String> productNameColumn;
@@ -38,24 +47,22 @@ public class ExchangeController {
     private TableColumn<SaleItemEntry, Float> pricePerCarrierColumn;
     @FXML
     private TableColumn<SaleItemEntry, Spinner<Integer>> refundCarrierColumn;
-    @FXML
-    private VBox refundBox;
-    @FXML
-    private Label totalPriceLabel;
 
     @FXML
     public void initialize() {
         displayContent(false);
+        formatTable();
     }
 
     @FXML
     public void onSearchButtonClicked() {
-        formatTable();
+        displayContent(false);
+        invoiceNumberLabel.getStyleClass().remove("alert");
 
         try {
+
             SaleSearchService saleSearchService = RMIClient.getRmiClient().getRmiFactory().getSaleSearchService();
             SaleDTO sale = saleSearchService.saleByInvoiceNumber(SessionManager.getInstance().getSessionId(), searchTextField.getText());
-
             refundedSaleItems = new ArrayList<>();
             sale.getSaleItems().forEach(saleItem -> refundedSaleItems.add(new SaleItemEntry(
                     saleItem.getProductName(),
@@ -74,32 +81,34 @@ public class ExchangeController {
             saleItemsTable.sort();
 
             totalPriceLabel.setText(sale.getTotalPrice() + "€");
-
             displayContent(true);
 
-        } catch (RemoteException e) {
-            showPopup("Connection Error", "A connection error occured.", Alert.AlertType.ERROR);
+        } catch (RemoteException ignored) {
+
         } catch (NoSuchElementException ne) {
-            showPopup("Sale not found", "Sale " + searchTextField.getText() + " not found", Alert.AlertType.ERROR);
+
+            invoiceNumberLabel.setText("No sale with invoice number " + searchTextField.getText() + " found!");
+            invoiceNumberLabel.getStyleClass().add("alert");
+            invoiceNumberLabel.setVisible(true);
+
         } catch (SessionExpired | NoPermissionForOperation e) {
+
             e.printStackTrace();
+
         }
     }
-
 
     @FXML
     public void onHomeButtonClicked() {
         SceneManager.getInstance().switchView(SceneManager.VIEW_EXCHANGE);
     }
 
-
-
-
-
-
     @FXML
-    private void onRefundButtonClicked() {
+    public void onRefundButtonClicked() {
+        feedbackLabel.getStyleClass().remove("alert");
+
         try {
+
             RefundSaleService refundSaleService = RMIClient.getRmiClient().getRmiFactory().getRefundedSaleService();
             List<RefundedSaleItemDTO> refundedSaleItemDTOs = new ArrayList<>();
             refundedSaleItems.forEach(refundedSaleItem -> {
@@ -116,43 +125,35 @@ public class ExchangeController {
             if(refundedSaleItemDTOs.size() > 0) {
                 refundSaleService.refundSale(SessionManager.getInstance().getSessionId(), invoiceNumberLabel.getText(), refundedSaleItemDTOs);
                 onSearchButtonClicked();
-                showPopup("Sale Items refunded", "Refund successful", Alert.AlertType.INFORMATION);
+                feedbackLabel.setText("Refund successful!");
                 formatTable();
             } else {
-                showPopup("Refund not possible", "You have to select at least one item to refund", Alert.AlertType.ERROR);
+                feedbackLabel.getStyleClass().add("alert");
+                feedbackLabel.setText("You have to select at least one item to refund!");
             }
+
         } catch (RemoteException | NoPermissionForOperation | SessionExpired e) {
+
             e.printStackTrace();
+
         }
     }
 
-    private void showPopup(String title, String message, Alert.AlertType alertType) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(message);
-        ButtonType confirmButton = new ButtonType("Ok");
-        alert.getButtonTypes().setAll(confirmButton);
-        alert.show();
-    }
-
-
     private void formatTable() {
-
-        // Fomat table columns
         pricePerCarrierColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<SaleItemEntry, Float> call(TableColumn<SaleItemEntry, Float> param) {
                 return new TableCell<>() {
+
                     @Override
                     protected void updateItem(Float pricePerCarrier, boolean empty) {
-                        super.updateItem(pricePerCarrier, empty);
-                        if (empty || pricePerCarrier == null) {
-                            setText("");
-                        } else {
-                            String pricePerCarrierStr = pricePerCarrier + "€";
-
-                            setText(pricePerCarrierStr);
-                        }
+                    super.updateItem(pricePerCarrier, empty);
+                    if (empty || pricePerCarrier == null) {
+                        setText("");
+                    } else {
+                        String pricePerCarrierStr = pricePerCarrier + "€";
+                        setText(pricePerCarrierStr);
+                    }
                     }
                 };
             }
@@ -163,31 +164,22 @@ public class ExchangeController {
             public TableCell<SaleItemEntry, Spinner<Integer>> call(final TableColumn<SaleItemEntry, Spinner<Integer>> param) {
                 return new TableCell<>() {
 
-                    private final Spinner<Integer> refundAmountSpinner = new Spinner<>();
-
                     @Override
                     public void updateItem(Spinner<Integer> item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty) {
                             setGraphic(null);
-                            setText(null);
                         } else {
+                            Spinner<Integer> refundAmountSpinner = new Spinner<>();
                             SaleItemEntry selectedItem = getTableView().getItems().get(getIndex());
                             int maximumRefundableAmount = selectedItem.getAmountOfCarriers() - selectedItem.getRefundedAmount();
 
                             if(maximumRefundableAmount != 0) {
-                                refundAmountSpinner.setValueFactory(
-                                        new SpinnerValueFactory.IntegerSpinnerValueFactory(
-                                                0,
-                                                maximumRefundableAmount,
-                                                0
-                                        )
-                                );
+                                refundAmountSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, maximumRefundableAmount, 0));
 
                                 refundAmountSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
                                     SaleItemEntry refundedSaleItem = refundedSaleItems.get(getIndex());
-                                    refundedSaleItem.setAmountToRefund(newValue);
-                                });
+                                    refundedSaleItem.setAmountToRefund(newValue);});
 
                                 setGraphic(refundAmountSpinner);
                             }
@@ -196,15 +188,15 @@ public class ExchangeController {
                 };
             }
         };
-
         refundCarrierColumn.setCellFactory(spinnerCellFactory);
     }
 
-
     private void displayContent(boolean show) {
         invoiceNumberLabel.setVisible(show);
+        priceLabel.setVisible(show);
+        totalPriceLabel.setVisible(show);
         saleItemsTable.setVisible(show);
-        refundBox.setVisible(show);
+        bottomBox.setVisible(show);
     }
 
 }

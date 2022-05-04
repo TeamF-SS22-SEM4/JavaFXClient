@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.control.cell.*?>
-<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
 <HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.ShopController">
    <children>
       <fx:include source="elements/sidebar.fxml" />
@@ -73,7 +79,7 @@
                               <PropertyValueFactory property="releaseYear" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn fx:id="priceColumn" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" text="Price">
+                        <TableColumn fx:id="priceColumn" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: center;" text="Price [from]">
                            <cellValueFactory>
                               <PropertyValueFactory property="smallestPrice" />
                            </cellValueFactory>

@@ -21,19 +21,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessagesReadChannelsController {
+
     @FXML
     private TableView<Topic> topicTable;
-
     @FXML
     private TableColumn<Topic, String> nameColumn;
-
     @FXML
     private TableColumn<Topic, Button> viewMessagesButtonColumn;
 
+    @FXML
     public void initialize() {
-        initTable();
+        formatTable();
 
-        // Add all subscribed topics of user
         try {
             List<Topic> topics = new ArrayList<>();
             List<String> subscribedTopics = RMIClient.getRmiClient()
@@ -41,41 +40,37 @@ public class MessagesReadChannelsController {
                                                         .getMessagingService()
                                                         .getSubscribedTopics(SessionManager.getInstance().getSessionId());
 
-            subscribedTopics.forEach(name ->
-                    topics.add(new Topic(name, JMSClient.getJmsClient().getAmountOfMessagesByTopic(name)))
-            );
+            subscribedTopics.forEach(name -> topics.add(new Topic(name, JMSClient.getJmsClient().getAmountOfMessagesByTopic(name))));
 
             ObservableList<Topic> observableTopicList = FXCollections.observableArrayList(topics);
             topicTable.setItems(observableTopicList);
             topicTable.getSortOrder().add(nameColumn);
             topicTable.sort();
+
         } catch (RemoteException | SessionExpired | NoPermissionForOperation ignored) {}
     }
 
-    private void initTable() {
-        // Create buttons in table
+    private void formatTable() {
         viewMessagesButtonColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<Topic, Button> call(TableColumn<Topic, Button> param) {
-
-                final Button viewMessagesButton = new Button("View Messages");
-                viewMessagesButton.getStyleClass().add("btn");
-
                 return new TableCell<>() {
+
                     @Override
                     public void updateItem(Button item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty) {
                             setGraphic(null);
-                            setText(null);
                         } else {
+                            Button viewMessagesButton = new Button("View messages");
+                            viewMessagesButton.getStyleClass().add("btn");
+
                             viewMessagesButton.setOnAction(event -> {
-                                MessageListController.topicName = getTableView().getItems().get(getIndex()).getName();
+                                MessagesReadOverviewController.topicName = getTableView().getItems().get(getIndex()).getName();
                                 SceneManager.getInstance().switchView(SceneManager.VIEW_MESSAGES_READ_OVERVIEW);
                             });
 
                             setGraphic(viewMessagesButton);
-                            setText(null);
                         }
                     }
                 };

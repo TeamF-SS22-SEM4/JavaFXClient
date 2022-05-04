@@ -30,7 +30,6 @@ public class LoginController {
     private static final String REMOTE_HOST = "10.0.40.170";
     private static final String REMOTE_PORT = "12345";
     private static final String REMOTE_INFORMATION_TEXT = "remote (port:12345)";
-
     private static final String LOCAL_HOST = "localhost";
     private static final String LOCAL_PORT = "1099";
     private static final String LOCAL_INFORMATION_TEXT = "local (port:1099)";
@@ -91,13 +90,13 @@ public class LoginController {
                     if (loginResultDTO.getRoles().contains("Operator")) {
                         if (connectionTypeChoiceBox.getValue().equals(LOCAL_INFORMATION_TEXT)) {
                             OrderingClient.getInstance().connect(LOCAL_HOST);
+
                         } else {
                             OrderingClient.getInstance().connect(REMOTE_HOST);
                         }
                     }
 
                     SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
-
 
                 } catch (RemoteException | NotBoundException e) {
 

@@ -79,7 +79,7 @@
                               <PropertyValueFactory property="city" />
                            </cellValueFactory>
                         </TableColumn>
-                        <TableColumn fx:id="addToSaleColumn" text="Action">
+                        <TableColumn fx:id="addToSaleColumn" style="-fx-alignment: center;">
                   </TableColumn>
                      </columns>
                      <columnResizePolicy>

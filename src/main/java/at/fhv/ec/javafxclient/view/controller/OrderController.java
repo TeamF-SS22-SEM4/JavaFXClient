@@ -22,34 +22,19 @@ public class OrderController {
 
     @FXML
     private TableView<DetailedOrderDTO> ordersTable;
-
-    @FXML
-    private TableColumn<DetailedOrderDTO, String> productNameColumn;
-
-    @FXML
-    private TableColumn<DetailedOrderDTO, String> carrierTypeColumn;
-
-    @FXML
-    private TableColumn<DetailedOrderDTO, String> employeeColumn;
-
-    @FXML
-    private TableColumn<DetailedOrderDTO, Integer> amountColumn;
-
     @FXML
     private TableColumn<DetailedOrderDTO, UUID> actionColumn;
 
     @FXML
     public void initialize() {
+        formatTable();
 
         List<DetailedOrderDTO> orders = orderingClient.getActiveOrders();
-
-        this.createTableCallbacks();
-
         ObservableList<DetailedOrderDTO> orderTableData = FXCollections.observableArrayList(orders);
         ordersTable.setItems(orderTableData);
     }
 
-    private void createTableCallbacks() {
+    private void formatTable() {
         actionColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<DetailedOrderDTO, UUID> call(TableColumn<DetailedOrderDTO, UUID> param) {
@@ -59,7 +44,6 @@ public class OrderController {
                     protected void updateItem(UUID id, boolean empty) {
                         super.updateItem(id, empty);
                         if (empty || id == null) {
-                            setText(null);
                             setGraphic(null);
                         } else {
                             HBox wrapperBox = new HBox();

@@ -21,98 +21,102 @@ import java.util.List;
 import java.util.UUID;
 
 public class ShoppingCartController {
+
     public static List<ShoppingCartEntry> shoppingCart = new ArrayList<>();
+    public static CustomerDTO customer;
     private static float totalPrice;
 
-    public static CustomerDTO customer;
-    public Button payButton;
     @FXML
     private ToggleGroup paymentToggleGroup;
-
+    @FXML
+    private Button payButton;
+    @FXML
+    private Label totalPriceLabel;
+    @FXML
+    private Label feedbackLabel;
+    @FXML
+    private Button addCustomerButton;
+    @FXML
+    private Button removeCustomerButton;
+    @FXML
+    private Label customerNameLabel;
+    @FXML
+    private Label customerStreetLabel;
+    @FXML
+    private Label customerCityLabel;
     @FXML
     private TableView<ShoppingCartEntry> shoppingCartTable;
-
     @FXML
     private TableColumn<ShoppingCartEntry, String> productNameColumn;
-
     @FXML
     private TableColumn<ShoppingCartEntry, Spinner<Integer>> selectedAmountColumn;
-
     @FXML
     private TableColumn<ShoppingCartEntry, Float> pricePerCarrierColumn;
-
     @FXML
     private TableColumn<ShoppingCartEntry, Button> actionColumn;
 
     @FXML
-    private Label totalPriceLabel;
-
-    @FXML
-    private Button addCustomerButton;
-
-    @FXML
-    private Button removeCustomerButton;
-
-    @FXML
-    private Label customerNameLabel;
-
-    @FXML
-    private Label customerStreetLabel;
-
-    @FXML
-    private Label customerCityLabel;
-
-
-    @FXML
     public void initialize() {
-        createShoppingCartTable();
-
         ObservableList<ShoppingCartEntry> shoppingCartTableData = FXCollections.observableArrayList(shoppingCart);
         shoppingCartTable.setItems(shoppingCartTableData);
         shoppingCartTable.getSortOrder().add(productNameColumn);
         shoppingCartTable.sort();
 
+        formatTable();
         updateTotalPrice();
-
         addCustomer();
-
         updatePayButton();
-
     }
 
-
-
-
-    private void updateTotalPrice() {
-        totalPrice = 0;
-
-        shoppingCart.forEach(item -> totalPrice += item.getTotalProductPrice());
-
-        totalPriceLabel.setText(totalPrice + "€");
+    @FXML
+    public void onBackButtonClicked() {
+        SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
     }
 
-    private void createShoppingCartTable() {
+    @FXML
+    public void onSelectCustomerButtonClicked() {
+        SceneManager.getInstance().switchView(SceneManager.VIEW_CUSTOMER);
+    }
+
+    @FXML
+    public void onRemoveCustomerButtonClicked() {
+        customer = null;
+        addCustomer();
+    }
+
+    @FXML
+    protected void onPayButtonClicked() {
+        feedbackLabel.setText("");
+        feedbackLabel.getStyleClass().remove("alert");
+
+        if(shoppingCart.size() > 0) {
+
+            RadioButton selectedPaymentMethodRadioButton = (RadioButton) paymentToggleGroup.getSelectedToggle();
+
+            if(selectedPaymentMethodRadioButton != null) {
+                UUID customerId = customer == null ? null : customer.getCustomerId();
+                purchase(selectedPaymentMethodRadioButton.getText(), customerId);
+            } else {
+                feedbackLabel.getStyleClass().add("alert");
+                feedbackLabel.setText("Select a payment method!");
+            }
+        }
+    }
+
+    private void formatTable() {
         Callback<TableColumn<ShoppingCartEntry, Spinner<Integer>>, TableCell<ShoppingCartEntry, Spinner<Integer>>> spinnerCellFactory = new Callback<>() {
             @Override
             public TableCell<ShoppingCartEntry, Spinner<Integer>> call(final TableColumn<ShoppingCartEntry, Spinner<Integer>> param) {
                 return new TableCell<>() {
-
-                    private final Spinner<Integer> selectedAmountSpinner = new Spinner<>();
 
                     @Override
                     public void updateItem(Spinner<Integer> item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty) {
                             setGraphic(null);
-                            setText(null);
                         } else {
-                            selectedAmountSpinner.setValueFactory(
-                                    new SpinnerValueFactory.IntegerSpinnerValueFactory(
-                                            1,
-                                            shoppingCart.get(getIndex()).getAmountAvailable(),
-                                            shoppingCart.get(getIndex()).getSelectedAmount()
-                                    )
-                            );
+                            Spinner<Integer> selectedAmountSpinner = new Spinner<>();
+                            selectedAmountSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, shoppingCart.get(getIndex()).getAmountAvailable(), shoppingCart.get(getIndex()).getSelectedAmount()));
 
                             selectedAmountSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
                                 ShoppingCartEntry selectedShoppingCartItem = shoppingCart.get(getIndex());
@@ -127,13 +131,13 @@ public class ShoppingCartController {
                 };
             }
         };
-
         selectedAmountColumn.setCellFactory(spinnerCellFactory);
 
         pricePerCarrierColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<ShoppingCartEntry, Float> call(TableColumn<ShoppingCartEntry, Float> param) {
                 return new TableCell<>() {
+
                     @Override
                     protected void updateItem(Float pricePerCarrier, boolean empty) {
                         super.updateItem(pricePerCarrier, empty);
@@ -141,7 +145,6 @@ public class ShoppingCartController {
                             setText("");
                         } else {
                             String pricePerCarrierStr = pricePerCarrier + "€";
-
                             setText(pricePerCarrierStr);
                         }
                     }
@@ -154,13 +157,11 @@ public class ShoppingCartController {
             public TableCell<ShoppingCartEntry, Button> call(TableColumn<ShoppingCartEntry, Button> param) {
                 return new TableCell<>() {
 
-
                     @Override
                     public void updateItem(Button item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty) {
                             setGraphic(null);
-                            setText(null);
                         } else {
                             Button removeButton = new Button("Remove");
                             removeButton.getStyleClass().add("btn-alert");
@@ -186,51 +187,11 @@ public class ShoppingCartController {
         }
     }
 
-    private void showPopup(String title, String message, Alert.AlertType alertType) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(message);
-        ButtonType confirmButton = new ButtonType("Ok");
-        alert.getButtonTypes().setAll(confirmButton);
-        alert.show();
-    }
-
-    @FXML
-    protected void onPayButtonClicked() {
-        if(shoppingCart.size() > 0) {
-
-            RadioButton selectedPaymentMethodRadioButton = (RadioButton) paymentToggleGroup.getSelectedToggle();
-
-            if(selectedPaymentMethodRadioButton != null) {
-                UUID customerId = customer == null ? null : customer.getCustomerId();
-                purchase(selectedPaymentMethodRadioButton.getText(), customerId);
-            } else {
-                showPopup("Error", "You have to select a payment method", Alert.AlertType.ERROR);
-            }
-
-        } else {
-            showPopup(
-                    "Error",
-                    "The shopping cart is empty. Please add a product to the shopping cart.",
-                    Alert.AlertType.ERROR
-            );
-        }
-    }
-
-    @FXML
-    protected void onSelectCustomerButtonClicked() {
-        SceneManager.getInstance().switchView(SceneManager.VIEW_CUSTOMER);
-    }
-
-    @FXML
-    protected void onRemoveCustomerButtonClicked() {
-        customer = null;
-        addCustomer();
-    }
-
     private void purchase(String selectedPaymentMethod, UUID customerId) {
-        List<ShoppingCartProductDTO> shoppingCartProducts = new ArrayList<>();
+        feedbackLabel.setText("");
+        feedbackLabel.getStyleClass().remove("alert");
 
+        List<ShoppingCartProductDTO> shoppingCartProducts = new ArrayList<>();
         shoppingCart.forEach(shoppingCartItem -> {
             shoppingCartProducts.add(
                     ShoppingCartProductDTO.builder()
@@ -253,22 +214,27 @@ public class ShoppingCartController {
                     .buyWithShoppingCart(SessionManager.getInstance().getSessionId(), shoppingCartProducts, selectedPaymentMethod, customerId);
 
             shoppingCart.clear();
-            showPopup("Successful", "Invoice No.: " + invoiceNumber + "\nBill is printed...", Alert.AlertType.CONFIRMATION);
+
+            Alert alert = new Alert(Alert.AlertType.NONE);
+            alert.setTitle("Successful order");
+            alert.setContentText("Invoice No.: " + invoiceNumber + "\n\nBill is printed...");
+            ButtonType confirmButton = new ButtonType("Ok");
+            alert.getButtonTypes().setAll(confirmButton);
+            alert.show();
+
             SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
         } catch (CarrierNotAvailableException cne) {
-            showPopup("Error", "The selected amount is not available.", Alert.AlertType.ERROR);
-            cne.printStackTrace();
+            feedbackLabel.getStyleClass().add("alert");
+            feedbackLabel.setText("Selected amount is not available!");
         } catch (IOException e) {
-            showPopup("Error", "An error occurred.", Alert.AlertType.ERROR);
-            e.printStackTrace();
+            feedbackLabel.getStyleClass().add("alert");
+            feedbackLabel.setText("An error occurred!");
         } catch (SessionExpired | NoPermissionForOperation e) {
             e.printStackTrace();
         }
     }
 
-
     private void addCustomer() {
-        // Add customer information
         if(customer != null) {
 
             customerNameLabel.setVisible(true);
@@ -304,12 +270,13 @@ public class ShoppingCartController {
             removeCustomerButton.setManaged(false);
             addCustomerButton.setVisible(true);
             addCustomerButton.setManaged(true);
-
         }
     }
 
-    @FXML
-    public void onBackButtonClicked() {
-        SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
+    private void updateTotalPrice() {
+        totalPrice = 0;
+        shoppingCart.forEach(item -> totalPrice += item.getTotalProductPrice());
+        totalPriceLabel.setText(totalPrice + "€");
     }
+
 }

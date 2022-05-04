@@ -7,7 +7,6 @@ import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ec.javafxclient.model.CustomMessage;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,7 +17,7 @@ import javax.jms.JMSException;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 
-public class MessageDetailsController {
+public class MessagesReadController {
 
     public static String topicName;
     public static CustomMessage customMessage;
@@ -34,8 +33,8 @@ public class MessageDetailsController {
     @FXML
     private Label statusLabel;
 
+    @FXML
     public void initialize() {
-        // Update last viewed of employee
         try {
             RMIClient.getRmiClient()
                     .getRmiFactory()
@@ -50,24 +49,24 @@ public class MessageDetailsController {
         statusLabel.setVisible(false);
         titleLabel.setText(topicName + " - " + customMessage.getTitle());
 
-        // Fill textfield and make it read only
         titleTextField.setText(customMessage.getTitle());
         titleTextField.setEditable(false);
         titleTextField.setFocusTraversable(false);
 
-        // fill textarea and make it read only
         contentTextArea.setText(customMessage.getContent());
         contentTextArea.setEditable(false);
         contentTextArea.setWrapText(true);
     }
 
     @FXML
-    protected void onAcknowledgeButtonClicked() {
+    public void onAcknowledgeButtonClicked() {
+        statusLabel.getStyleClass().remove("alert");
+
         try {
             JMSClient.getJmsClient().acknowledgeMessage(topicName, customMessage);
-
             statusLabel.setText("Successfully acknowledged message");
         } catch (JMSException e) {
+            statusLabel.getStyleClass().add("alert");
             statusLabel.setText("Couldn't acknowledge message");
             throw new RuntimeException(e);
         }

@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
 <HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.ShoppingCartController">
    <children>
       <fx:include source="elements/sidebar.fxml" />
@@ -107,11 +115,15 @@
                                     <Insets right="10.0" />
                                  </padding></Label>
                               <Pane prefHeight="200.0" prefWidth="200.0" />
-                              <Button fx:id="payButton" mnemonicParsing="false" onAction="#onPayButtonClicked" styleClass="btn-success" text="     Pay     ">
+                              <HBox alignment="CENTER_RIGHT" spacing="10.0">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
-                              </Button>
+                                 <children>
+                                    <Label fx:id="feedbackLabel" styleClass="h2" />
+                                    <Button fx:id="payButton" mnemonicParsing="false" onAction="#onPayButtonClicked" styleClass="btn-success" text="     Pay     " />
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                      </children>

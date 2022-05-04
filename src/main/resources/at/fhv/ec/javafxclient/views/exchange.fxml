@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.control.cell.*?>
-<?import javafx.scene.layout.*?>
 <?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
 <HBox minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.ExchangeController">
    <children>
       <fx:include source="elements/sidebar.fxml" />
@@ -47,10 +54,21 @@
             </HBox>
             <VBox prefHeight="200.0" prefWidth="100.0" styleClass="content" VBox.vgrow="ALWAYS">
                <children>
-                  <Label fx:id="invoiceNumberLabel" styleClass="h2" text="Invoice number">
+                  <HBox fx:id="topBox" alignment="CENTER">
                      <VBox.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
-                     </VBox.margin></Label>
+                     </VBox.margin>
+                     <children>
+                        <Label fx:id="invoiceNumberLabel" styleClass="h2" text="Invoice number" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label fx:id="priceLabel" styleClass="h2" text="Total price">
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="totalPriceLabel" styleClass="p-1-bold" text="0.0€" />
+                     </children>
+                  </HBox>
                   <TableView fx:id="saleItemsTable" VBox.vgrow="ALWAYS">
                     <columns>
                     <TableColumn fx:id="productNameColumn" prefWidth="75.0" text="Album">
@@ -89,28 +107,19 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <VBox fx:id="refundBox" alignment="TOP_RIGHT" spacing="10.0">
+                  <HBox fx:id="bottomBox" alignment="CENTER">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                      <children>
-                        <Label styleClass="h2" text="Total price">
-                           <padding>
-                              <Insets bottom="5.0" />
-                           </padding>
-                        </Label>
-                        <Label fx:id="totalPriceLabel" styleClass="p-1-bold" text="0.0€">
-                           <padding>
-                              <Insets right="10.0" />
-                           </padding>
-                        </Label>
-                        <Button fx:id="refundButton" mnemonicParsing="false" onAction="#onRefundButtonClicked" styleClass="btn-success" text="  Refund  ">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </Button>
+                        <Label fx:id="feedbackLabel" styleClass="h2" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Button fx:id="refundButton" mnemonicParsing="false" onAction="#onRefundButtonClicked" styleClass="btn-success" text="  Refund  " />
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
                      </padding>
-                  </VBox>
+                  </HBox>
                </children>
             </VBox>
          </children>

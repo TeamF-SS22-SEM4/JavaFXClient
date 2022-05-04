@@ -10,8 +10,8 @@
     -fx-color-btn-text: #fafafa;
 
     -fx-color-bg-1: #282828;
-    -fx-color-bg-2: #3c3c3c;
-    -fx-color-bg-3: #646464;
+    -fx-color-bg-2: #373737;
+    -fx-color-bg-3: #505050;
     -fx-color-bg-4: #787878;
     -fx-color-bg-hover: rgba(194, 127, 0, 0.15);
 }
@@ -115,14 +115,6 @@
 .sidebar-body ToggleButton {
     -fx-max-width: infinity;
     -fx-background-color: -fx-color-primary;
-    -fx-opacity: 0.5;
-}
-
-.sidebar-body ToggleButton:selected,
-.sidebar-body ToggleButton:selected FontAwesomeIconView,
-.sidebar-body ToggleButton:hover,
-.sidebar-body ToggleButton:hover FontAwesomeIconView {
-    -fx-opacity: 1;
 }
 /********************************************************************************/
 /* HEADER                                                                       */
@@ -197,13 +189,13 @@ Button:pressed, ToggleButton:pressed {
 }
 
 .btn-notify, .btn-notify FontAwesomeIconView {
-    -fx-text-fill: -fx-color-primary !important;
-    -fx-fill: -fx-color-primary !important;
-    -fx-background-color: -fx-color-btn-text !important;
-    -fx-border-color: -fx-color-primary !important;
-    -fx-background-radius: 10 !important;
-    -fx-border-width: 3 !important;
-    -fx-border-radius: 5 !important;
+    -fx-text-fill: -fx-color-primary;
+    -fx-fill: -fx-color-primary;
+    -fx-background-color: -fx-color-btn-text;
+    -fx-border-color: -fx-color-primary;
+    -fx-background-radius: 10;
+    -fx-border-width: 3;
+    -fx-border-radius: 5;
 }
 /********************************************************************************/
 /* CHOICE BOX                                                                   */
@@ -356,30 +348,29 @@ Hyperlink:focused {
 /********************************************************************************/
 /* TEXTFIELD / AREA                                                             */
 /********************************************************************************/
-
-TextField {
+.content TextField {
     -fx-background-color: -fx-color-bg-4;
     -fx-background-radius: 0;
     -fx-border-color: transparent;
     -fx-border-width: 1.5;
     -fx-text-fill: -fx-color-text-1;
 }
-TextField:focused {
+.content TextField:focused {
     -fx-border-color: -fx-color-primary;
 }
 
-TextArea {
+.content TextArea {
     -fx-background-insets: -0.5;
     -fx-background-color: transparent;
     -fx-text-fill: -fx-color-text-1;
 
 }
 
-TextArea:focused {
+.content TextArea:focused {
     -fx-background-color: -fx-color-primary;
 }
 
-TextArea .content {
+.content TextArea .content {
     -fx-background-color: -fx-color-bg-4;
     -fx-background-radius: 0;
 }

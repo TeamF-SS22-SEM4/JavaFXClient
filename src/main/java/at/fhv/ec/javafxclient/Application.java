@@ -1,5 +1,6 @@
 package at.fhv.ec.javafxclient;
 
+import at.fhv.ec.javafxclient.view.controller.SidebarController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -33,8 +34,6 @@ public class Application extends javafx.application.Application {
         window.getIcons().add(new Image("images/icon.png"));
         window.setTitle("Tomify");
         window.setScene(scene);
-        window.setHeight(800);
-        window.setWidth(1400);
         window.show();
     }
 

@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
@@ -38,14 +39,9 @@ import java.util.UUID;
 public class ShopController implements Initializable {
 
     private TextAnimator textAnimator;
-
     private ProductSearchService productSearchService;
-
     private BuyModalController buyController;
-
     private DetailsModalController detailsController;
-
-    //////////////////////////////////////////////////////////////////////////////////////////
 
     @FXML
     private TableView<ProductOverviewDTO> productTable;
@@ -64,10 +60,6 @@ public class ShopController implements Initializable {
     @FXML
     private Button shoppingCartButton;
 
-    //////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         String[] texts = {"album", "artist", "genre", "release"};
@@ -76,39 +68,19 @@ public class ShopController implements Initializable {
         Thread th = new Thread(textAnimator);
         th.start();
 
-
-        // Modify price column
-        priceColumn.setCellFactory(new Callback<>() {
-            @Override
-            public TableCell<ProductOverviewDTO, Float> call(TableColumn<ProductOverviewDTO, Float> param) {
-                return new TableCell<>() {
-                    @Override
-                    protected void updateItem(Float minPrice, boolean empty) {
-                        super.updateItem(minPrice, empty);
-                        if (empty || minPrice == null) {
-                            setText("");
-                        } else {
-                            String minPriceStr = "from " + minPrice + "€";
-                            setText(minPriceStr);
-                        }
-                    }
-                };
-            }
-        });
-
-        searchInProductTable("");
+        searchProduct("");
         checkIfShoppingCartIsFilled();
     }
 
     @FXML
     public void onHomeButtonClicked() {
-        searchInProductTable("");
+        searchProduct("");
     }
 
     @FXML
     public void onSearchButtonClicked() {
         searchTextField.selectAll();
-        searchInProductTable(searchTextField.getText());
+        searchProduct(searchTextField.getText());
     }
 
     @FXML
@@ -116,79 +88,38 @@ public class ShopController implements Initializable {
         SceneManager.getInstance().switchView(SceneManager.VIEW_SHOPPING_CART);
     }
 
-    private void searchInProductTable(String searchTerm) {
+    private void searchProduct(String searchTerm) {
         try {
             productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
             ObservableList<ProductOverviewDTO> productList = FXCollections.observableArrayList(productSearchService.fullTextSearch(SessionManager.getInstance().getSessionId(), searchTerm));
             productTable.setItems(productList);
             productTable.getSortOrder().add(albumColumn);
             productTable.sort();
-            addButtonsToProductTable();
+            formatTable();
         } catch (RemoteException | SessionExpired | NoPermissionForOperation e) {
             e.printStackTrace();
         }
     }
 
-    private Stage setModalValues(Stage modal, Pane modalRoot) {
-        modal.setResizable(false);
-        modal.initModality(Modality.NONE);
-        modal.initStyle(StageStyle.UNDECORATED);
-        modal.initOwner(Application.getWindow());
-        modal.setX(Application.getWindow().getX() + Application.getWindow().getWidth()/2 - modalRoot.getWidth()/2 + 225/2);
-        modal.setY(Application.getWindow().getY() + Application.getWindow().getHeight()/2 - modalRoot.getHeight()/2);
+    private void formatTable() {
+        priceColumn.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<ProductOverviewDTO, Float> call(TableColumn<ProductOverviewDTO, Float> param) {
+                return new TableCell<>() {
 
-        modal.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-            if (!isNowFocused) {
-                closeModal(modal);
+                    @Override
+                    protected void updateItem(Float minPrice, boolean empty) {
+                        super.updateItem(minPrice, empty);
+                        if (empty || minPrice == null) {
+                            setText("");
+                        } else {
+                            String minPriceStr = minPrice + "€";
+                            setText(minPriceStr);
+                        }
+                    }
+                };
             }
         });
-
-        return modal;
-    }
-
-
-
-    private void showModal(Stage modal) {
-        modal.show();
-        ColorAdjust colorAdjust = new ColorAdjust();
-        colorAdjust.setBrightness(-0.75);
-        rootContainer.setEffect(colorAdjust);
-    }
-
-    private void closeModal(Stage modal) {
-        modal.close();
-        rootContainer.setEffect(null);
-    }
-
-
-    private Scene createModalScene(Stage modal, Pane modalRoot, Double width, Double height) {
-
-        if (width > Application.getWindow().getWidth() - 20 - 255) {
-            width = Application.getWindow().getWidth() - 20 - 255;
-        }
-
-        if (height > Application.getWindow().getHeight() - 40) {
-            height = Application.getWindow().getHeight() - 40;
-        }
-
-        Scene scene = new Scene(modalRoot, width, height);
-
-        for (int i = 0; i < Application.getStylesheets().size(); i++) {
-            scene.getStylesheets().add(Application.getStylesheets().get(i));
-        }
-
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
-            if (KeyCode.ESCAPE == event.getCode()) {
-                closeModal(modal);
-            }
-        });
-
-        return scene;
-    }
-
-
-
-    private void addButtonsToProductTable() {
 
         detailsButtonColumn.setCellFactory(new Callback<>() {
             public TableCell<ProductOverviewDTO, Button> call(TableColumn<ProductOverviewDTO, Button> param) {
@@ -208,18 +139,15 @@ public class ShopController implements Initializable {
                                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("views/elements/detailsModal.fxml"));
                                     Pane modalRoot = fxmlLoader.load();
 
-                                    detailsController = fxmlLoader.getController();
-
                                     productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
                                     UUID productID = getTableView().getItems().get(getIndex()).getProductId();
                                     ProductDetailsDTO productDetails = productSearchService.productById(SessionManager.getInstance().getSessionId(), productID);
-
                                     ObservableList<SongDTO> songList = FXCollections.observableArrayList(productDetails.getSongs());
+
+                                    detailsController = fxmlLoader.getController();
                                     detailsController.detailsTableView.setItems(songList);
                                     detailsController.detailsTableView.getSortOrder().add(detailsController.titleColumn);
                                     detailsController.detailsTableView.sort();
-
-
                                     detailsController.headingLabel.setText(productDetails.getName() + " - " + productDetails.getArtistName());
                                     detailsController.albumLabel.setText(productDetails.getName());
                                     detailsController.artistLabel.setText(productDetails.getArtistName());
@@ -227,27 +155,19 @@ public class ShopController implements Initializable {
                                     detailsController.releaseLabel.setText(productDetails.getReleaseYear());
                                     detailsController.durationLabel.setText(productDetails.getDuration());
                                     detailsController.labelLabel.setText(productDetails.getLabelName());
-
                                     detailsController.backButton.setOnAction((action1234) -> closeModal(modalStage));
 
-
-
-                                    double width = 700 + Application.getWindow().getWidth()/10;
-                                    double height = 300 + Application.getWindow().getHeight()/5;
+                                    double width = 650 + Application.getWindow().getWidth()/5;
+                                    double height = 300 + Application.getWindow().getHeight()/2.5;
 
                                     Scene scene = createModalScene(modalStage, modalRoot, width, height);
                                     modalStage.setScene(scene);
                                     setModalValues(modalStage, modalRoot);
-
                                     showModal(modalStage);
-
-
-
 
                                 } catch (IOException | NoPermissionForOperation | SessionExpired e) {
                                     throw new RuntimeException(e);
                                 }
-
                             });
                             setGraphic(detailsButton);
                         }
@@ -255,10 +175,6 @@ public class ShopController implements Initializable {
                 };
             }
         });
-
-        //////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////
 
         buyButtonColumn.setCellFactory(new Callback<>() {
             public TableCell<ProductOverviewDTO, Button> call(TableColumn<ProductOverviewDTO, Button> param) {
@@ -273,32 +189,28 @@ public class ShopController implements Initializable {
                             buyButton.getStyleClass().add("btn-success");
                             buyButton.setOnAction(action -> {
 
-
                                 try {
                                     Stage modalStage = new Stage();
                                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("views/elements/buyModal.fxml"));
                                     Pane modalRoot = fxmlLoader.load();
 
-                                    buyController = fxmlLoader.getController();
-
                                     productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
                                     UUID productID = getTableView().getItems().get(getIndex()).getProductId();
                                     ProductDetailsDTO productDetails = productSearchService.productById(SessionManager.getInstance().getSessionId(), productID);
-
                                     ObservableList<SoundCarrierDTO> priceList = FXCollections.observableArrayList(productDetails.getSoundCarriers());
+
+                                    buyController = fxmlLoader.getController();
                                     buyController.buyTableView.setItems(priceList);
                                     buyController.buyTableView.getSortOrder().add(buyController.soundCarrierNameColumn);
                                     buyController.buyTableView.sort();
-
                                     buyController.headingLabel.setText(productDetails.getName() + " - " + productDetails.getArtistName());
-
                                     buyController.backButton.setOnAction((action1234) -> closeModal(modalStage));
-
 
                                     buyController.pricePerCarrierColumn.setCellFactory(new Callback<>() {
                                         @Override
                                         public TableCell<SoundCarrierDTO, Float> call(TableColumn<SoundCarrierDTO, Float> param) {
                                             return new TableCell<>() {
+
                                                 @Override
                                                 protected void updateItem(Float pricePerCarrier, boolean empty) {
                                                     super.updateItem(pricePerCarrier, empty);
@@ -313,11 +225,11 @@ public class ShopController implements Initializable {
                                         }
                                     });
 
-
                                     Callback<TableColumn<SoundCarrierDTO, String>, TableCell<SoundCarrierDTO, String>> spinnerCellFactory = new Callback<>() {
                                         @Override
                                         public TableCell<SoundCarrierDTO, String> call(final TableColumn<SoundCarrierDTO, String> param) {
                                             return new TableCell<>() {
+
                                                 @Override
                                                 public void updateItem(String item, boolean empty) {
                                                     super.updateItem(item, empty);
@@ -335,11 +247,11 @@ public class ShopController implements Initializable {
                                     };
                                     buyController.selectAmountColumn.setCellFactory(spinnerCellFactory);
 
-
                                     Callback<TableColumn<SoundCarrierDTO, String>, TableCell<SoundCarrierDTO, String>> addToCartCellFactory = new Callback<>() {
                                         @Override
                                         public TableCell<SoundCarrierDTO, String> call(final TableColumn<SoundCarrierDTO, String> param) {
                                             return new TableCell<>() {
+
                                                 @Override
                                                 public void updateItem(String item, boolean empty) {
                                                     super.updateItem(item, empty);
@@ -361,12 +273,11 @@ public class ShopController implements Initializable {
                                     };
                                     buyController.addToCartColumn.setCellFactory(addToCartCellFactory);
 
-
-
                                     Callback<TableColumn<SoundCarrierDTO, Button>, TableCell<SoundCarrierDTO, Button>> orderCellFactory = new Callback<>() {
                                         @Override
                                         public TableCell<SoundCarrierDTO, Button> call(final TableColumn<SoundCarrierDTO, Button> param) {
                                             return new TableCell<>() {
+
                                                 @Override
                                                 public void updateItem(Button item, boolean empty) {
                                                     super.updateItem(item, empty);
@@ -376,7 +287,6 @@ public class ShopController implements Initializable {
                                                         HBox wrappingBox = new HBox();
                                                         wrappingBox.setStyle("-fx-alignment: center");
                                                         wrappingBox.setStyle("-fx-spacing: 5");
-
 
                                                         Spinner amountSpinner = new Spinner();
                                                         Button startOrderButton = new Button("Order");
@@ -430,22 +340,17 @@ public class ShopController implements Initializable {
                                     };
                                     buyController.orderColumn.setCellFactory(orderCellFactory);
 
-
-
-                                    double width = 600 + Application.getWindow().getWidth()/5;
+                                    double width = 650 + Application.getWindow().getWidth()/5;
                                     double height = 310;
 
                                     Scene scene = createModalScene(modalStage, modalRoot, width, height);
                                     modalStage.setScene(scene);
                                     setModalValues(modalStage, modalRoot);
-
                                     showModal(modalStage);
 
                                 } catch (IOException | NoPermissionForOperation | SessionExpired e) {
                                     throw new RuntimeException(e);
                                 }
-
-
                             });
                             setGraphic(buyButton);
                         }
@@ -454,7 +359,6 @@ public class ShopController implements Initializable {
             }
         });
     }
-
 
     private void checkIfShoppingCartIsFilled () {
         int items = ShoppingCartController.shoppingCart.size();
@@ -469,6 +373,8 @@ public class ShopController implements Initializable {
     }
 
     private void addProductToCart(String soundCarrierName, int selectedAmount, ProductDetailsDTO productDetails) {
+        buyController.feedbackLabel.getStyleClass().remove("alert");
+
         SoundCarrierDTO selectedSoundCarrier = productDetails.getSoundCarriers().stream()
                 .filter(soundCarrierDTO -> soundCarrierDTO.getSoundCarrierName().equals(soundCarrierName))
                 .findFirst().orElse(null);
@@ -489,8 +395,6 @@ public class ShopController implements Initializable {
 
             if(!ShoppingCartController.shoppingCart.contains(cartEntry)) {
                 ShoppingCartController.shoppingCart.add(cartEntry);
-
-                buyController.feedbackLabel.getStyleClass().remove("alert");
                 buyController.feedbackLabel.setText("Success - Your article(s) are now in the shopping cart!");
             } else {
                 buyController.feedbackLabel.getStyleClass().add("alert");
@@ -504,9 +408,65 @@ public class ShopController implements Initializable {
         checkIfShoppingCartIsFilled();
     }
 
-    public void displayOrderingSuccess(boolean success) {
+
+    private Stage setModalValues(Stage modal, Pane modalRoot) {
+        modal.setResizable(false);
+        modal.initModality(Modality.NONE);
+        modal.initStyle(StageStyle.UNDECORATED);
+        modal.initOwner(Application.getWindow());
+        modal.setX(Application.getWindow().getX() + Application.getWindow().getWidth()/2 - modalRoot.getWidth()/2 + 225/2);
+        modal.setY(Application.getWindow().getY() + Application.getWindow().getHeight()/2 - modalRoot.getHeight()/2 + 20/2);
+
+        modal.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+            if (!isNowFocused) {
+                closeModal(modal);
+            }
+        });
+
+        return modal;
+    }
+
+    private void showModal(Stage modal) {
+        modal.show();
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(-0.75);
+        rootContainer.setEffect(colorAdjust);
+    }
+
+    private void closeModal(Stage modal) {
+        modal.close();
+        rootContainer.setEffect(null);
+    }
+
+    private Scene createModalScene(Stage modal, Pane modalRoot, Double width, Double height) {
+
+        if (width > Application.getWindow().getWidth() - 20 - 255) {
+            width = Application.getWindow().getWidth() - 20 - 255;      //sidebar offset
+        }
+
+        if (height > Application.getWindow().getHeight() - 20 - 80) {
+            height = Application.getWindow().getHeight() - 20 - 80;     //taskbar offset
+        }
+
+        Scene scene = new Scene(modalRoot, width, height);
+
+        for (int i = 0; i < Application.getStylesheets().size(); i++) {
+            scene.getStylesheets().add(Application.getStylesheets().get(i));
+        }
+
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent event) -> {
+            if (KeyCode.ESCAPE == event.getCode()) {
+                closeModal(modal);
+            }
+        });
+
+        return scene;
+    }
+
+    private void displayOrderingSuccess(boolean success) {
+        buyController.feedbackLabel.getStyleClass().remove("alert");
+
         if (success) {
-            buyController.feedbackLabel.getStyleClass().remove("alert");
             buyController.feedbackLabel.setText("Success - Placed Order");
         } else {
             buyController.feedbackLabel.getStyleClass().add("alert");
