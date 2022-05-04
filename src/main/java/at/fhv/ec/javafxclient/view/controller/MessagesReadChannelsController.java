@@ -49,13 +49,7 @@ public class MessagesReadChannelsController {
             topicTable.setItems(observableTopicList);
             topicTable.getSortOrder().add(nameColumn);
             topicTable.sort();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        } catch (SessionExpired e) {
-            throw new RuntimeException(e);
-        } catch (NoPermissionForOperation e) {
-            throw new RuntimeException(e);
-        }
+        } catch (RemoteException | SessionExpired | NoPermissionForOperation ignored) {}
     }
 
     private void initTable() {

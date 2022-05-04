@@ -57,7 +57,9 @@ public class SendMessageController {
                 statusLabel.setText("Sent message successfully to topic " + topicName);
                 statusLabel.setVisible(true);
             } catch (RemoteException | SessionExpired | NoPermissionForOperation e) {
-                throw new RuntimeException(e);
+                statusLabel.setText("Could not send message to topic " + topicName);
+                statusLabel.setVisible(true);
+
             }
         } else {
             statusLabel.setText("Title and message can't be empty");

@@ -10,9 +10,9 @@ import at.fhv.ss22.ea.f.communication.dto.LoginResultDTO;
 import at.fhv.ss22.ea.f.communication.exception.AuthenticationFailed;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import javax.jms.JMSException;
@@ -22,9 +22,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.ResourceBundle;
 
-public class LoginController implements Initializable {
+public class LoginController {
+
+    private AuthenticationService authenticationService;
 
     private static final String REMOTE_HOST = "10.0.40.170";
     private static final String REMOTE_PORT = "12345";
@@ -33,10 +34,6 @@ public class LoginController implements Initializable {
     private static final String LOCAL_HOST = "localhost";
     private static final String LOCAL_PORT = "1099";
     private static final String LOCAL_INFORMATION_TEXT = "local (port:1099)";
-
-    private AuthenticationService authenticationService;
-
-    //////////////////////////////////////////////////////////////////////////////////////////
 
     @FXML
     private ChoiceBox<String> connectionTypeChoiceBox;
@@ -47,12 +44,8 @@ public class LoginController implements Initializable {
     @FXML
     private Label infoLabel;
 
-    //////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         connectionTypeChoiceBox.getItems().addAll(REMOTE_INFORMATION_TEXT, LOCAL_INFORMATION_TEXT);
         connectionTypeChoiceBox.setValue(LOCAL_INFORMATION_TEXT);
 
@@ -116,9 +109,7 @@ public class LoginController implements Initializable {
                     infoLabel.getStyleClass().add("alert");
                     infoLabel.setText("Invalid username or password!");
 
-                } catch (IOException e) {
-
-                    e.printStackTrace();
+                } catch (IOException ignored) {
 
                 } catch (JMSException e) {
 
@@ -128,6 +119,7 @@ public class LoginController implements Initializable {
         }
     }
 
+    @FXML
     public void onLinkClicked() {
         try {
             Desktop.getDesktop().browse(new URL("https://www.windows-faq.de/2018/07/28/bildschirmanzeige-bei-windows-10-skalieren-schriftgroesse-veraendern/").toURI());

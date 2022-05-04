@@ -1,37 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <HBox fx:id="rootPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.MessagesWriteChannelsController">
    <children>
       <fx:include source="elements/sidebar.fxml" />
       <VBox HBox.hgrow="ALWAYS">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="header">
-               <children>
-                  <Label styleClass="h1" text="Write messages" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" styleClass="content" VBox.vgrow="ALWAYS">
+             <HBox prefHeight="100.0" prefWidth="200.0" styleClass="header">
+                 <children>
+                     <Label styleClass="h1" text="Write messages" />
+                     <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                 </children>
+             </HBox>
+             <VBox styleClass="content" VBox.vgrow="ALWAYS">
                <children>
                   <TableView fx:id="channelTable" VBox.vgrow="ALWAYS">
                     <columns>
-                      <TableColumn fx:id="nameColumn" prefWidth="75.0" text="Name">
+                      <TableColumn fx:id="nameColumn" text="Topic">
                          <cellValueFactory>
                             <PropertyValueFactory property="name" />
                          </cellValueFactory>
                       </TableColumn>
-                      <TableColumn fx:id="actionColumn" prefWidth="75.0" style="-fx-alignment: center;" />
+                      <TableColumn fx:id="actionColumn" style="-fx-alignment: center;" />
                     </columns>
                      <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
                </children>

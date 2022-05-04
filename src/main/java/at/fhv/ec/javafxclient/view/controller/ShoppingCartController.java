@@ -11,10 +11,10 @@ import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,11 +74,9 @@ public class ShoppingCartController {
 
         updateTotalPrice();
 
-
         addCustomer();
 
-
-updatePayButton();
+        updatePayButton();
 
     }
 
@@ -117,7 +115,6 @@ updatePayButton();
                             );
 
                             selectedAmountSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-                                // TODO: Update total per product in table
                                 ShoppingCartEntry selectedShoppingCartItem = shoppingCart.get(getIndex());
                                 selectedShoppingCartItem.setSelectedAmount(newValue);
                                 selectedShoppingCartItem.setTotalProductPrice(newValue * selectedShoppingCartItem.getPricePerCarrier());

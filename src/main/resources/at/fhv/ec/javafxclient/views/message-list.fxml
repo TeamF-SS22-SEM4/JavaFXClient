@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 <HBox fx:id="ct" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.MessageListController">
    <children>
       <fx:include source="elements/sidebar.fxml" />
@@ -37,6 +37,11 @@
                              <PropertyValueFactory property="content" />
                           </cellValueFactory>
                        </TableColumn>
+                       <TableColumn fx:id="dateColumn" text="Date">
+                          <cellValueFactory>
+                             <PropertyValueFactory property="creationDate" />
+                          </cellValueFactory>
+                       </TableColumn>
                        <TableColumn fx:id="detailsButtonColumn" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="-1.0" text="">
                        </TableColumn>
                     </columns>
@@ -46,3 +51,5 @@
       </VBox>
    </children>
 </HBox>
+
+

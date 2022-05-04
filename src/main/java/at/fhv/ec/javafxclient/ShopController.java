@@ -1,9 +1,9 @@
 package at.fhv.ec.javafxclient;
 
 import at.fhv.ec.javafxclient.communication.RMIClient;
+import at.fhv.ec.javafxclient.model.ShoppingCartEntry;
 import at.fhv.ec.javafxclient.view.animator.TextAnimator;
 import at.fhv.ec.javafxclient.view.animator.TextOutput;
-import at.fhv.ec.javafxclient.model.ShoppingCartEntry;
 import at.fhv.ec.javafxclient.view.controller.BuyModalController;
 import at.fhv.ec.javafxclient.view.controller.DetailsModalController;
 import at.fhv.ec.javafxclient.view.controller.ShoppingCartController;
@@ -11,25 +11,23 @@ import at.fhv.ss22.ea.f.communication.api.ProductSearchService;
 import at.fhv.ss22.ea.f.communication.dto.*;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
-import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -383,7 +381,7 @@ public class ShopController implements Initializable {
                                                         Spinner amountSpinner = new Spinner();
                                                         Button startOrderButton = new Button("Order");
                                                         startOrderButton.getStyleClass().add("btn");
-                                                        Button placeOrderButton = new Button("➔");
+                                                        Button placeOrderButton = new Button("✔");
                                                         placeOrderButton.getStyleClass().add("btn-success");
                                                         Button quitOrderButton = new Button("❌");
                                                         quitOrderButton.getStyleClass().add("btn");

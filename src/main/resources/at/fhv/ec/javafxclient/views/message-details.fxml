@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
@@ -7,52 +8,55 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<HBox fx:id="ct" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.MessageDetailsController">
+<HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.MessageDetailsController">
    <children>
       <fx:include source="elements/sidebar.fxml" />
       <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
          <children>
-            <HBox alignment="CENTER_LEFT" styleClass="header" VBox.vgrow="ALWAYS">
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="header">
                <children>
-                  <HBox alignment="CENTER" />
-                  <Pane HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label fx:id="titleLabel" layoutY="-5.0" text="Label" textFill="WHITE">
-                           <font>
-                              <Font size="36.0" />
-                           </font>
-                        </Label>
-                     </children></Pane>
+                  <Label fx:id="titleLabel" styleClass="h1" text="Label" />
+                  <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" onAction="#onBackButtonClicked" styleClass="btn" text="Back" />
                </children>
             </HBox>
-            <VBox styleClass="content" VBox.vgrow="ALWAYS">
+            <VBox alignment="CENTER" styleClass="content" VBox.vgrow="ALWAYS">
                <children>
-                  <Pane prefHeight="485.0" prefWidth="890.0">
+                  <VBox maxWidth="500.0">
                      <children>
-                        <TextField fx:id="titleTextField" layoutX="348.0" layoutY="47.0" prefHeight="28.0" prefWidth="304.0" />
-                        <TextArea fx:id="contentTextArea" layoutX="345.0" layoutY="107.0" prefHeight="285.0" prefWidth="424.0" />
-                        <Text fill="WHITE" layoutX="251.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title">
-                           <font>
-                              <Font size="30.0" />
-                           </font>
-                        </Text>
-                        <Text fill="WHITE" layoutX="185.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message">
-                           <font>
-                              <Font size="30.0" />
-                           </font>
-                        </Text>
-                        <Button fx:id="acknowledgeButton" layoutX="652.0" layoutY="405.0" mnemonicParsing="false" onAction="#onAcknowledgeButtonClicked" styleClass="btn" text="Acknowledge" />
-                        <Label fx:id="statusLabel" layoutX="185.0" layoutY="433.0" text="Label" textFill="WHITE">
-                           <font>
-                              <Font size="30.0" />
-                           </font>
+                        <Label styleClass="h2" text="Title">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" />
+                           </padding>
                         </Label>
+                        <TextField fx:id="titleTextField" />
+                        <Label styleClass="h2" text="Message">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" top="40.0" />
+                           </padding>
+                        </Label>
+                        <TextArea fx:id="contentTextArea" />
+                        <HBox alignment="CENTER">
+                           <children>
+                              <Label fx:id="statusLabel" styleClass="h2" text="Label" />
+                              <Pane HBox.hgrow="ALWAYS" />
+                              <Button fx:id="acknowledgeButton" mnemonicParsing="false" onAction="#onAcknowledgeButtonClicked" styleClass="btn-success" text="Acknowledge" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets bottom="50.0" top="20.0" />
+                           </VBox.margin>
+                        </HBox>
                      </children>
-                  </Pane>
-               </children></VBox>
+                  </VBox>
+               </children>
+            </VBox>
          </children>
       </VBox>
    </children>

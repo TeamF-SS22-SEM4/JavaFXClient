@@ -1,11 +1,13 @@
 package at.fhv.ec.javafxclient.view.controller;
 
+import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.JMSClient;
 import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ec.javafxclient.model.CustomMessage;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,21 +19,18 @@ import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 
 public class MessageDetailsController {
+
     public static String topicName;
     public static CustomMessage customMessage;
 
     @FXML
     private Label titleLabel;
-
     @FXML
     private TextField titleTextField;
-
     @FXML
     private TextArea contentTextArea;
-
     @FXML
     private Button acknowledgeButton;
-
     @FXML
     private Label statusLabel;
 
@@ -44,16 +43,12 @@ public class MessageDetailsController {
                     .updateLastViewed(SessionManager.getInstance().getSessionId(), LocalDateTime.now());
 
             SessionManager.getInstance().onMessageViewed();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        } catch (SessionExpired e) {
-            throw new RuntimeException(e);
-        } catch (NoPermissionForOperation e) {
+        } catch (RemoteException | SessionExpired | NoPermissionForOperation e) {
             throw new RuntimeException(e);
         }
 
         statusLabel.setVisible(false);
-        titleLabel.setText("Message '" + customMessage.getTitle() + "' from topic " + topicName);
+        titleLabel.setText(topicName + " - " + customMessage.getTitle());
 
         // Fill textfield and make it read only
         titleTextField.setText(customMessage.getTitle());
@@ -79,5 +74,9 @@ public class MessageDetailsController {
 
         acknowledgeButton.setVisible(false);
         statusLabel.setVisible(true);
+    }
+
+    public void onBackButtonClicked() {
+        SceneManager.getInstance().switchView(SceneManager.VIEW_MESSAGES_READ_OVERVIEW);
     }
 }

@@ -1,69 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
-<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <HBox fx:id="ct" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.OrderController">
     <children>
         <fx:include source="elements/sidebar.fxml" />
         <VBox minWidth="400.0" HBox.hgrow="ALWAYS">
             <children>
-                <HBox alignment="CENTER_LEFT" styleClass="header" VBox.vgrow="ALWAYS">
-                    <children>
-                        <HBox alignment="CENTER" />
-                        <Pane HBox.hgrow="ALWAYS">
-                            <children>
-                                <Text fill="WHITE" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pending Orders">
-                                    <font>
-                                        <Font size="36.0" />
-                                    </font>
-                                </Text>
-                            </children></Pane>
-                    </children>
-                </HBox>
-            <TableView editable="true" fx:id="ordersTable" VBox.vgrow="ALWAYS">
-              <columns>
-                  <TableColumn prefWidth="75.0" maxWidth="200" fx:id="productNameColumn" text="Productname" >
-                      <cellValueFactory>
-                          <PropertyValueFactory property="productName" />
-                      </cellValueFactory>
-                  </TableColumn>
-                  <TableColumn prefWidth="50.0" maxWidth="200" fx:id="carrierTypeColumn" text="Carriertype" style="-fx-alignment: center;">
-                      <cellValueFactory>
-                          <PropertyValueFactory property="carrierType" />
-                      </cellValueFactory>
-                  </TableColumn>
-                  <TableColumn prefWidth="80.0" maxWidth="100" fx:id="employeeColumn" text="Ordered by" style="-fx-alignment: center;">
-                      <cellValueFactory>
-                          <PropertyValueFactory property="employeeName" />
-                      </cellValueFactory>
-                  </TableColumn>
-                  <TableColumn prefWidth="80.0" maxWidth="100" fx:id="amountColumn" text="Amount" style="-fx-alignment: center;">
-                      <cellValueFactory>
-                          <PropertyValueFactory property="amount" />
-                      </cellValueFactory>
-                  </TableColumn>
-                  <TableColumn prefWidth="40.0" maxWidth="200" fx:id="denyColumn"  text="Deny" style="-fx-alignment: center;">
-                      <cellValueFactory>
-                          <PropertyValueFactory property="orderId" />
-                      </cellValueFactory>
-                  </TableColumn>
-                  <TableColumn prefWidth="40.0" maxWidth="200" fx:id="approveColumn" text="Approve" style="-fx-alignment: center;">
-                      <cellValueFactory>
-                          <PropertyValueFactory property="orderId" />
-                      </cellValueFactory>
-                  </TableColumn>
-              </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="header">
+               <children>
+                  <Label styleClass="h1" text="Pending orders" />
+                  <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" styleClass="content" VBox.vgrow="ALWAYS">
+               <children>
+                  <TableView fx:id="ordersTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                      <TableColumn fx:id="productNameColumn" prefWidth="75.0" text="Album">
+                          <cellValueFactory>
+                              <PropertyValueFactory property="productName" />
+                          </cellValueFactory>
+                      </TableColumn>
+                      <TableColumn fx:id="carrierTypeColumn" prefWidth="75.0" text="Type">
+                          <cellValueFactory>
+                              <PropertyValueFactory property="carrierType" />
+                          </cellValueFactory>
+                      </TableColumn>
+                        <TableColumn fx:id="employeeColumn" prefWidth="75.0" text="Employee">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="employeeName" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="amountColumn" style="-fx-alignment: center;" prefWidth="75.0" text="Amount">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="amount" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="actionColumn" style="-fx-alignment: center;">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="orderId" />
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+            </VBox>
             </children>
         </VBox>
     </children>

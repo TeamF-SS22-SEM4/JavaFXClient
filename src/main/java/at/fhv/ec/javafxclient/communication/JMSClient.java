@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class JMSClient {
+
     private static JMSClient jmsClient;
     private final String PROTOCOL = "tcp";
     private final String PORT = "61616";
@@ -48,7 +49,6 @@ public class JMSClient {
     }
 
     public void startMessageListeners(List<String> topics, String employeeId) {
-        // TODO: find better solution
         topics.forEach(topic -> {
             try {
                 TopicConnection connection = (TopicConnection) connectionFactory.createConnection();
@@ -66,7 +66,6 @@ public class JMSClient {
                 consumer.setMessageListener(message -> {
                     TextMessage textMessage = (TextMessage) message;
                     try {
-                        System.out.println("New Message: " + textMessage.getText());
                         jmsMessages.put(message.getJMSMessageID(), message); // Save original message to acknowledge it later
 
                         String title = textMessage.getText().split("\n")[0];
@@ -92,7 +91,6 @@ public class JMSClient {
                     }
                 });
 
-                System.out.println("Started Listener for topic " + topic);
                 connections.put(topic, connection);
                 sessions.put(topic, session);
                 consumers.put(topic, consumer);
@@ -149,7 +147,6 @@ public class JMSClient {
         consumers.forEach((topic , consumer) -> {
             try {
                 consumer.close();
-                System.out.println("Closed consumer for " + topic);
             } catch (JMSException ignored) {
 
             }
@@ -158,7 +155,6 @@ public class JMSClient {
         sessions.forEach((topic , session) -> {
             try {
                 session.close();
-                System.out.println("Closed session for " + topic);
             } catch (JMSException ignored) {
 
             }
@@ -167,7 +163,6 @@ public class JMSClient {
         connections.forEach((topic , connection) -> {
             try {
                 connection.close();
-                System.out.println("Closed connection for " + topic);
             } catch (JMSException ignored) {
 
             }

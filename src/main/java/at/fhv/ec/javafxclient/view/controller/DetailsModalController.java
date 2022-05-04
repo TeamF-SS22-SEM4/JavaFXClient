@@ -8,6 +8,12 @@ import javafx.scene.control.TableView;
 
 public class DetailsModalController {
 
+    public TableView<SongDTO> detailsTableView;
+    public TableColumn<SongDTO, String> titleColumn;
+    public TableColumn<SongDTO, String> durationColumn;
+
+    public Label headingLabel;
+    public Button backButton;
     public Label albumLabel;
     public Label artistLabel;
     public Label genreLabel;
@@ -15,9 +21,4 @@ public class DetailsModalController {
     public Label durationLabel;
     public Label labelLabel;
 
-    public TableView detailsTableView;
-    public TableColumn<SongDTO, String> titleColumn;
-    public TableColumn<SongDTO, String> durationColumn;
-    public Label headingLabel;
-    public Button backButton;
 }

@@ -114,8 +114,10 @@ public class SidebarController implements Initializable {
         // Check if new messages were received
         if(SessionManager.getInstance().isNewMessagesReceived()) {
             messageButton.getStyleClass().add("btn-notify");
+            readMessageButton.getStyleClass().add("btn-notify");
             int amountOfNewMessages = JMSClient.getJmsClient().getAmountOfNewMessages();
             messageButton.setText("Messages (" + amountOfNewMessages + ")");
+            readMessageButton.setText("Read (" + amountOfNewMessages + ")");
         }
     }
 }
