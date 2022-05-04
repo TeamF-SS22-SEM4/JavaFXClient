@@ -182,14 +182,17 @@ public class ShoppingCartController {
     private void updatePayButton() {
         if (shoppingCart.isEmpty()) {
             payButton.setVisible(false);
+            payButton.setManaged(false);
         } else {
             payButton.setVisible(true);
+            payButton.setManaged(true);
         }
     }
 
     private void purchase(String selectedPaymentMethod, UUID customerId) {
         feedbackLabel.setText("");
         feedbackLabel.getStyleClass().remove("alert");
+        feedbackLabel.setStyle(null);
 
         List<ShoppingCartProductDTO> shoppingCartProducts = new ArrayList<>();
         shoppingCart.forEach(shoppingCartItem -> {
@@ -213,16 +216,16 @@ public class ShoppingCartController {
                     .getBuyingService()
                     .buyWithShoppingCart(SessionManager.getInstance().getSessionId(), shoppingCartProducts, selectedPaymentMethod, customerId);
 
+            customer = null;
+            totalPrice = 0;
             shoppingCart.clear();
+            paymentToggleGroup.selectToggle(null);
 
-            Alert alert = new Alert(Alert.AlertType.NONE);
-            alert.setTitle("Successful order");
-            alert.setContentText("Invoice No.: " + invoiceNumber + "\n\nBill is printed...");
-            ButtonType confirmButton = new ButtonType("Ok");
-            alert.getButtonTypes().setAll(confirmButton);
-            alert.show();
+            initialize();
 
-            SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
+            feedbackLabel.setStyle("-fx-text-fill: #269f3e;");
+            feedbackLabel.setText("Purchase successful! Invoice No.: " + invoiceNumber);
+
         } catch (CarrierNotAvailableException cne) {
             feedbackLabel.getStyleClass().add("alert");
             feedbackLabel.setText("Selected amount is not available!");

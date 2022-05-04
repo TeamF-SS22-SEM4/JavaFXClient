@@ -5,7 +5,6 @@ import at.fhv.ec.javafxclient.communication.JMSClient;
 import at.fhv.ec.javafxclient.model.CustomMessage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;

@@ -158,7 +158,7 @@ public class ShopController implements Initializable {
                                     detailsController.backButton.setOnAction((action1234) -> closeModal(modalStage));
 
                                     double width = 650 + Application.getWindow().getWidth()/5;
-                                    double height = 300 + Application.getWindow().getHeight()/2.5;
+                                    double height = 250 + Application.getWindow().getHeight()/2.5;
 
                                     Scene scene = createModalScene(modalStage, modalRoot, width, height);
                                     modalStage.setScene(scene);
@@ -285,8 +285,8 @@ public class ShopController implements Initializable {
                                                         setGraphic(null);
                                                     } else {
                                                         HBox wrappingBox = new HBox();
-                                                        wrappingBox.setStyle("-fx-alignment: center");
-                                                        wrappingBox.setStyle("-fx-spacing: 5");
+                                                        wrappingBox.setAlignment(Pos.CENTER);
+                                                        wrappingBox.setSpacing(5);
 
                                                         Spinner amountSpinner = new Spinner();
                                                         Button startOrderButton = new Button("Order");
@@ -467,10 +467,10 @@ public class ShopController implements Initializable {
         buyController.feedbackLabel.getStyleClass().remove("alert");
 
         if (success) {
-            buyController.feedbackLabel.setText("Success - Placed Order");
+            buyController.feedbackLabel.setText("Success - Placed Order!");
         } else {
             buyController.feedbackLabel.getStyleClass().add("alert");
-            buyController.feedbackLabel.setText("Failed - while placing order");
+            buyController.feedbackLabel.setText("Failed - while placing order!");
         }
     }
 }

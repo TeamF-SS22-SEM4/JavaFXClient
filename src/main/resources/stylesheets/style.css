@@ -3,8 +3,8 @@
 /********************************************************************************/
 * {
     -fx-color-primary: rgb(194, 127, 0);
-    -fx-color-success: #006708;
-    -fx-color-alert: rgb(200, 0, 0);
+    -fx-color-success: green;
+    -fx-color-alert: red;
     -fx-color-text-1: #fafafa;
     -fx-color-text-2: #c2c2c2;
     -fx-color-btn-text: #fafafa;
