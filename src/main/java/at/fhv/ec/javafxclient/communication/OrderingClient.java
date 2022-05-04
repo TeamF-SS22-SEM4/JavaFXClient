@@ -8,18 +8,16 @@ import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
 import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.ActiveMQSession;
-import org.springframework.beans.factory.support.ScopeNotActiveException;
 
 import javax.jms.*;
 import java.io.IOException;
 import java.lang.IllegalStateException;
-import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class OrderingClient {
+
     private static final String ORDER_TOPIC_NAME = "Orders";
     private static final String ORDER_CLIENT_CONNECTION_ID = "system_ordering_client";
     private static final String ORDER_CLIENT_NAME = "ordering_client";
@@ -32,20 +30,17 @@ public class OrderingClient {
     private Topic topic;
     private List<ObjectMessage> messageList = new LinkedList<>();
 
-    private OrderingClient() {
-    }
+    private OrderingClient() {}
+
     public void disconnect() {
         try {
             this.session.close();
             this.connection.stop();
             this.connection.close();
-        } catch (JMSException | NullPointerException e) {
-            e.printStackTrace();
-        }
+        } catch (JMSException | NullPointerException ignored) {}
     }
-    public void connect(String host) {
 
-        //TODO just load when logged in as operator
+    public void connect(String host) {
         try {
             this.connectionFactory = new ActiveMQConnectionFactory("tcp://" + host + ":" + JMS_PORT);
             this.connectionFactory.setTrustAllPackages(true);
@@ -96,14 +91,9 @@ public class OrderingClient {
                     .withCarrierId(detailedOrderDTO.getSoundCarrierId())
                     .build();
             RMIClient.getRmiClient().getRmiFactory().getOrderingService().approveOrder(SessionManager.getInstance().getSessionId(), orderDTO);
-            //TODO replace, just first version of refreesh
-            SceneManager.getInstance().switchView("order");
-        } catch (JMSException | IOException e) {
+            SceneManager.getInstance().switchView(SceneManager.VIEW_ORDERS);
+        } catch (JMSException | IOException | SessionExpired | NoPermissionForOperation e) {
             e.printStackTrace();
-        } catch (SessionExpired sessionExpired) {
-            sessionExpired.printStackTrace();
-        } catch (NoPermissionForOperation noPermissionForOperation) {
-            noPermissionForOperation.printStackTrace();
         }
     }
 
@@ -120,8 +110,7 @@ public class OrderingClient {
         try {
             this.messageList.remove(message);
             message.acknowledge();
-            //TODO replace, just first version of refreesh
-            SceneManager.getInstance().switchView("order");
+            SceneManager.getInstance().switchView(SceneManager.VIEW_ORDERS);
         } catch (JMSException e) {
             e.printStackTrace();
         }

@@ -2,12 +2,26 @@ package at.fhv.ec.javafxclient;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class SceneManager {
+
+    private static final String VIEW_LOGIN = "login";
+    public static final String VIEW_SHOP = "shop";
+    public static final String VIEW_EXCHANGE = "exchange";
+    public static final String VIEW_CUSTOMER = "customer";
+    public static final String VIEW_MESSAGES_READ_CHANNELS = "messages-read-channels";
+    public static final String VIEW_MESSAGES_WRITE_CHANNELS = "messages-write-channels";
+    public static final String VIEW_ORDERS = "order";
+
+    public static final String VIEW_SHOPPING_CART = "shoppingcart";
+
+    public static final String VIEW_MESSAGES_WRITE = "messages-write";
+    public static final String VIEW_MESSAGES_READ_OVERVIEW = "messages-read-overview";
+    public static final String VIEW_MESSAGES_READ = "messages-read";
 
     private static SceneManager instance;
     private static Stage window;
@@ -49,15 +63,15 @@ public class SceneManager {
         ArrayList<String> stylesheets = new ArrayList<>();
         stylesheets.add(Application.getStylesheetDefault());
 
-        if (themeStyle.equals("light")) {
+        if (themeStyle.equals(("light"))) {
             stylesheets.add(Application.getStylesheetLight());
         }
 
-        if (themeColor.equals("color1")) {
+        if (themeColor.equals(("color1"))) {
             stylesheets.add(Application.getStylesheetColor1());
-        } else if (themeColor.equals("color2")) {
+        } else if (themeColor.equals(("color2"))) {
             stylesheets.add(Application.getStylesheetColor2());
-        } else if (themeColor.equals("color3")) {
+        } else if (themeColor.equals(("color3"))) {
             stylesheets.add(Application.getStylesheetColor3());
         }
 
@@ -72,7 +86,7 @@ public class SceneManager {
     }
 
     public void logout() {
-        switchTheme("dark","color2");
-        switchView("login");
+        switchTheme("dark", "color2");
+        switchView(SceneManager.VIEW_LOGIN);
     }
 }

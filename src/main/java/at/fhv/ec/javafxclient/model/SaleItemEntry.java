@@ -1,4 +1,4 @@
-package at.fhv.ec.javafxclient.view.utils;
+package at.fhv.ec.javafxclient.model;
 
 import java.util.UUID;
 

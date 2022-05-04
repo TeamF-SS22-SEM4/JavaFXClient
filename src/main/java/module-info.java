@@ -6,8 +6,7 @@ module at.fhv.ec.javafxclient {
     requires java.naming;
     requires java.datatransfer;
     requires java.desktop;
-    requires RMI.Shared.Lib.v41;
-
+    requires RMI.Shared.Lib.v45;
 
     exports at.fhv.ec.javafxclient;
     opens at.fhv.ec.javafxclient to javafx.fxml;

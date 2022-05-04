@@ -3,30 +3,32 @@
 /********************************************************************************/
 * {
     -fx-color-primary: rgb(194, 127, 0);
-    -fx-color-success: #006708;
-    -fx-color-alert: rgba(255, 0, 0, 1);
+    -fx-color-success: green;
+    -fx-color-alert: red;
     -fx-color-text-1: #fafafa;
-    -fx-color-text-2: #c2c2c2;
-    -fx-color-btn-text: #262626;
+    -fx-color-text-2: #bebebe;
+    -fx-color-btn-text: #fafafa;
 
     -fx-color-bg-1: #282828;
-    -fx-color-bg-2: #424242;
-    -fx-color-bg-3: #616161;
+    -fx-color-bg-2: #373737;
+    -fx-color-bg-3: #464646;
+    -fx-color-bg-4: #646464;
     -fx-color-bg-hover: rgba(194, 127, 0, 0.15);
 }
 
 .root {
-    -fx-pref-height: 648;
-    -fx-pref-width: 1152;
+    -fx-pref-height: 720;
+    -fx-pref-width: 1280;
     -fx-font: 14px "Helvetica";
     -fx-focus-color: -fx-color-primary;
+    -fx-accent: -fx-color-primary;
     -fx-faint-focus-color: transparent;
 }
 /********************************************************************************/
 /* LOGIN                                                                        */
 /********************************************************************************/
 .login-background {
-    -fx-background-image: url(images/background.jpg);
+    -fx-background-image: url(../images/background.jpg);
     -fx-background-size: cover;
     -fx-font-size: 16;
 }
@@ -50,19 +52,19 @@
 }
 
 .login-textfield {
-    -fx-background-color: transparent;
-    -fx-text-fill: -fx-color-text-2;
-    -fx-prompt-text-fill: -fx-color-text-2;
-    -fx-border-color: -fx-color-text-2;
-    -fx-border-width: 0 0 2 0;
-    -fx-min-width: 225;
-    -fx-max-width: 225;
+    -fx-background-color: transparent !important;
+    -fx-text-fill: -fx-color-text-2 !important;
+    -fx-prompt-text-fill: -fx-color-text-2 !important;
+    -fx-border-color: -fx-color-text-2 !important;
+    -fx-border-width: 0 0 2 0 !important;
+    -fx-min-width: 225 !important;
+    -fx-max-width: 225 !important;
 }
 
 .login-textfield:focused {
-    -fx-text-fill: -fx-color-text-1;
-    -fx-prompt-text-fill: -fx-color-text-1;
-    -fx-border-color: -fx-color-primary;
+    -fx-text-fill: -fx-color-text-1 !important;
+    -fx-prompt-text-fill: -fx-color-text-1 !important;
+    -fx-border-color: -fx-color-primary !important;
 }
 
 .login-button {
@@ -89,7 +91,7 @@
 }
 
 .sidebar-logo {
-    -fx-background-image: url(images/logo_2.png);
+    -fx-background-image: url(../images/logo_2.png);
     -fx-background-size: contain;
     -fx-background-repeat: stretch;
     -fx-background-position: center;
@@ -113,14 +115,6 @@
 .sidebar-body ToggleButton {
     -fx-max-width: infinity;
     -fx-background-color: -fx-color-primary;
-    -fx-opacity: 0.5;
-}
-
-.sidebar-body ToggleButton:selected,
-.sidebar-body ToggleButton:selected FontAwesomeIconView,
-.sidebar-body ToggleButton:hover,
-.sidebar-body ToggleButton:hover FontAwesomeIconView {
-    -fx-opacity: 1;
 }
 /********************************************************************************/
 /* HEADER                                                                       */
@@ -169,6 +163,10 @@ Button, ToggleButton {
     -fx-border-insets: 0 0 -1 0, 0, 1, 2 !important;
 }
 
+Button:pressed, ToggleButton:pressed {
+    -fx-background-insets: 1 1 0 1 !important;
+}
+
 .btn, .btn FontAwesomeIconView {
     -fx-text-fill: -fx-color-btn-text;
     -fx-fill: -fx-color-btn-text;
@@ -184,13 +182,20 @@ Button, ToggleButton {
 }
 
 .btn-alert, .btn-alert FontAwesomeIconView {
-    -fx-text-fill: -fx-color-primary !important;
-    -fx-fill: -fx-color-primary !important;
-    -fx-background-color: -fx-color-btn-text !important;
-    -fx-border-color: -fx-color-primary !important;
-    -fx-background-radius: 10 !important;
-    -fx-border-width: 3 !important;
-    -fx-border-radius: 5 !important;
+    -fx-text-fill: -fx-color-btn-text;
+    -fx-fill: -fx-color-btn-text;
+    -fx-background-color: -fx-color-alert;
+    -fx-background-radius: 5;
+}
+
+.btn-notify, .btn-notify FontAwesomeIconView {
+    -fx-text-fill: -fx-color-primary;
+    -fx-fill: -fx-color-primary;
+    -fx-background-color: -fx-color-btn-text;
+    -fx-border-color: -fx-color-primary;
+    -fx-background-radius: 10;
+    -fx-border-width: 3;
+    -fx-border-radius: 5;
 }
 /********************************************************************************/
 /* CHOICE BOX                                                                   */
@@ -340,6 +345,36 @@ Hyperlink:hover {
 Hyperlink:focused {
     -fx-border-width: 0;
 }
+/********************************************************************************/
+/* TEXTFIELD / AREA                                                             */
+/********************************************************************************/
+.content TextField {
+    -fx-background-color: -fx-color-bg-4;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-border-width: 1.5;
+    -fx-text-fill: -fx-color-text-1;
+}
+.content TextField:focused {
+    -fx-border-color: -fx-color-primary;
+}
+
+.content TextArea {
+    -fx-background-insets: -0.5;
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-color-text-1;
+
+}
+
+.content TextArea:focused {
+    -fx-background-color: -fx-color-primary;
+}
+
+.content TextArea .content {
+    -fx-background-color: -fx-color-bg-4;
+    -fx-background-radius: 0;
+}
+
 /********************************************************************************/
 /* ELEMENTS                                                                     */
 /********************************************************************************/

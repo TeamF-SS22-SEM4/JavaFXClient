@@ -1,0 +1,9 @@
+* {
+    -fx-color-text-1: #323232 !important;
+    -fx-color-text-2: #464646 !important;
+
+    -fx-color-bg-1: #c8c8c8 !important;
+    -fx-color-bg-2: #e1e1e1 !important;
+    -fx-color-bg-3: #f0f0f0 !important;
+    -fx-color-bg-4: #dcdcdc !important;
+}

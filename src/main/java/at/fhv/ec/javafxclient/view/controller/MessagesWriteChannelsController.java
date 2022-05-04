@@ -1,4 +1,4 @@
-package at.fhv.ec.javafxclient.view;
+package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.model.Topic;
@@ -11,21 +11,20 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
-import java.io.IOException;
 import java.util.List;
 
-public class AllTopicsListController {
-    @FXML
-    private TableView<Topic> topicTable;
+public class MessagesWriteChannelsController {
 
+    @FXML
+    private TableView<Topic> channelTable;
     @FXML
     private TableColumn<Topic, String> nameColumn;
+    @FXML
+    private TableColumn<Topic, Button> actionColumn;
 
     @FXML
-    private TableColumn<Topic, Button> newMessageButtonColumn;
-
     public void initialize() {
-        initTable();
+        formatTable();
 
         List<Topic> topics = List.of(
                 new Topic("Pop"),
@@ -38,38 +37,37 @@ public class AllTopicsListController {
         );
 
         ObservableList<Topic> observableTopicList = FXCollections.observableArrayList(topics);
-        topicTable.setItems(observableTopicList);
-        topicTable.getSortOrder().add(nameColumn);
-        topicTable.sort();
+        channelTable.setItems(observableTopicList);
+        channelTable.getSortOrder().add(nameColumn);
+        channelTable.sort();
     }
 
-    private void initTable() {
-        // Create buttons in table
-        newMessageButtonColumn.setCellFactory(new Callback<>() {
+    private void formatTable() {
+        actionColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<Topic, Button> call(TableColumn<Topic, Button> param) {
-
-                final Button newMessageButton = new Button("New Message");
-                newMessageButton.getStyleClass().add("btn");
-
                 return new TableCell<>() {
+
                     @Override
                     public void updateItem(Button item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty) {
                             setGraphic(null);
-                            setText(null);
                         } else {
+                            Button newMessageButton = new Button("New message");
+                            newMessageButton.getStyleClass().add("btn");
+
                             newMessageButton.setOnAction(event -> {
-                                SendMessageController.topicName = getTableView().getItems().get(getIndex()).getName();
-                                SceneManager.getInstance().switchView("send-message");
+                                MessagesWriteController.topicName = getTableView().getItems().get(getIndex()).getName();
+                                SceneManager.getInstance().switchView(SceneManager.VIEW_MESSAGES_WRITE);
                             });
+
                             setGraphic(newMessageButton);
-                            setText(null);
                         }
                     }
                 };
             }
         });
     }
+
 }

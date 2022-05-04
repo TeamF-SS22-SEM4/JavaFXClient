@@ -1,5 +1,7 @@
 package at.fhv.ec.javafxclient.model;
 
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CustomMessage {
@@ -7,13 +9,13 @@ public class CustomMessage {
     private final String title;
     private final String content;
 
-    private final Date creationDate;
+    private final String creationDate;
 
     public CustomMessage(String jmsId, String title, String content, Date creationDate) {
         this.jmsId = jmsId;
         this.title = title;
         this.content = content;
-        this.creationDate = creationDate;
+        this.creationDate = new SimpleDateFormat("hh:mm dd-MM-yyyy").format(creationDate);
     }
 
     public String getJmsId() {
@@ -28,7 +30,7 @@ public class CustomMessage {
         return content;
     }
 
-    public Date getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 }
