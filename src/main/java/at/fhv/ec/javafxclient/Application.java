@@ -29,6 +29,7 @@ public class Application extends javafx.application.Application {
         window = stage;
         window.getIcons().add(new Image("images/icon.png"));
         window.setTitle("Tomify");
+        window.setMaximized(true);
         window.setScene(scene);
         window.show();
     }

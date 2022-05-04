@@ -6,13 +6,13 @@
     -fx-color-success: green;
     -fx-color-alert: red;
     -fx-color-text-1: #fafafa;
-    -fx-color-text-2: #c2c2c2;
+    -fx-color-text-2: #bebebe;
     -fx-color-btn-text: #fafafa;
 
     -fx-color-bg-1: #282828;
     -fx-color-bg-2: #373737;
-    -fx-color-bg-3: #505050;
-    -fx-color-bg-4: #787878;
+    -fx-color-bg-3: #464646;
+    -fx-color-bg-4: #646464;
     -fx-color-bg-hover: rgba(194, 127, 0, 0.15);
 }
 

@@ -47,10 +47,6 @@ public class LoginController {
     public void initialize() {
         connectionTypeChoiceBox.getItems().addAll(REMOTE_INFORMATION_TEXT, LOCAL_INFORMATION_TEXT);
         connectionTypeChoiceBox.setValue(LOCAL_INFORMATION_TEXT);
-
-        // backdoor user
-        usernameTextField.setText("tf-test");
-        passwordTextField.setText("PssWrd");
     }
 
     @FXML
