@@ -117,7 +117,7 @@ public class ShopController implements Initializable {
     private void searchInProductTable(String searchTerm) {
         try {
             productSearchService = EJBClient.getEjbClient().getProductSearchService();
-            ObservableList<ProductOverviewDTO> productList = FXCollections.observableArrayList(productSearchService.fullTextSearch(SessionManager.getInstance().getSessionId(), searchTerm));
+            ObservableList<ProductOverviewDTO> productList = FXCollections.observableArrayList(productSearchService.fullTextSearch(searchTerm));
             productTable.setItems(productList);
             productTable.getSortOrder().add(albumColumn);
             productTable.sort();
@@ -189,7 +189,7 @@ public class ShopController implements Initializable {
                                 try {
                                     productSearchService = EJBClient.getEjbClient().getProductSearchService();
                                     UUID productID = getTableView().getItems().get(getIndex()).getProductId();
-                                    ProductDetailsDTO productDetails = productSearchService.productById(SessionManager.getInstance().getSessionId(), productID);
+                                    ProductDetailsDTO productDetails = productSearchService.productById(productID);
 
                                     TableColumn<SongDTO, String> titleColumn = new TableColumn<>("Title");
                                     titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -296,7 +296,7 @@ public class ShopController implements Initializable {
                                 try {
                                     productSearchService = EJBClient.getEjbClient().getProductSearchService();
                                     UUID productID = getTableView().getItems().get(getIndex()).getProductId();
-                                    ProductDetailsDTO productDetails = productSearchService.productById(SessionManager.getInstance().getSessionId(), productID);
+                                    ProductDetailsDTO productDetails = productSearchService.productById(productID);
 
                                     TableColumn<SoundCarrierDTO, String> soundCarrierNameColumn = new TableColumn<>("Type");
                                     soundCarrierNameColumn.setCellValueFactory(new PropertyValueFactory<>("soundCarrierName"));

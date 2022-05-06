@@ -39,7 +39,7 @@ javafx {
 }
 
 dependencies {
-    implementation 'com.github.TeamF-SS22-SEM4:RMI-Shared-Lib:v46'
+    implementation 'com.github.TeamF-SS22-SEM4:RMI-Shared-Lib:v48'
     implementation 'de.jensd:fontawesomefx-fontawesome:4.7.0-9.1.2'
     implementation 'org.apache.activemq:activemq-all:5.17.0'
     implementation 'org.apache.logging.log4j:log4j-api:2.17.2'
