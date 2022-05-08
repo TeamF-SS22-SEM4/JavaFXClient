@@ -1,6 +1,6 @@
 package at.fhv.ec.javafxclient;
 
-import at.fhv.ec.javafxclient.communication.RMIClient;
+import at.fhv.ec.javafxclient.communication.EJBClient;
 import at.fhv.ec.javafxclient.model.ShoppingCartEntry;
 import at.fhv.ec.javafxclient.view.animator.TextAnimator;
 import at.fhv.ec.javafxclient.view.animator.TextOutput;
@@ -30,6 +30,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
+import javax.naming.NamingException;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -90,13 +91,13 @@ public class ShopController implements Initializable {
 
     private void searchProduct(String searchTerm) {
         try {
-            productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
-            ObservableList<ProductOverviewDTO> productList = FXCollections.observableArrayList(productSearchService.fullTextSearch(SessionManager.getInstance().getSessionId(), searchTerm));
+            productSearchService = EJBClient.getEjbClient().getProductSearchService();
+            ObservableList<ProductOverviewDTO> productList = FXCollections.observableArrayList(productSearchService.fullTextSearch(searchTerm));
             productTable.setItems(productList);
             productTable.getSortOrder().add(albumColumn);
             productTable.sort();
             formatTable();
-        } catch (RemoteException | SessionExpired | NoPermissionForOperation e) {
+        } catch (SessionExpired | NoPermissionForOperation | NamingException e) {
             e.printStackTrace();
         }
     }
@@ -139,9 +140,9 @@ public class ShopController implements Initializable {
                                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("views/elements/detailsModal.fxml"));
                                     Pane modalRoot = fxmlLoader.load();
 
-                                    productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
+                                    productSearchService = EJBClient.getEjbClient().getProductSearchService();
                                     UUID productID = getTableView().getItems().get(getIndex()).getProductId();
-                                    ProductDetailsDTO productDetails = productSearchService.productById(SessionManager.getInstance().getSessionId(), productID);
+                                    ProductDetailsDTO productDetails = productSearchService.productById(productID);
                                     ObservableList<SongDTO> songList = FXCollections.observableArrayList(productDetails.getSongs());
 
                                     detailsController = fxmlLoader.getController();
@@ -165,7 +166,7 @@ public class ShopController implements Initializable {
                                     setModalValues(modalStage, modalRoot);
                                     showModal(modalStage);
 
-                                } catch (IOException | NoPermissionForOperation | SessionExpired e) {
+                                } catch (IOException | NoPermissionForOperation | SessionExpired | NamingException e) {
                                     throw new RuntimeException(e);
                                 }
                             });
@@ -194,9 +195,9 @@ public class ShopController implements Initializable {
                                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("views/elements/buyModal.fxml"));
                                     Pane modalRoot = fxmlLoader.load();
 
-                                    productSearchService = RMIClient.getRmiClient().getRmiFactory().getProductSearchService();
+                                    productSearchService = EJBClient.getEjbClient().getProductSearchService();
                                     UUID productID = getTableView().getItems().get(getIndex()).getProductId();
-                                    ProductDetailsDTO productDetails = productSearchService.productById(SessionManager.getInstance().getSessionId(), productID);
+                                    ProductDetailsDTO productDetails = productSearchService.productById(productID);
                                     ObservableList<SoundCarrierDTO> priceList = FXCollections.observableArrayList(productDetails.getSoundCarriers());
 
                                     buyController = fxmlLoader.getController();
@@ -318,10 +319,10 @@ public class ShopController implements Initializable {
 
                                                                 boolean orderingSuccess = false;
                                                                 try {
-                                                                    orderingSuccess = RMIClient.getRmiClient().getRmiFactory().getOrderingService()
+                                                                    orderingSuccess = EJBClient.getEjbClient().getOrderingService()
                                                                             .placeOrder(SessionManager.getInstance().getSessionId(), orderDTO);
 
-                                                                } catch (RemoteException | SessionExpired | NoPermissionForOperation e) {
+                                                                } catch ( SessionExpired | NoPermissionForOperation | NamingException e) {
                                                                     e.printStackTrace();
                                                                 }
                                                                 displayOrderingSuccess(orderingSuccess);
@@ -348,7 +349,7 @@ public class ShopController implements Initializable {
                                     setModalValues(modalStage, modalRoot);
                                     showModal(modalStage);
 
-                                } catch (IOException | NoPermissionForOperation | SessionExpired e) {
+                                } catch (IOException | NoPermissionForOperation | SessionExpired | NamingException e) {
                                     throw new RuntimeException(e);
                                 }
                             });

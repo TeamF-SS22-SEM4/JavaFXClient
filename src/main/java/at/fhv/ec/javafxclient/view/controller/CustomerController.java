@@ -18,6 +18,7 @@ import javax.naming.NamingException;
 import java.util.List;
 
 public class CustomerController {
+    CustomerService customerService;
 
     @FXML
     private TextField searchTextField;
@@ -35,11 +36,6 @@ public class CustomerController {
         formatTable();
     }
 
-    @FXML
-    public void onSearchButtonClicked() {
-        String searchTerm = searchTextField.getText();
-        searchCustomer(searchTerm);
-    }
 
     @FXML
     public void onHomeButtonClicked() {
@@ -80,7 +76,6 @@ public class CustomerController {
                                 Button addToSaleButton = new Button("Add to sale");
                                 addToSaleButton.setOnAction(event -> {
                                     CheckoutController.customer = getTableView().getItems().get(getIndex());
-                                        SceneManager.getInstance().switchView(SceneManager.VIEW_CHECKOUT);
                                 });
                                 setGraphic(addToSaleButton);
                                 setText(null);
@@ -92,13 +87,12 @@ public class CustomerController {
 
             addToSaleColumn.setVisible(true);
         }
-    }
 
     @FXML
     protected void onSearchButtonClicked() {
         String searchTerm = searchTextField.getText();
         try {
-            customerService = RMIClient.getRmiClient().getRmiFactory().getCustomerSearchService();
+            customerService = EJBClient.getEjbClient().getCustomerService();
             List<CustomerDTO> customers = customerService.search(SessionManager.getInstance().getSessionId(), searchTerm);
 
             ObservableList<CustomerDTO> customerTableData = FXCollections.observableArrayList(customers);

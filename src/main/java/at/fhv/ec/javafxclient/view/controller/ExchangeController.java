@@ -82,9 +82,7 @@ public class ExchangeController {
             totalPriceLabel.setText(sale.getTotalPrice() + "€");
             displayContent(true);
 
-            contentPaneTop.setVisible(true);
             saleItemsTable.setVisible(true);
-            contentPaneBottom.setVisible(true);
         } catch (NoSuchElementException ne) {
 
             invoiceNumberLabel.setText("No sale with invoice number " + searchTextField.getText() + " found!");

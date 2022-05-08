@@ -99,9 +99,6 @@ public class LoginController {
 
                     infoLabel.getStyleClass().add("alert");
                     infoLabel.setText("Invalid username or password!");
-
-                } catch (IOException ignored) {
-
                 } catch (JMSException e) {
                     throw new RuntimeException(e);
                 } catch (NamingException e) {
