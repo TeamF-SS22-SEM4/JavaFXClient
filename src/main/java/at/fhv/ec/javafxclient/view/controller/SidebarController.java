@@ -9,6 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 public class SidebarController {
 
     @FXML

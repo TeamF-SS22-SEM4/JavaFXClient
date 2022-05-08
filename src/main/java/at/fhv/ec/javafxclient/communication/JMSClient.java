@@ -8,6 +8,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.ActiveMQSession;
 
 import javax.jms.*;
+import javax.naming.NamingException;
 import java.rmi.RemoteException;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -72,9 +73,7 @@ public class JMSClient {
                         String content = textMessage.getText().split("\n")[1];
                         addMessageToTopic(topic, new CustomMessage(message.getJMSMessageID(), title, content, new Date(message.getJMSTimestamp())));
 
-                        LocalDateTime lastViewed = RMIClient.getRmiClient()
-                                .getRmiFactory()
-                                .getMessagingService()
+                        LocalDateTime lastViewed = EJBClient.getEjbClient().getMessagingService()
                                 .getLastViewed(SessionManager.getInstance().getSessionId());
 
                         LocalDateTime messageDateTime = LocalDateTime.ofInstant(
@@ -86,7 +85,9 @@ public class JMSClient {
                             SessionManager.getInstance().onNewMessageReceived();
                             amountOfNewMessages += 1;
                         }
-                    } catch (JMSException | SessionExpired | RemoteException | NoPermissionForOperation e) {
+                    } catch (JMSException | SessionExpired | NoPermissionForOperation e) {
+                        throw new RuntimeException(e);
+                    } catch (NamingException e) {
                         throw new RuntimeException(e);
                     }
                 });
