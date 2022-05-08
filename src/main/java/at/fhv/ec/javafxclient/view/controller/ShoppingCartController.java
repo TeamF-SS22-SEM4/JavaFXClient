@@ -2,7 +2,7 @@ package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
-import at.fhv.ec.javafxclient.communication.RMIClient;
+import at.fhv.ec.javafxclient.communication.EJBClient;
 import at.fhv.ec.javafxclient.model.ShoppingCartEntry;
 import at.fhv.ss22.ea.f.communication.dto.CustomerDTO;
 import at.fhv.ss22.ea.f.communication.dto.ShoppingCartProductDTO;
@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 
+import javax.naming.NamingException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -211,9 +212,7 @@ public class ShoppingCartController {
         });
 
         try {
-            String invoiceNumber = RMIClient.getRmiClient()
-                    .getRmiFactory()
-                    .getBuyingService()
+            String invoiceNumber = EJBClient.getEjbClient().getBuyingService()
                     .buyWithShoppingCart(SessionManager.getInstance().getSessionId(), shoppingCartProducts, selectedPaymentMethod, customerId);
 
             customer = null;
@@ -229,10 +228,9 @@ public class ShoppingCartController {
         } catch (CarrierNotAvailableException cne) {
             feedbackLabel.getStyleClass().add("alert");
             feedbackLabel.setText("Selected amount is not available!");
-        } catch (IOException e) {
-            feedbackLabel.getStyleClass().add("alert");
-            feedbackLabel.setText("An error occurred!");
         } catch (SessionExpired | NoPermissionForOperation e) {
+            e.printStackTrace();
+        } catch (NamingException e) {
             e.printStackTrace();
         }
     }
