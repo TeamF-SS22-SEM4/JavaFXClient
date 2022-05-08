@@ -1,7 +1,6 @@
 * {
-    -fx-color-primary: #003246 !important;
-    -fx-color-btn-text: #fafafa !important;
-    -fx-color-bg-hover: rgba(0, 50, 70, 0.15) !important;
+    -fx-color-primary: #005078 !important;
+    -fx-color-bg-hover: rgba(0, 80, 120, 0.15) !important;
 }
 
 .sidebar-logo {

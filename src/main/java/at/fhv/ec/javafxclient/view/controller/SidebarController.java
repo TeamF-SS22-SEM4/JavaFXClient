@@ -5,7 +5,6 @@ import at.fhv.ec.javafxclient.SessionManager;
 import at.fhv.ec.javafxclient.communication.JMSClient;
 import at.fhv.ec.javafxclient.communication.OrderingClient;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -13,77 +12,26 @@ import javafx.scene.control.ToggleGroup;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SidebarController implements Initializable {
+public class SidebarController {
+
     @FXML
     private Button messageButton;
     @FXML
-    private Button topicsButton;
-
+    private Button readMessageButton;
+    @FXML
+    private Button writeMessageButton;
     @FXML
     private Button orderButton;
+    @FXML
+    private Button logoutButton;
+    @FXML
+    private ToggleGroup themeStyleToggleGroup;
+    @FXML
+    private ToggleGroup themeColorToggleGroup;
 
-    public ToggleGroup themeStyleToggleGroup;
-    public ToggleGroup themeColorToggleGroup;
-    public ToggleButton dark;
-    public Button logoutButton;
 
     @FXML
-    private void onLogoClicked() {
-        SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
-    }
-    @FXML
-    private void onShopButtonClicked() {
-        SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
-    }
-
-    @FXML
-    private void onExchangeButtonClicked() {
-        SceneManager.getInstance().switchView(SceneManager.VIEW_EXCHANGE);
-    }
-
-    @FXML
-    private void onCustomerButtonClicked() {
-        SceneManager.getInstance().switchView(SceneManager.VIEW_CUSTOMER);
-    }
-
-    @FXML
-    private void onOrderButtonClicked() {
-        SceneManager.getInstance().switchView(SceneManager.VIEW_ORDERS);
-    }
-
-    @FXML
-    private void onMessageButtonClicked() {
-        SceneManager.getInstance().switchView(SceneManager.VIEW_MESSAGES);
-    }
-
-    @FXML
-    private void onTopicsButtonClicked() {
-        SceneManager.getInstance().switchView(SceneManager.VIEW_TOPICS);
-    }
-
-    @FXML
-    private void onThemeButtonsClicked() {
-        ToggleButton toggleButtonStyle = (ToggleButton) themeStyleToggleGroup.getSelectedToggle();
-        String themeStyle = toggleButtonStyle.getId();
-
-        ToggleButton toggleButtonColor = (ToggleButton) themeColorToggleGroup.getSelectedToggle();
-        String themeColor = toggleButtonColor.getId();
-
-        SceneManager.getInstance().switchTheme(themeStyle, themeColor);
-    }
-
-    @FXML
-    private void onLogoutButtonClicked() {
-        SessionManager.getInstance().logout();
-        SceneManager.getInstance().logout();
-        JMSClient.getJmsClient().logout();
-        OrderingClient.getInstance().disconnect();
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-
+    public void initialize() {
         themeStyleToggleGroup.selectedToggleProperty().addListener((obsVal, oldVal, newVal) -> {
             if (newVal == null)
                 oldVal.setSelected(true);
@@ -96,16 +44,68 @@ public class SidebarController implements Initializable {
 
         logoutButton.setText("Log out\n" + SessionManager.getInstance().getUsername());
 
-        if(!SessionManager.getInstance().getRoles().contains("Operator")) {
-            topicsButton.setVisible(false);
+        if (!SessionManager.getInstance().getRoles().contains("Operator")) {
+            readMessageButton.setVisible(false);
+            writeMessageButton.setVisible(false);
             orderButton.setVisible(false);
+        } else {
+            messageButton.setVisible(false);
+            messageButton.setManaged(false);
         }
 
-        // Check if new messages were received
         if(SessionManager.getInstance().isNewMessagesReceived()) {
-            messageButton.getStyleClass().add("btn-alert");
+            messageButton.getStyleClass().add("btn-notify");
+            readMessageButton.getStyleClass().add("btn-notify");
+
             int amountOfNewMessages = JMSClient.getJmsClient().getAmountOfNewMessages();
             messageButton.setText("Messages (" + amountOfNewMessages + ")");
+            readMessageButton.setText("Read (" + amountOfNewMessages + ")");
         }
     }
+
+    @FXML
+    public void onLogoClicked() {
+        SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
+    }
+
+    @FXML
+    public void onShopButtonClicked() {
+        SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
+    }
+
+    @FXML
+    public void onExchangeButtonClicked() {
+        SceneManager.getInstance().switchView(SceneManager.VIEW_EXCHANGE);
+    }
+
+    @FXML
+    public void onMessageButtonClicked() {
+        SceneManager.getInstance().switchView(SceneManager.VIEW_MESSAGES_READ_CHANNELS);
+    }
+
+    @FXML
+    public void onTopicsButtonClicked() {
+        SceneManager.getInstance().switchView(SceneManager.VIEW_MESSAGES_WRITE_CHANNELS);
+    }
+
+    @FXML
+    public void onOrderButtonClicked() {
+        SceneManager.getInstance().switchView(SceneManager.VIEW_ORDERS);
+    }
+
+    @FXML
+    public void onThemeButtonsClicked() {
+        String theme = ((ToggleButton) themeStyleToggleGroup.getSelectedToggle()).getId();
+        String color = ((ToggleButton) themeColorToggleGroup.getSelectedToggle()).getId();
+        SceneManager.getInstance().switchTheme(theme, color);
+    }
+
+    @FXML
+    public void onLogoutButtonClicked() {
+        SessionManager.getInstance().logout();
+        SceneManager.getInstance().logout();
+        JMSClient.getJmsClient().disconnect();
+        OrderingClient.getInstance().disconnect();
+    }
+
 }

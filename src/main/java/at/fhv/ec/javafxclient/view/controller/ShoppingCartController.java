@@ -1,105 +1,124 @@
 package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
+import at.fhv.ec.javafxclient.SessionManager;
+import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ec.javafxclient.model.ShoppingCartEntry;
+import at.fhv.ss22.ea.f.communication.dto.CustomerDTO;
+import at.fhv.ss22.ea.f.communication.dto.ShoppingCartProductDTO;
+import at.fhv.ss22.ea.f.communication.exception.CarrierNotAvailableException;
+import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
+import at.fhv.ss22.ea.f.communication.exception.SessionExpired;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ShoppingCartController {
+
     public static List<ShoppingCartEntry> shoppingCart = new ArrayList<>();
+    public static CustomerDTO customer;
     private static float totalPrice;
 
     @FXML
+    private ToggleGroup paymentToggleGroup;
+    @FXML
+    private Button payButton;
+    @FXML
+    private Label totalPriceLabel;
+    @FXML
+    private Label feedbackLabel;
+    @FXML
+    private Button addCustomerButton;
+    @FXML
+    private Button removeCustomerButton;
+    @FXML
+    private Label customerNameLabel;
+    @FXML
+    private Label customerStreetLabel;
+    @FXML
+    private Label customerCityLabel;
+    @FXML
     private TableView<ShoppingCartEntry> shoppingCartTable;
-
     @FXML
     private TableColumn<ShoppingCartEntry, String> productNameColumn;
-
     @FXML
     private TableColumn<ShoppingCartEntry, Spinner<Integer>> selectedAmountColumn;
-
     @FXML
     private TableColumn<ShoppingCartEntry, Float> pricePerCarrierColumn;
-
     @FXML
     private TableColumn<ShoppingCartEntry, Button> actionColumn;
 
     @FXML
-    private Label totalPriceLabel;
-
-    @FXML
     public void initialize() {
-        createShoppingCartTable();
-
         ObservableList<ShoppingCartEntry> shoppingCartTableData = FXCollections.observableArrayList(shoppingCart);
         shoppingCartTable.setItems(shoppingCartTableData);
         shoppingCartTable.getSortOrder().add(productNameColumn);
         shoppingCartTable.sort();
 
+        formatTable();
         updateTotalPrice();
+        addCustomer();
+        updatePayButton();
     }
 
     @FXML
-    protected void onClearCartButtonClicked() {
-        shoppingCartTable.getItems().clear();
-        shoppingCart.clear();
-        updateTotalPrice();
+    public void onBackButtonClicked() {
+        SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
     }
 
     @FXML
-    protected void onCheckoutButtonClicked() {
+    public void onSelectCustomerButtonClicked() {
+        SceneManager.getInstance().switchView(SceneManager.VIEW_CUSTOMER);
+    }
+
+    @FXML
+    public void onRemoveCustomerButtonClicked() {
+        customer = null;
+        addCustomer();
+    }
+
+    @FXML
+    protected void onPayButtonClicked() {
+        feedbackLabel.setText("");
+        feedbackLabel.getStyleClass().remove("alert");
+
         if(shoppingCart.size() > 0) {
-                SceneManager.getInstance().switchView(SceneManager.VIEW_CHECKOUT);
-        } else {
-            showPopup(
-                    "Error",
-                    "The shopping cart is empty. Please add a product to the shopping cart.",
-                    Alert.AlertType.ERROR
-            );
+
+            RadioButton selectedPaymentMethodRadioButton = (RadioButton) paymentToggleGroup.getSelectedToggle();
+
+            if(selectedPaymentMethodRadioButton != null) {
+                UUID customerId = customer == null ? null : customer.getCustomerId();
+                purchase(selectedPaymentMethodRadioButton.getText(), customerId);
+            } else {
+                feedbackLabel.getStyleClass().add("alert");
+                feedbackLabel.setText("Select a payment method!");
+            }
         }
     }
 
-    private void updateTotalPrice() {
-        totalPrice = 0;
-
-        shoppingCart.forEach(item -> {
-            totalPrice += item.getTotalProductPrice();
-        });
-
-        totalPriceLabel.setText(totalPrice + "€");
-    }
-
-    private void createShoppingCartTable() {
+    private void formatTable() {
         Callback<TableColumn<ShoppingCartEntry, Spinner<Integer>>, TableCell<ShoppingCartEntry, Spinner<Integer>>> spinnerCellFactory = new Callback<>() {
             @Override
             public TableCell<ShoppingCartEntry, Spinner<Integer>> call(final TableColumn<ShoppingCartEntry, Spinner<Integer>> param) {
                 return new TableCell<>() {
-
-                    private final Spinner<Integer> selectedAmountSpinner = new Spinner<>();
 
                     @Override
                     public void updateItem(Spinner<Integer> item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty) {
                             setGraphic(null);
-                            setText(null);
                         } else {
-                            selectedAmountSpinner.setValueFactory(
-                                    new SpinnerValueFactory.IntegerSpinnerValueFactory(
-                                            1,
-                                            shoppingCart.get(getIndex()).getAmountAvailable(),
-                                            shoppingCart.get(getIndex()).getSelectedAmount()
-                                    )
-                            );
+                            Spinner<Integer> selectedAmountSpinner = new Spinner<>();
+                            selectedAmountSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, shoppingCart.get(getIndex()).getAmountAvailable(), shoppingCart.get(getIndex()).getSelectedAmount()));
 
                             selectedAmountSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-                                // TODO: Update total per product in table
                                 ShoppingCartEntry selectedShoppingCartItem = shoppingCart.get(getIndex());
                                 selectedShoppingCartItem.setSelectedAmount(newValue);
                                 selectedShoppingCartItem.setTotalProductPrice(newValue * selectedShoppingCartItem.getPricePerCarrier());
@@ -112,13 +131,13 @@ public class ShoppingCartController {
                 };
             }
         };
-
         selectedAmountColumn.setCellFactory(spinnerCellFactory);
 
         pricePerCarrierColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<ShoppingCartEntry, Float> call(TableColumn<ShoppingCartEntry, Float> param) {
                 return new TableCell<>() {
+
                     @Override
                     protected void updateItem(Float pricePerCarrier, boolean empty) {
                         super.updateItem(pricePerCarrier, empty);
@@ -126,7 +145,6 @@ public class ShoppingCartController {
                             setText("");
                         } else {
                             String pricePerCarrierStr = pricePerCarrier + "€";
-
                             setText(pricePerCarrierStr);
                         }
                     }
@@ -139,19 +157,19 @@ public class ShoppingCartController {
             public TableCell<ShoppingCartEntry, Button> call(TableColumn<ShoppingCartEntry, Button> param) {
                 return new TableCell<>() {
 
-                    final Button removeButton = new Button("Remove");
-
                     @Override
                     public void updateItem(Button item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty) {
                             setGraphic(null);
-                            setText(null);
                         } else {
+                            Button removeButton = new Button("Remove");
+                            removeButton.getStyleClass().add("btn-alert");
                             removeButton.setOnAction(event -> {
                                 shoppingCartTable.getItems().remove(getIndex());
                                 shoppingCart.remove(getIndex());
                                 updateTotalPrice();
+                                updatePayButton();
                             });
                             setGraphic(removeButton);
                         }
@@ -161,17 +179,107 @@ public class ShoppingCartController {
         });
     }
 
-    private void showPopup(String title, String message, Alert.AlertType alertType) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(message);
-        ButtonType confirmButton = new ButtonType("Ok");
-        alert.getButtonTypes().setAll(confirmButton);
-        alert.show();
+    private void updatePayButton() {
+        if (shoppingCart.isEmpty()) {
+            payButton.setVisible(false);
+            payButton.setManaged(false);
+        } else {
+            payButton.setVisible(true);
+            payButton.setManaged(true);
+        }
     }
 
-    @FXML
-    public void onBackButtonClicked() {
-        SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
+    private void purchase(String selectedPaymentMethod, UUID customerId) {
+        feedbackLabel.setText("");
+        feedbackLabel.getStyleClass().remove("alert");
+        feedbackLabel.setStyle(null);
+
+        List<ShoppingCartProductDTO> shoppingCartProducts = new ArrayList<>();
+        shoppingCart.forEach(shoppingCartItem -> {
+            shoppingCartProducts.add(
+                    ShoppingCartProductDTO.builder()
+                            .withProductId(shoppingCartItem.getProductId())
+                            .withSoundCarrierId(shoppingCartItem.getSoundCarrierId())
+                            .withProductName(shoppingCartItem.getProductName())
+                            .withArtistName(shoppingCartItem.getArtistName())
+                            .withSelectedAmount(shoppingCartItem.getSelectedAmount())
+                            .withCarrierName(shoppingCartItem.getSoundCarrierName())
+                            .withPricePerCarrier(shoppingCartItem.getPricePerCarrier())
+                            .withTotalProductPrice(totalPrice)
+                            .build()
+            );
+        });
+
+        try {
+            String invoiceNumber = RMIClient.getRmiClient()
+                    .getRmiFactory()
+                    .getBuyingService()
+                    .buyWithShoppingCart(SessionManager.getInstance().getSessionId(), shoppingCartProducts, selectedPaymentMethod, customerId);
+
+            customer = null;
+            totalPrice = 0;
+            shoppingCart.clear();
+            paymentToggleGroup.selectToggle(null);
+
+            initialize();
+
+            feedbackLabel.setStyle("-fx-text-fill: #269f3e;");
+            feedbackLabel.setText("Purchase successful! Invoice No.: " + invoiceNumber);
+
+        } catch (CarrierNotAvailableException cne) {
+            feedbackLabel.getStyleClass().add("alert");
+            feedbackLabel.setText("Selected amount is not available!");
+        } catch (IOException e) {
+            feedbackLabel.getStyleClass().add("alert");
+            feedbackLabel.setText("An error occurred!");
+        } catch (SessionExpired | NoPermissionForOperation e) {
+            e.printStackTrace();
+        }
     }
+
+    private void addCustomer() {
+        if(customer != null) {
+
+            customerNameLabel.setVisible(true);
+            customerNameLabel.setManaged(true);
+
+            customerStreetLabel.setVisible(true);
+            customerStreetLabel.setManaged(true);
+
+            customerCityLabel.setVisible(true);
+            customerCityLabel.setManaged(true);
+
+            customerNameLabel.setText(customer.getGivenName() + " " + customer.getFamilyName());
+            customerStreetLabel.setText(customer.getStreet() + " " + customer.getHouseNumber());
+            customerCityLabel.setText(customer.getPostalCode() + " " + customer.getCity());
+
+            removeCustomerButton.setVisible(true);
+            removeCustomerButton.setManaged(true);
+            addCustomerButton.setVisible(false);
+            addCustomerButton.setManaged(false);
+
+        } else {
+
+            customerNameLabel.setVisible(false);
+            customerNameLabel.setManaged(false);
+
+            customerStreetLabel.setVisible(false);
+            customerStreetLabel.setManaged(false);
+
+            customerCityLabel.setVisible(false);
+            customerCityLabel.setManaged(false);
+
+            removeCustomerButton.setVisible(false);
+            removeCustomerButton.setManaged(false);
+            addCustomerButton.setVisible(true);
+            addCustomerButton.setManaged(true);
+        }
+    }
+
+    private void updateTotalPrice() {
+        totalPrice = 0;
+        shoppingCart.forEach(item -> totalPrice += item.getTotalProductPrice());
+        totalPriceLabel.setText(totalPrice + "€");
+    }
+
 }

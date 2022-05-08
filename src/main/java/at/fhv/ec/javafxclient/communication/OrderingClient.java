@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class OrderingClient {
+
     private static final String ORDER_TOPIC_NAME = "Orders";
     private static final String ORDER_CLIENT_CONNECTION_ID = "system_ordering_client";
     private static final String ORDER_CLIENT_NAME = "ordering_client";
@@ -30,20 +31,17 @@ public class OrderingClient {
     private Topic topic;
     private List<ObjectMessage> messageList = new LinkedList<>();
 
-    private OrderingClient() {
-    }
+    private OrderingClient() {}
+
     public void disconnect() {
         try {
             this.session.close();
             this.connection.stop();
             this.connection.close();
-        } catch (JMSException | NullPointerException e) {
-            e.printStackTrace();
-        }
+        } catch (JMSException | NullPointerException ignored) {}
     }
-    public void connect(String host) {
 
-        //TODO just load when logged in as operator
+    public void connect(String host) {
         try {
             this.connectionFactory = new ActiveMQConnectionFactory("tcp://" + host + ":" + JMS_PORT);
             this.connectionFactory.setTrustAllPackages(true);
@@ -120,8 +118,7 @@ public class OrderingClient {
         try {
             this.messageList.remove(message);
             message.acknowledge();
-            //TODO replace, just first version of refreesh
-            SceneManager.getInstance().switchView("order");
+            SceneManager.getInstance().switchView(SceneManager.VIEW_ORDERS);
         } catch (JMSException e) {
             e.printStackTrace();
         }

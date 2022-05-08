@@ -24,17 +24,15 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LoginController implements Initializable {
+public class LoginController {
+
+    private AuthenticationService authenticationService;
 
     private static final String REMOTE_HOST = "10.0.40.170";
     private static final String REMOTE_INFORMATION_TEXT = "remote";
 
     private static final String LOCAL_HOST = "localhost";
     private static final String LOCAL_INFORMATION_TEXT = "local";
-
-    private AuthenticationService authenticationService;
-
-    //////////////////////////////////////////////////////////////////////////////////////////
 
     @FXML
     private ChoiceBox<String> connectionTypeChoiceBox;
@@ -45,18 +43,10 @@ public class LoginController implements Initializable {
     @FXML
     private Label infoLabel;
 
-    //////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         connectionTypeChoiceBox.getItems().addAll(REMOTE_INFORMATION_TEXT, LOCAL_INFORMATION_TEXT);
-        connectionTypeChoiceBox.setValue(REMOTE_INFORMATION_TEXT);
-
-        // backdoor user
-        usernameTextField.setText("tf-test");
-        passwordTextField.setText("PssWrd");
+        connectionTypeChoiceBox.setValue(LOCAL_INFORMATION_TEXT);
     }
 
     @FXML
@@ -90,12 +80,13 @@ public class LoginController implements Initializable {
                     authenticationService = EJBClient.getEjbClient().getAuthenticationService();
                     LoginResultDTO loginResultDTO = authenticationService.login(username, password);
 
-                    SessionManager.getInstance().login(loginResultDTO.getUsername(), loginResultDTO.getSessionId(), loginResultDTO.getRoles(), loginResultDTO.getTopicNames());
+                    SessionManager.getInstance().login(loginResultDTO.getUsername(), loginResultDTO.getSessionId(), loginResultDTO.getRoles());
                     JMSClient.getJmsClient().startMessageListeners(loginResultDTO.getTopicNames(), loginResultDTO.getEmployeeId());
 
                     if (loginResultDTO.getRoles().contains("Operator")) {
                         if (connectionTypeChoiceBox.getValue().equals(LOCAL_INFORMATION_TEXT)) {
                             OrderingClient.getInstance().connect(LOCAL_HOST);
+
                         } else {
                             OrderingClient.getInstance().connect(REMOTE_HOST);
                         }
@@ -109,6 +100,8 @@ public class LoginController implements Initializable {
                     infoLabel.getStyleClass().add("alert");
                     infoLabel.setText("Invalid username or password!");
 
+                } catch (IOException ignored) {
+
                 } catch (JMSException e) {
                     throw new RuntimeException(e);
                 } catch (NamingException e) {
@@ -120,6 +113,7 @@ public class LoginController implements Initializable {
         }
     }
 
+    @FXML
     public void onLinkClicked() {
         try {
             Desktop.getDesktop().browse(new URL("https://www.windows-faq.de/2018/07/28/bildschirmanzeige-bei-windows-10-skalieren-schriftgroesse-veraendern/").toURI());

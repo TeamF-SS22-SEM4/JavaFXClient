@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.layout.*?>
 <VBox alignment="CENTER" styleClass="login-background" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.fhv.ec.javafxclient.view.controller.LoginController">
    <children>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="login-content">
          <children>
             <ImageView fitWidth="200" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../images/logo_2.png" />
+                  <Image url="@../../../../../images/logo.png" />
                </image>
             </ImageView>
             <Label fx:id="infoLabel" alignment="TOP_CENTER" styleClass="login-text" textAlignment="CENTER" wrapText="true" />
@@ -67,7 +60,7 @@
                   </FontAwesomeIconView>
                   <VBox>
                      <children>
-                        <Label styleClass="color-text-2" text="For LUKAS KAUFMANN: make sure the scaling is at 100%!" wrapText="true" />
+                        <Label styleClass="color-text-2" text="For best experience make sure the scaling is at 100%!" wrapText="true" />
                         <Hyperlink focusTraversable="false" onAction="#onLinkClicked" text="Tutorial" />
                      </children>
                   </VBox>

@@ -10,7 +10,6 @@ public class SessionManager {
 
     private static String username;
     private static List<String> roles;
-    private static List<String> topicNames;
 
     private static boolean newMessagesReceived;
 
@@ -19,7 +18,6 @@ public class SessionManager {
             session = new SessionManager();
             sessionId = "";
             roles = new ArrayList<>();
-            topicNames = new ArrayList<>();
             newMessagesReceived = false;
             username = "";
         }
@@ -27,17 +25,16 @@ public class SessionManager {
         return session;
     }
 
-    public void login(String aUsername, String aSessionId, List<String> aRolesList, List<String> aTopicNamesList) {
+    public void login(String aUsername, String aSessionId, List<String> aRolesList) {
         username = aUsername;
         sessionId = aSessionId;
         roles.addAll(aRolesList);
-        topicNames.addAll(aTopicNamesList);
     }
 
     public void logout() {
         sessionId = "";
         roles.clear();
-        topicNames.clear();
+        newMessagesReceived = false;
     }
 
     public void onNewMessageReceived() {
@@ -57,10 +54,6 @@ public class SessionManager {
 
     public List<String> getRoles() {
         return roles;
-    }
-
-    public List<String> getTopicNames() {
-        return topicNames;
     }
 
     public boolean isNewMessagesReceived() {

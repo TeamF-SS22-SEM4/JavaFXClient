@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class JMSClient {
+
     private static JMSClient jmsClient;
     private final String PROTOCOL = "tcp";
     private final String PORT = "61616";
@@ -49,7 +50,6 @@ public class JMSClient {
     }
 
     public void startMessageListeners(List<String> topics, String employeeId) {
-        // TODO: find better solution
         topics.forEach(topic -> {
             try {
                 TopicConnection connection = (TopicConnection) connectionFactory.createConnection();
@@ -142,34 +142,38 @@ public class JMSClient {
         jmsMessages.remove(customMessage.getJmsId());
         topicMessages.remove(customMessage);
     }
-    public void logout() {
-        // TODO: Find better solution
+
+    public void disconnect() {
         // Close all connections
-        consumers.forEach((k , v) -> {
+        consumers.forEach((topic , consumer) -> {
             try {
-                v.close();
-            } catch (JMSException e) {
-                throw new RuntimeException(e);
+                consumer.close();
+            } catch (JMSException ignored) {
+
             }
         });
 
-        sessions.forEach((k , v) -> {
+        sessions.forEach((topic , session) -> {
             try {
-                v.close();
-            } catch (JMSException e) {
-                throw new RuntimeException(e);
+                session.close();
+            } catch (JMSException ignored) {
+
             }
         });
 
-        connections.forEach((k , v) -> {
+        connections.forEach((topic , connection) -> {
             try {
-                v.close();
-            } catch (JMSException e) {
-                throw new RuntimeException(e);
+                connection.close();
+            } catch (JMSException ignored) {
+
             }
         });
 
+        consumers.clear();
+        sessions.clear();
+        connections.clear();
         jmsMessages.clear();
         messages.clear();
+        amountOfNewMessages = 0;
     }
 }

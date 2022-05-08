@@ -5,10 +5,12 @@ import at.fhv.ss22.ea.f.communication.dto.DetailedOrderDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
 import java.util.List;
@@ -20,153 +22,49 @@ public class OrderController {
 
     @FXML
     private TableView<DetailedOrderDTO> ordersTable;
-
     @FXML
-    private TableColumn<DetailedOrderDTO, String> productNameColumn;
-
-    @FXML
-    private TableColumn<DetailedOrderDTO, String> carrierTypeColumn;
-
-    @FXML
-    private TableColumn<DetailedOrderDTO, String> employeeColumn;
-
-    @FXML
-    private TableColumn<DetailedOrderDTO, Integer> amountColumn;
-
-    @FXML
-    private TableColumn<DetailedOrderDTO, UUID> denyColumn;
-
-    @FXML
-    private TableColumn<DetailedOrderDTO, UUID> approveColumn;
+    private TableColumn<DetailedOrderDTO, UUID> actionColumn;
 
     @FXML
     public void initialize() {
+        formatTable();
 
         List<DetailedOrderDTO> orders = orderingClient.getActiveOrders();
-
-        this.createTableCallbacks();
-
         ObservableList<DetailedOrderDTO> orderTableData = FXCollections.observableArrayList(orders);
         ordersTable.setItems(orderTableData);
     }
 
-    private void createTableCallbacks() {
-        approveColumn.setCellFactory(new Callback<TableColumn<DetailedOrderDTO, UUID>, TableCell<DetailedOrderDTO, UUID>>() {
+    private void formatTable() {
+        actionColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<DetailedOrderDTO, UUID> call(TableColumn<DetailedOrderDTO, UUID> param) {
                 return new TableCell<>() {
-                    private final Button approveButton = new Button("Approve");
 
                     @Override
                     protected void updateItem(UUID id, boolean empty) {
                         super.updateItem(id, empty);
-                        if (empty || id ==null) {
-                            setText(null);
+                        if (empty || id == null) {
                             setGraphic(null);
                         } else {
+                            HBox wrapperBox = new HBox();
+                            wrapperBox.setSpacing(10);
+                            wrapperBox.setAlignment(Pos.CENTER);
+
+                            Button approveButton = new Button("✔");
                             approveButton.getStyleClass().add("btn-success");
-                            approveButton.setOnAction(event -> {
-                                orderingClient.approveOrder(id);
-                            });
-                            setGraphic(approveButton);
-                        }
-                    }
-                };
-            }
-        });
+                            approveButton.setOnAction(event -> orderingClient.approveOrder(id));
 
-        denyColumn.setCellFactory(new Callback<TableColumn<DetailedOrderDTO, UUID>, TableCell<DetailedOrderDTO, UUID>>() {
-            @Override
-            public TableCell<DetailedOrderDTO, UUID> call(TableColumn<DetailedOrderDTO, UUID> param) {
-                return new TableCell<>() {
-                    private final Button denyButton = new Button("Deny");
+                            Button denyButton = new Button("❌");
+                            denyButton.getStyleClass().add("btn-alert");
+                            denyButton.setOnAction(event -> orderingClient.denyOrder(id));
 
-                    @Override
-                    protected void updateItem(UUID id, boolean empty) {
-                        super.updateItem(id, empty);
-                        if (empty || id ==null) {
-                            setText(null);
-                            setGraphic(null);
-                        } else {
-                            denyButton.getStyleClass().add("btn");
-                            denyButton.setOnAction(event -> {
-                                orderingClient.denyOrder(id);
-                            });
-                            setGraphic(denyButton);
-                        }
-                    }
-                };
-            }
-        });
+                            wrapperBox.getChildren().addAll(approveButton, denyButton);
 
-        employeeColumn.setCellFactory(new Callback<TableColumn<DetailedOrderDTO, String>, TableCell<DetailedOrderDTO, String>>() {
-            @Override
-            public TableCell<DetailedOrderDTO, String> call(TableColumn<DetailedOrderDTO, String> param) {
-                return new TableCell<>() {
-                    @Override
-                    protected void updateItem(String employee, boolean empty) {
-                        super.updateItem(employee, empty);
-                        if (empty || employee == null) {
-                            setGraphic(null);
-                            setText(null);
-                        } else {
-                            setText(employee);
-                        }
-                    }
-                };
-            }
-        });
-
-        amountColumn.setCellFactory(new Callback<TableColumn<DetailedOrderDTO, Integer>, TableCell<DetailedOrderDTO, Integer>>() {
-            @Override
-            public TableCell<DetailedOrderDTO, Integer> call(TableColumn<DetailedOrderDTO, Integer> param) {
-                return new TableCell<>() {
-                    @Override
-                    protected void updateItem(Integer amount, boolean empty) {
-                        super.updateItem(amount, empty);
-                        if (empty || amount == null) {
-                            setText(null);
-                            setGraphic(null);
-                        } else {
-                            setText(amount.toString());
-                        }
-                    }
-                };
-            }
-        });
-
-        productNameColumn.setCellFactory(new Callback<TableColumn<DetailedOrderDTO, String>, TableCell<DetailedOrderDTO, String>>() {
-            @Override
-            public TableCell<DetailedOrderDTO, String> call(TableColumn<DetailedOrderDTO, String> param) {
-                return new TableCell<>() {
-                    @Override
-                    protected void updateItem(String productName, boolean empty) {
-                        super.updateItem(productName, empty);
-                        if (empty || productName == null) {
-                            setText("");
-                        } else {
-                            setText(productName);
-                        }
-                    }
-                };
-            }
-        });
-        carrierTypeColumn.setCellFactory(new Callback<TableColumn<DetailedOrderDTO, String>, TableCell<DetailedOrderDTO, String>>() {
-            @Override
-            public TableCell<DetailedOrderDTO, String> call(TableColumn<DetailedOrderDTO, String> param) {
-                return new TableCell<>() {
-                    @Override
-                    protected void updateItem(String type, boolean empty) {
-                        super.updateItem(type, empty);
-                        if (empty || type == null) {
-                            setText("");
-                        } else {
-                            setText(type);
+                            setGraphic(wrapperBox);
                         }
                     }
                 };
             }
         });
     }
-
 }
