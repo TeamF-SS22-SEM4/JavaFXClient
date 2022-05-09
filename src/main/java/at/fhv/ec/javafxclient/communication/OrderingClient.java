@@ -10,6 +10,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.ActiveMQSession;
 
 import javax.jms.*;
+import javax.naming.NamingException;
 import java.io.IOException;
 import java.lang.IllegalStateException;
 import java.util.LinkedList;
@@ -90,10 +91,17 @@ public class OrderingClient {
                     .withAmount(detailedOrderDTO.getAmount())
                     .withCarrierId(detailedOrderDTO.getSoundCarrierId())
                     .build();
-            RMIClient.getRmiClient().getRmiFactory().getOrderingService().approveOrder(SessionManager.getInstance().getSessionId(), orderDTO);
-            SceneManager.getInstance().switchView(SceneManager.VIEW_ORDERS);
-        } catch (JMSException | IOException | SessionExpired | NoPermissionForOperation e) {
+            EJBClient.getEjbClient().getOrderingService().approveOrder(SessionManager.getInstance().getSessionId(), orderDTO);
+            //TODO replace, just first version of refreesh
+            SceneManager.getInstance().switchView("order");
+        } catch (JMSException e) {
             e.printStackTrace();
+        } catch (SessionExpired sessionExpired) {
+            sessionExpired.printStackTrace();
+        } catch (NoPermissionForOperation noPermissionForOperation) {
+            noPermissionForOperation.printStackTrace();
+        } catch (NamingException e) {
+            throw new RuntimeException(e);
         }
     }
 

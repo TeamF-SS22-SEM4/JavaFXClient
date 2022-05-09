@@ -2,7 +2,7 @@ package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
-import at.fhv.ec.javafxclient.communication.RMIClient;
+import at.fhv.ec.javafxclient.communication.EJBClient;
 import at.fhv.ec.javafxclient.model.SaleItemEntry;
 import at.fhv.ss22.ea.f.communication.api.RefundSaleService;
 import at.fhv.ss22.ea.f.communication.api.SaleSearchService;
@@ -17,7 +17,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 
-import java.rmi.RemoteException;
+import javax.naming.NamingException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -59,8 +60,7 @@ public class ExchangeController {
         invoiceNumberLabel.getStyleClass().remove("alert");
 
         try {
-
-            SaleSearchService saleSearchService = RMIClient.getRmiClient().getRmiFactory().getSaleSearchService();
+            SaleSearchService saleSearchService = EJBClient.getEjbClient().getSaleSearchService();
             SaleDTO sale = saleSearchService.saleByInvoiceNumber(SessionManager.getInstance().getSessionId(), searchTextField.getText());
             refundedSaleItems = new ArrayList<>();
             sale.getSaleItems().forEach(saleItem -> refundedSaleItems.add(new SaleItemEntry(
@@ -82,8 +82,7 @@ public class ExchangeController {
             totalPriceLabel.setText(sale.getTotalPrice() + "€");
             displayContent(true);
 
-        } catch (RemoteException ignored) {
-
+            saleItemsTable.setVisible(true);
         } catch (NoSuchElementException ne) {
 
             invoiceNumberLabel.setText("No sale with invoice number " + searchTextField.getText() + " found!");
@@ -93,7 +92,8 @@ public class ExchangeController {
         } catch (SessionExpired | NoPermissionForOperation e) {
 
             e.printStackTrace();
-
+        } catch (NamingException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -107,8 +107,7 @@ public class ExchangeController {
         feedbackLabel.getStyleClass().remove("alert");
 
         try {
-
-            RefundSaleService refundSaleService = RMIClient.getRmiClient().getRmiFactory().getRefundedSaleService();
+            RefundSaleService refundSaleService = EJBClient.getEjbClient().getRefundSaleService();
             List<RefundedSaleItemDTO> refundedSaleItemDTOs = new ArrayList<>();
             refundedSaleItems.forEach(refundedSaleItem -> {
                 if(refundedSaleItem.getAmountToRefund() > 0) {
@@ -130,11 +129,10 @@ public class ExchangeController {
                 feedbackLabel.getStyleClass().add("alert");
                 feedbackLabel.setText("You have to select at least one item to refund!");
             }
-
-        } catch (RemoteException | NoPermissionForOperation | SessionExpired e) {
-
+        } catch (NoPermissionForOperation | SessionExpired e) {
             e.printStackTrace();
-
+        } catch (NamingException e) {
+            throw new RuntimeException(e);
         }
     }
 

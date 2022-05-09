@@ -2,37 +2,37 @@ package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
+import at.fhv.ec.javafxclient.communication.EJBClient;
 import at.fhv.ec.javafxclient.communication.JMSClient;
 import at.fhv.ec.javafxclient.communication.OrderingClient;
-import at.fhv.ec.javafxclient.communication.RMIClient;
 import at.fhv.ss22.ea.f.communication.api.AuthenticationService;
 import at.fhv.ss22.ea.f.communication.dto.LoginResultDTO;
 import at.fhv.ss22.ea.f.communication.exception.AuthenticationFailed;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import javax.jms.JMSException;
+import javax.naming.NamingException;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
+import java.util.ResourceBundle;
 
 public class LoginController {
 
     private AuthenticationService authenticationService;
 
     private static final String REMOTE_HOST = "10.0.40.170";
-    private static final String REMOTE_PORT = "12345";
-    private static final String REMOTE_INFORMATION_TEXT = "remote (port:12345)";
+    private static final String REMOTE_INFORMATION_TEXT = "remote";
+
     private static final String LOCAL_HOST = "localhost";
-    private static final String LOCAL_PORT = "1099";
-    private static final String LOCAL_INFORMATION_TEXT = "local (port:1099)";
+    private static final String LOCAL_INFORMATION_TEXT = "local";
 
     @FXML
     private ChoiceBox<String> connectionTypeChoiceBox;
@@ -69,15 +69,15 @@ public class LoginController {
 
                 try {
                     if (connectionTypeChoiceBox.getValue().equals(LOCAL_INFORMATION_TEXT)) {
-                        RMIClient.getRmiClient().connect(LOCAL_HOST, LOCAL_PORT);
+                        EJBClient.getEjbClient().connect(LOCAL_HOST);
                         JMSClient.getJmsClient().connect(LOCAL_HOST);
 
                     } else {
-                        RMIClient.getRmiClient().connect(REMOTE_HOST, REMOTE_PORT);
+                        EJBClient.getEjbClient().connect(REMOTE_HOST);
                         JMSClient.getJmsClient().connect(REMOTE_HOST);
                     }
 
-                    authenticationService = RMIClient.getRmiClient().getRmiFactory().getAuthenticationService();
+                    authenticationService = EJBClient.getEjbClient().getAuthenticationService();
                     LoginResultDTO loginResultDTO = authenticationService.login(username, password);
 
                     SessionManager.getInstance().login(loginResultDTO.getUsername(), loginResultDTO.getSessionId(), loginResultDTO.getRoles());
@@ -94,21 +94,17 @@ public class LoginController {
 
                     SceneManager.getInstance().switchView(SceneManager.VIEW_SHOP);
 
-                } catch (RemoteException | NotBoundException e) {
-
-                    infoLabel.getStyleClass().add("alert");
-                    infoLabel.setText("Connection to the server could not be established!");
 
                 } catch (AuthenticationFailed e) {
 
                     infoLabel.getStyleClass().add("alert");
                     infoLabel.setText("Invalid username or password!");
-
-                } catch (IOException ignored) {
-
                 } catch (JMSException e) {
-
                     throw new RuntimeException(e);
+                } catch (NamingException e) {
+                    infoLabel.getStyleClass().add("alert");
+                    infoLabel.setText("Connection to the server could not be established!");
+                    e.printStackTrace();
                 }
             });
         }

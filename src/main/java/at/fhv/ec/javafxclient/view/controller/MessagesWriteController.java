@@ -2,7 +2,7 @@ package at.fhv.ec.javafxclient.view.controller;
 
 import at.fhv.ec.javafxclient.SceneManager;
 import at.fhv.ec.javafxclient.SessionManager;
-import at.fhv.ec.javafxclient.communication.RMIClient;
+import at.fhv.ec.javafxclient.communication.EJBClient;
 import at.fhv.ss22.ea.f.communication.api.MessagingService;
 import at.fhv.ss22.ea.f.communication.dto.MessageDTO;
 import at.fhv.ss22.ea.f.communication.exception.NoPermissionForOperation;
@@ -12,7 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-import java.rmi.RemoteException;
+import javax.naming.NamingException;
 
 public class MessagesWriteController {
 
@@ -42,7 +42,8 @@ public class MessagesWriteController {
         if((!titleTextField.getText().isEmpty()) && (!contentTextArea.getText().isEmpty())) {
 
             try {
-                MessagingService messagingService = RMIClient.getRmiClient().getRmiFactory().getMessagingService();
+                MessagingService messagingService = EJBClient.getEjbClient().getMessagingService();
+
                 MessageDTO message = MessageDTO.builder()
                         .withTitle(titleTextField.getText())
                         .withContent(contentTextArea.getText())
@@ -55,12 +56,10 @@ public class MessagesWriteController {
 
                 statusLabel.setText("Sent message successfully to topic " + topicName + " !");
                 statusLabel.setVisible(true);
-
-            } catch (RemoteException | SessionExpired | NoPermissionForOperation e) {
-
-                statusLabel.getStyleClass().add("alert");
-                statusLabel.setText("Could not send message to topic " + topicName + " !");
-                statusLabel.setVisible(true);
+            } catch (SessionExpired | NoPermissionForOperation e) {
+                throw new RuntimeException(e);
+            } catch (NamingException e) {
+                throw new RuntimeException(e);
             }
 
         } else {
