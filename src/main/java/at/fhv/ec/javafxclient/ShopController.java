@@ -36,6 +36,7 @@ import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ShopController implements Initializable {
 
@@ -198,7 +199,11 @@ public class ShopController implements Initializable {
                                     productSearchService = EJBClient.getEjbClient().getProductSearchService();
                                     UUID productID = getTableView().getItems().get(getIndex()).getProductId();
                                     ProductDetailsDTO productDetails = productSearchService.productById(productID);
-                                    ObservableList<SoundCarrierDTO> priceList = FXCollections.observableArrayList(productDetails.getSoundCarriers());
+                                    ObservableList<SoundCarrierDTO> priceList = FXCollections.observableArrayList(
+                                            productDetails.getSoundCarriers().stream()
+                                                    .filter(c -> !"Digital".equals(c.getSoundCarrierName()))
+                                                    .collect(Collectors.toList())
+                                    );
 
                                     buyController = fxmlLoader.getController();
                                     buyController.buyTableView.setItems(priceList);
