@@ -33,6 +33,7 @@ import javafx.util.Callback;
 
 import javax.naming.NamingException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
@@ -328,7 +329,10 @@ public class ShopController implements Initializable {
                                     orderColumn.setMinWidth(200);
                                     orderColumn.setMaxWidth(200);
 
-                                    ObservableList<SoundCarrierDTO> priceList = FXCollections.observableArrayList(productDetails.getSoundCarriers());
+                                    List<SoundCarrierDTO> carriers = productDetails.getSoundCarriers();
+                                    carriers.removeIf(c -> c.getSoundCarrierName().equals("Digital"));
+
+                                    ObservableList<SoundCarrierDTO> priceList = FXCollections.observableArrayList(carriers);
                                     priceTable.setItems(priceList);
                                     priceTable.getColumns().addAll(soundCarrierNameColumn, amountAvailableColumn, pricePerCarrierColumn, selectAmountColumn, addToCartColumn, orderColumn);
                                     priceTable.getSortOrder().add(soundCarrierNameColumn);
