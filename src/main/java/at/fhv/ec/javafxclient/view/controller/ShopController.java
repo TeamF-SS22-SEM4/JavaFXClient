@@ -36,7 +36,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+
+//TODO remove this? is this duplicated?
 public class ShopController implements Initializable {
 
     private TextAnimator textAnimator;
@@ -328,11 +331,8 @@ public class ShopController implements Initializable {
                                     orderColumn.setStyle("-fx-alignment: center-right;");
                                     orderColumn.setMinWidth(200);
                                     orderColumn.setMaxWidth(200);
-
-                                    List<SoundCarrierDTO> carriers = productDetails.getSoundCarriers();
-                                    carriers.removeIf(c -> c.getSoundCarrierName().equals("Digital"));
-
-                                    ObservableList<SoundCarrierDTO> priceList = FXCollections.observableArrayList(carriers);
+                                    
+                                    ObservableList<SoundCarrierDTO> priceList = FXCollections.observableArrayList(productDetails.getSoundCarriers());
                                     priceTable.setItems(priceList);
                                     priceTable.getColumns().addAll(soundCarrierNameColumn, amountAvailableColumn, pricePerCarrierColumn, selectAmountColumn, addToCartColumn, orderColumn);
                                     priceTable.getSortOrder().add(soundCarrierNameColumn);
