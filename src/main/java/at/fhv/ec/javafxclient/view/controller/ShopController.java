@@ -33,9 +33,13 @@ import javafx.util.Callback;
 
 import javax.naming.NamingException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+
+//TODO remove this? is this duplicated?
 public class ShopController implements Initializable {
 
     private TextAnimator textAnimator;
@@ -327,7 +331,7 @@ public class ShopController implements Initializable {
                                     orderColumn.setStyle("-fx-alignment: center-right;");
                                     orderColumn.setMinWidth(200);
                                     orderColumn.setMaxWidth(200);
-
+                                    
                                     ObservableList<SoundCarrierDTO> priceList = FXCollections.observableArrayList(productDetails.getSoundCarriers());
                                     priceTable.setItems(priceList);
                                     priceTable.getColumns().addAll(soundCarrierNameColumn, amountAvailableColumn, pricePerCarrierColumn, selectAmountColumn, addToCartColumn, orderColumn);
