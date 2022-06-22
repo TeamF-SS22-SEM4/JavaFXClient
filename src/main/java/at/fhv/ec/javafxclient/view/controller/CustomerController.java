@@ -74,6 +74,7 @@ public class CustomerController {
                                 setText(null);
                             } else {
                                 Button addToSaleButton = new Button("Add to sale");
+                                addToSaleButton.getStyleClass().add("btn-success");
                                 addToSaleButton.setOnAction(event -> {
                                     ShoppingCartController.customer = getTableView().getItems().get(getIndex());
                                     SceneManager.getInstance().switchView(SceneManager.VIEW_SHOPPING_CART);

@@ -54,7 +54,7 @@ public class OrderController {
                             approveButton.getStyleClass().add("btn-success");
                             approveButton.setOnAction(event -> orderingClient.approveOrder(id));
 
-                            Button denyButton = new Button("❌");
+                            Button denyButton = new Button("✘");
                             denyButton.getStyleClass().add("btn-alert");
                             denyButton.setOnAction(event -> orderingClient.denyOrder(id));
 

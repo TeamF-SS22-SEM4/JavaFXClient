@@ -299,7 +299,7 @@ public class ShopController implements Initializable {
                                                         startOrderButton.getStyleClass().add("btn");
                                                         Button placeOrderButton = new Button("✔");
                                                         placeOrderButton.getStyleClass().add("btn-success");
-                                                        Button quitOrderButton = new Button("❌");
+                                                        Button quitOrderButton = new Button("✘");
                                                         quitOrderButton.getStyleClass().add("btn");
 
                                                         wrappingBox.getChildren().add(startOrderButton);
